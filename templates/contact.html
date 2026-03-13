@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block title %}Contact — Mustafa Noman{% endblock %}
+
+{% block content %}
+
+<!-- Page Hero -->
+<section class="page-hero section--dark" aria-labelledby="contact-title">
+  <div class="container">
+    <span class="section-label mono reveal">Get In Touch</span>
+    <h1 class="page-hero__title reveal" id="contact-title">Let's Talk Data.</h1>
+  </div>
+</section>
+
+<!-- Contact Content -->
+<section class="section" aria-label="Contact information and form">
+  <div class="container">
+    <div class="contact-grid">
+
+      <!-- Contact Info -->
+      <div class="contact-info reveal">
+        <h2>Start a Conversation</h2>
+        <p>Whether you have a project in mind, want to discuss analytics strategy, or just want to connect — I'd love to hear from you.</p>
+        
+        <div class="contact-details">
+          
+          <a href="mailto:mustafanoman128@gmail.com" class="contact-detail">
+            <span class="contact-detail__icon mono">
+              <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+              </svg>
+            </span>
+            <div>
+              <span class="contact-detail__label mono">Email</span>
+              <span class="contact-detail__val">mustafanoman128@gmail.com</span>
+            </div>
+          </a>
+          
+          
+          
+          <a href="https://linkedin.com/in/mustafanoman128" target="_blank" rel="noopener noreferrer" class="contact-detail">
+            <span class="contact-detail__icon mono">
+              <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+              </svg>
+            </span>
+            <div>
+              <span class="contact-detail__label mono">LinkedIn</span>
+              <span class="contact-detail__val">linkedin.com/in/mustafanoman128</span>
+            </div>
+          </a>
+          
+          <div class="contact-detail">
+            <span class="contact-detail__icon mono">
+              <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+              </svg>
+            </span>
+            <div>
+              <span class="contact-detail__label mono">Location</span>
+              <span class="contact-detail__val">karachi, Pakistan</span>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="contact-form-wrap reveal">
+        <form class="contact-form" method="POST" aria-labelledby="contact-form-heading">
+          <h3 id="contact-form-heading" class="sr-only">Contact form</h3>
+          <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+          
+          <div class="form-group">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" id="name" name="name" class="form-control" placeholder="Your full name" required maxlength="120" autocomplete="name" />
+          </div>
+          
+          <div class="form-group">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" id="email" name="email" class="form-control" placeholder="your@email.com" required maxlength="180" autocomplete="email" />
+          </div>
+          
+          <div class="form-group">
+            <label for="message" class="form-label">Message</label>
+            <textarea id="message" name="message" class="form-control" rows="6" placeholder="Tell me about your project or inquiry..." required maxlength="2000"></textarea>
+          </div>
+          
+          <button type="submit" class="btn btn--primary btn--full">
+            Send Message
+            <svg class="btn__icon btn__icon--arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}Sign Up — Mustafa Noman{% endblock %}
+
+{% block content %}
+
+<section class="auth-section section" aria-labelledby="signup-heading">
+  <div class="container">
+    <div class="auth-card reveal">
+      
+      <div class="auth-card__header">
+        <span class="mono section-label">Create Account</span>
+        <h2 id="signup-heading">Join the Conversation</h2>
+      </div>
+      
+      <form class="auth-form" method="POST" aria-label="Sign up form">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+        
+        <div class="form-group">
+          <label for="name" class="form-label">Full Name</label>
+          <input type="text" id="name" name="name" class="form-control" placeholder="Your name" required maxlength="120" autocomplete="name" />
+        </div>
+        
+        <div class="form-group">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" id="email" name="email" class="form-control" placeholder="your@email.com" required maxlength="180" autocomplete="email" />
+        </div>
+        
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" id="password" name="password" class="form-control" placeholder="Min. 8 characters" required minlength="8" autocomplete="new-password" />
+        </div>
+        
+        <div class="form-group">
+          <label for="confirm_password" class="form-label">Confirm Password</label>
+          <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="Repeat password" required autocomplete="new-password" />
+        </div>
+        
+        <button type="submit" class="btn btn--primary btn--full mt-4">
+          Create Account
+          <svg class="btn__icon btn__icon--arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </form>
+      
+      <p class="auth-card__foot">Already have an account? <a href="{{ url_for('login') }}">Log in</a></p>
+      
+    </div>
+  </div>
+</section>
+
+{% endblock %}

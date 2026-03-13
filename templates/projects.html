@@ -1,0 +1,401 @@
+{% extends 'base.html' %}
+{% block title %}Projects & Certifications — Mustafa Noman{% endblock %}
+
+{% block content %}
+
+<!-- Page Hero -->
+<section class="page-hero section--dark" aria-labelledby="projects-title">
+  <div class="container">
+    <h1 class="page-hero__title reveal" id="projects-title">My <em>Projects</em></h1>
+  </div>
+</section>
+
+<!-- Projects Grid -->
+<section class="section" aria-labelledby="all-projects-heading">
+  <div class="container">
+    
+    <div class="section-header reveal">
+      <span class="section-label mono">All Projects</span>
+      <h2 class="section-title" id="all-projects-heading">Selected Work</h2>
+    </div>
+
+    <!-- Project 01 -->
+    <div class="proj-detail reveal">
+      <div class="proj-detail__media">
+        <div class="proj-detail__img-wrap">
+          <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&h=500&fit=crop&q=80" alt="Bangalore House Price Prediction project" loading="lazy" />
+          <div class="proj-detail__num mono">01</div>
+        </div>
+        <div class="proj-detail__links">
+          <a href="https://github.com/mustafanoman128/Cross-Sell-Prediction.git" target="_blank" rel="noopener noreferrer" class="proj-link proj-link--github">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+            </svg>
+            View on GitHub
+          </a>
+        </div>
+      </div>
+      <div class="proj-detail__info">
+        <h2 class="proj-detail__title">Bangalore House Price<br>Prediction</h2>
+        <p class="proj-detail__desc">This machine learning project predicts house prices in Bangalore using features like area (sqft), BHK, bathrooms, and location. Built with Python and Scikit-learn, it employs a Linear Regression model trained on historical data from the Bengaluru House dataset. The frontend is a Flask web app with HTML/CSS/JS for user input, and the model is serialized with Pickle for deployment.</p>
+        <div class="proj-detail__outcomes">
+          <div class="proj-outcome">
+            <span class="proj-outcome__val mono">0.86</span>
+            <span class="proj-outcome__label">R&#178; Score</span>
+          </div>
+          <div class="proj-outcome">
+            <span class="proj-outcome__val mono">Flask</span>
+            <span class="proj-outcome__label">Deployed as Web App</span>
+          </div>
+          <div class="proj-outcome">
+            <span class="proj-outcome__val mono">AJAX</span>
+            <span class="proj-outcome__label">Real-time Predictions</span>
+          </div>
+        </div>
+        <div class="proj-detail__section-title mono">Key Techniques</div>
+        <ul class="proj-detail__list">
+          <li>Data cleaning &amp; feature engineering on raw housing data</li>
+          <li>Dimensionality reduction of categorical location variables</li>
+          <li>Model evaluation using R&#178; score and cross-validation</li>
+          <li>Pickle serialization for production model serving</li>
+        </ul>
+        <div class="proj-detail__tags">
+          <span>Python</span><span>Scikit-learn</span><span>Flask</span>
+          <span>Pandas</span><span>NumPy</span><span>Pickle</span><span>Jupyter</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-divider"></div>
+
+    <!-- Project 02 -->
+    <div class="proj-detail proj-detail--reverse reveal">
+      <div class="proj-detail__media">
+        <div class="proj-detail__img-wrap">
+          <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&h=500&fit=crop&q=80" alt="Healthcare Insurance Cost Prediction project" loading="lazy" />
+          <div class="proj-detail__num mono">02</div>
+        </div>
+        <div class="proj-detail__links">
+          <a href="https://github.com/mustafanoman128/Healthcare-Project.git" target="_blank" rel="noopener noreferrer" class="proj-link proj-link--github">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+            </svg>
+            View on GitHub
+          </a>
+        </div>
+      </div>
+      <div class="proj-detail__info">
+        <h2 class="proj-detail__title">Healthcare Insurance<br>Cost Prediction</h2>
+        <p class="proj-detail__desc">Using the insurance dataset, this project predicts individual medical costs using Random Forest regression. Features include age, sex, BMI, children, smoker status, and region. The Jupyter Notebook covers full data exploration (histograms, correlation matrices via Seaborn), encoding categorical variables, train-test split, model training, and evaluation using MAE and RMSE metrics.</p>
+        <div class="proj-detail__outcomes">
+          <div class="proj-outcome">
+            <span class="proj-outcome__val mono">~85%</span>
+            <span class="proj-outcome__label">Accuracy</span>
+          </div>
+          <div class="proj-outcome">
+            <span class="proj-outcome__val mono">PCA</span>
+            <span class="proj-outcome__label">Dimensionality Reduction</span>
+          </div>
+          <div class="proj-outcome">
+            <span class="proj-outcome__val mono">6</span>
+            <span class="proj-outcome__label">Input Features</span>
+          </div>
+        </div>
+        <div class="proj-detail__section-title mono">Key Techniques</div>
+        <ul class="proj-detail__list">
+          <li>EDA — distributions of age, BMI, charges using Matplotlib &amp; Seaborn</li>
+          <li>One-Hot Encoding for categorical variables (sex, region, smoker)</li>
+          <li>PCA for dimensionality reduction before modeling</li>
+          <li>Hyperparameter tuning via GridSearchCV</li>
+          <li>Model evaluation: MAE, RMSE, R&#178; Score, feature importance plots</li>
+        </ul>
+        <div class="proj-detail__tags">
+          <span>Python</span><span>Random Forest</span><span>PCA</span>
+          <span>Seaborn</span><span>Scikit-learn</span><span>Matplotlib</span><span>EDA</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-divider"></div>
+
+    <!-- Project 03 -->
+    <div class="proj-detail reveal">
+      <div class="proj-detail__media">
+        <div class="proj-detail__img-wrap">
+          <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=500&fit=crop&q=80" alt="One Oncology Performance Dashboard" loading="lazy" />
+          <div class="proj-detail__num mono">03</div>
+        </div>
+        <div class="proj-detail__links">
+          <a href="https://public.tableau.com/app/profile/mustafanoman128" target="_blank" rel="noopener noreferrer" class="proj-link proj-link--tableau">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M8 2a6 6 0 1 0 0 12A6 6 0 0 0 8 2zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
+              <path d="M7 4h2v5H7zm0 6h2v2H7z"/>
+            </svg>
+            View on Tableau Public
+          </a>
+        </div>
+      </div>
+      <div class="proj-detail__info">
+        <h2 class="proj-detail__title">One Oncology<br>Performance Dashboard</h2>
+        <p class="proj-detail__desc">Analyzed oncology performance data to create a Tableau dashboard focusing on metrics like payment amounts, payer types, service types (Office Visits, Laboratory), and trends by month/quarter. Visuals include bar charts for revenue by provider/clinic, heatmaps for correlations, and forecasts for new vs. existing patients.</p>
+        <div class="proj-detail__outcomes">
+          <div class="proj-outcome">
+            <span class="proj-outcome__val mono">$10K</span>
+            <span class="proj-outcome__label">Monthly Savings</span>
+          </div>
+          <div class="proj-outcome">
+            <span class="proj-outcome__val mono">$930+</span>
+            <span class="proj-outcome__label">Avg. New Patient Visit</span>
+          </div>
+          <div class="proj-outcome">
+            <span class="proj-outcome__val mono">LOD</span>
+            <span class="proj-outcome__label">Advanced Calculations</span>
+          </div>
+        </div>
+        <div class="proj-detail__section-title mono">Key Insights</div>
+        <ul class="proj-detail__list">
+          <li>High-revenue services: New Patient Visits averaging $930+ per visit</li>
+          <li>Payer distribution analysis: Commercial vs. Medicare breakdown</li>
+          <li>Referral source mapping — Hospital, PCP, and self-referral trends</li>
+          <li>Data cleaning via Alteryx reduced vendor costs by $10K/month</li>
+        </ul>
+        <div class="proj-detail__tags">
+          <span>Tableau</span><span>SQL</span><span>Alteryx</span>
+          <span>Healthcare Analytics</span><span>ETL</span><span>LOD Calcs</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-divider"></div>
+
+    <!-- Project 04 -->
+    <div class="proj-detail proj-detail--reverse reveal">
+      <div class="proj-detail__media">
+        <div class="proj-detail__img-wrap">
+          <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&h=500&fit=crop&q=80" alt="Airline Passenger Satisfaction Analysis" loading="lazy" />
+          <div class="proj-detail__num mono">04</div>
+        </div>
+        <div class="proj-detail__links">
+          <a href="https://public.tableau.com/app/profile/mustafanoman128" target="_blank" rel="noopener noreferrer" class="proj-link proj-link--tableau">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M8 2a6 6 0 1 0 0 12A6 6 0 0 0 8 2zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
+              <path d="M7 4h2v5H7zm0 6h2v2H7z"/>
+            </svg>
+            View on Tableau Public
+          </a>
+        </div>
+      </div>
+      <div class="proj-detail__info">
+        <h2 class="proj-detail__title">Airline Passenger<br>Satisfaction Analysis</h2>
+        <p class="proj-detail__desc">This Tableau workbook analyzes factors like seat comfort, cabin service, food quality, and value for money using verified airline review data. Visuals include histograms for rating distributions, scatter plots for correlations, and satisfaction trend lines broken out by route type, cabin class, and aircraft model.</p>
+        <div class="proj-detail__outcomes">
+          <div class="proj-outcome">
+            <span class="proj-outcome__val mono">45%</span>
+            <span class="proj-outcome__label">Complaints from Delays</span>
+          </div>
+          <div class="proj-outcome">
+            <span class="proj-outcome__val mono">IFE</span>
+            <span class="proj-outcome__label">Top Complaint Driver</span>
+          </div>
+          <div class="proj-outcome">
+            <span class="proj-outcome__val mono">Economy</span>
+            <span class="proj-outcome__label">Lowest Satisfaction</span>
+          </div>
+        </div>
+        <div class="proj-detail__section-title mono">Key Insights</div>
+        <ul class="proj-detail__list">
+          <li>45% of all complaints attributable to delays and poor in-flight entertainment</li>
+          <li>Economy cabin on A380 aircraft had the lowest comfort scores</li>
+          <li>Business class passengers showed 3x higher retention intent</li>
+          <li>Seat comfort correlation with NPS score: r = 0.72</li>
+        </ul>
+        <div class="proj-detail__tags">
+          <span>Tableau</span><span>Python</span><span>EDA</span>
+          <span>NPS Analysis</span><span>Correlation</span><span>Customer Analytics</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section section--dark" aria-labelledby="certs-heading">
+  <div class="container">
+    
+    <div class="section-header reveal">
+      <span class="section-label mono">Certifications</span>
+      <h2 class="section-title" id="certs-heading">Verified Credentials</h2>
+      <p class="section-sub">Industry certifications validating expertise in ETL, machine learning, and data visualization.</p>
+    </div>
+
+    <div class="certs-detail-grid">
+
+      <div class="cert-detail-card reveal">
+        <div class="cert-detail-card__img-wrap">
+          <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=700&h=380&fit=crop&q=80" alt="Alteryx Designer Core Certification" loading="lazy" />
+          <div class="cert-detail-card__provider">
+            <span class="mono">Alteryx</span>
+          </div>
+          <div class="cert-detail-card__verified">
+            <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+            </svg>
+            Verified
+          </div>
+        </div>
+        <div class="cert-detail-card__body">
+          <div class="cert-detail-card__header">
+            <div class="cert-detail-card__badge mono">ALTX</div>
+            <div>
+              <h3>Alteryx Designer Core</h3>
+              <span class="mono cert-detail-card__issuer">Alteryx Academy</span>
+            </div>
+          </div>
+          <p>Demonstrates proficiency in building end-to-end ETL workflows, data blending across multiple sources, spatial analytics, and predictive tool deployment within the Alteryx Designer platform.</p>
+          <div class="cert-detail-card__meta">
+            <div class="cert-meta-item">
+              <span class="mono cert-meta-label">Issued</span>
+              <span class="cert-meta-val">October 24, 2024</span>
+            </div>
+            <div class="cert-meta-item">
+              <span class="mono cert-meta-label">Expires</span>
+              <span class="cert-meta-val">October 24, 2026</span>
+            </div>
+          </div>
+          <div class="cert-detail-card__skills">
+            <span>ETL Workflows</span><span>Data Blending</span>
+            <span>Predictive Tools</span><span>Spatial Analytics</span>
+          </div>
+          
+          <div class="cert-actions">
+            <a href="{{ url_for('static', filename='pdfs/alteryx-core.pdf') }}" target="_blank" class="btn btn--outline-teall cert-btn">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/>
+              </svg>
+              View Certificate PDF
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="cert-detail-card reveal">
+        <div class="cert-detail-card__img-wrap">
+          <img src="https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=700&h=380&fit=crop&q=80" alt="Alteryx Machine Learning Fundamentals" loading="lazy" />
+          <div class="cert-detail-card__provider">
+            <span class="mono">Alteryx</span>
+          </div>
+          <div class="cert-detail-card__verified">
+            <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+            </svg>
+            Verified
+          </div>
+        </div>
+        <div class="cert-detail-card__body">
+          <div class="cert-detail-card__header">
+            <div class="cert-detail-card__badge mono">ALML</div>
+            <div>
+              <h3>Alteryx Machine Learning Fundamentals</h3>
+              <span class="mono cert-detail-card__issuer">Alteryx Academy</span>
+            </div>
+          </div>
+          <p>Covers model building, evaluation metrics, and deployment using Alteryx Intelligence Suite. Focuses on practical ML workflows including classification, regression, clustering, and time-series forecasting — all without writing code.</p>
+          <div class="cert-detail-card__meta">
+            <div class="cert-meta-item">
+              <span class="mono cert-meta-label">Platform</span>
+              <span class="cert-meta-val">Alteryx Intelligence Suite</span>
+            </div>
+            <div class="cert-meta-item">
+              <span class="mono cert-meta-label">Level</span>
+              <span class="cert-meta-val">Fundamentals</span>
+            </div>
+          </div>
+          <div class="cert-detail-card__skills">
+            <span>Model Building</span><span>Evaluation Metrics</span>
+            <span>Classification</span><span>Clustering</span><span>Forecasting</span>
+          </div>
+
+          <div class="cert-actions">
+            <a href="{{ url_for('static', filename='pdfs/alteryx-ml.pdf') }}" target="_blank" class="btn btn--outline-teall cert-btn">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/>
+              </svg>
+              View Certificate PDF
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="cert-detail-card reveal">
+        <div class="cert-detail-card__img-wrap">
+          <img src="https://images.unsplash.com/photo-1543286386-2e659306cd6c?w=700&h=380&fit=crop&q=80" alt="Tableau Desktop Foundations" loading="lazy" />
+          <div class="cert-detail-card__provider">
+            <span class="mono">Tableau</span>
+          </div>
+          <div class="cert-detail-card__verified">
+            <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+            </svg>
+            Verified
+          </div>
+        </div>
+        <div class="cert-detail-card__body">
+          <div class="cert-detail-card__header">
+            <div class="cert-detail-card__badge mono">TBLO</div>
+            <div>
+              <h3>Tableau Desktop Foundations</h3>
+              <span class="mono cert-detail-card__issuer">Tableau / Salesforce</span>
+            </div>
+          </div>
+          <p>Validates skills in data visualization, dashboard design, and data storytelling using Tableau Desktop. Covers connecting to data sources, building interactive charts, Level of Detail (LOD) expressions, and publishing to Tableau Server/Public.</p>
+          <div class="cert-detail-card__meta">
+            <div class="cert-meta-item">
+              <span class="mono cert-meta-label">Issued</span>
+              <span class="cert-meta-val">August 07, 2025</span>
+            </div>
+            <div class="cert-meta-item">
+              <span class="mono cert-meta-label">Credential ID</span>
+              <span class="cert-meta-val mono">6653705</span>
+            </div>
+          </div>
+          <div class="cert-detail-card__skills">
+            <span>Data Visualization</span><span>LOD Expressions</span>
+            <span>Dashboard Design</span><span>Data Storytelling</span>
+          </div>
+
+          <div class="cert-actions">
+            <a href="{{ url_for('static', filename='pdfs/tableau-foundations.pdf') }}" target="_blank" class="btn btn--outline-teall cert-btn">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/>
+              </svg>
+              View Certificate PDF
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- CTA Section -->
+<section class="cta-section section" aria-labelledby="cta-heading">
+  <div class="container">
+    <div class="cta-box reveal">
+      <div class="cta-box__glow"></div>
+      <span class="section-label mono">Let's Collaborate</span>
+      <h2 id="cta-heading">Have a Data Challenge<br><em>Worth Solving?</em></h2>
+      <p>From predictive models to executive dashboards — let's figure out the right solution together.</p>
+      <a href="{{ url_for('contact') }}" class="btn btn--primary btn--lg">
+        Get In Touch
+        <svg class="btn__icon btn__icon--arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

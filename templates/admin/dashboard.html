@@ -1,0 +1,85 @@
+{% extends 'admin/_base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% if request.endpoint == 'admin_dashboard' %}
+  {% include "components/navbar.html" %}
+{% endif %}
+{% block content %}
+
+<!-- Stats Cards -->
+<div class="stat-cards">
+  <div class="stat-card">
+    <span class="stat-card__num">{{ stats.users }}</span>
+    <span class="stat-card__label">Registered Users</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-card__num">{{ stats.posts }}</span>
+    <span class="stat-card__label">Blog Posts</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-card__num">{{ stats.comments }}</span>
+    <span class="stat-card__label">Comments</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-card__num">{{ stats.messages }}</span>
+    <span class="stat-card__label">Contact Messages</span>
+  </div>
+</div>
+
+<!-- Recent Messages -->
+<div class="adm-section">
+  <div class="adm-section__head">
+    <h2 class="adm-section__title">Recent Messages</h2>
+    <a href="{{ url_for('admin_messages') }}" class="btn-ghost" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">
+      View All
+      <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="vertical-align: middle; margin-left: 2px;">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+    </a>
+  </div>
+  
+  {% if recent_messages %}
+  <table class="adm-table">
+    <thead>
+      <tr>
+        <th>From</th>
+        <th>Email</th>
+        <th>Preview</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for m in recent_messages %}
+      <tr>
+        <td style="font-weight: 500; color: var(--white);">{{ m.name }}</td>
+        <td>{{ m.email }}</td>
+        <td class="post-content-cell">{{ m.message }}</td>
+        <td>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem">{{ m.created_at.strftime('%b %d') }}</span>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p style="color:var(--text-muted);font-size:0.9rem">No messages yet.</p>
+  {% endif %}
+</div>
+
+<!-- Quick Actions -->
+<div style="display:flex;gap:1rem;flex-wrap:wrap;">
+  <a href="{{ url_for('admin_new_blog') }}" class="btn-primary">
+    <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24" style="vertical-align: middle; margin-right: 4px;">
+      <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+    </svg>
+    Write New Post
+  </a>
+  <a href="{{ url_for('blog') }}" target="_blank" class="btn-ghost">
+    View Blog
+    <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="vertical-align: middle; margin-left: 4px;">
+      <path d="M5 12h14M12 5l7 7-7 7"/>
+    </svg>
+  </a>
+</div>
+
+{% endblock %}

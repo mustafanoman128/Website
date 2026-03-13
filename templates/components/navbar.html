@@ -1,0 +1,32 @@
+ <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230a0c10'/><text y='72' x='8' font-size='60' fill='%2300d4aa' font-family='monospace' font-weight='bold'>MN</text></svg>" />
+ <nav class="nav" id="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav__inner">
+      <a href="{{ url_for('home') }}" class="nav__logo" aria-label="Mustafa Noman Home">
+        <span class="nav__logo-bracket"></span>MUSTAFA NOMAN<span class="nav__logo-bracket"></span>
+      </a>
+      <button class="nav__burger" id="navBurger" aria-label="Toggle menu" aria-expanded="false"
+        aria-controls="navLinks">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="{{ url_for('home') }}" {% if request.endpoint=='home' %}class="active" {% endif %}>Home</a></li>
+        <li><a href="{{ url_for('about') }}" {% if request.endpoint=='about' %}class="active" {% endif %}>About</a></li>
+        <li><a href="{{ url_for('projects') }}" {% if request.endpoint=='projects' %}class="active" {% endif
+            %}>Projects</a></li>
+        <li><a href="{{ url_for('blog') }}" {% if request.endpoint in ['blog','blog_post'] %}class="active" {% endif
+            %}>Blog</a></li>
+        <li><a href="{{ url_for('contact') }}" {% if request.endpoint=='contact' %}class="active" {% endif
+            %}>Contact</a></li>
+        {% if current_user.is_authenticated %}
+        {% if current_user.is_admin %}
+        <li><a href="{{ url_for('admin_dashboard') }}" class="nav__cta">Admin</a></li>
+        {% endif %}
+        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        {% else %}
+        <li><a href="{{ url_for('login') }}">Login</a></li>
+        <li><a href="{{ url_for('signup') }}" class="nav__cta">Sign Up</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>

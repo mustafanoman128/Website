@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+{% block title %}{{ post.title }} — Mustafa Noman{% endblock %}
+
+{% block content %}
+
+
+<section class="post-hero section--dark" aria-labelledby="post-title">
+  <div class="container">
+    <a href="{{ url_for('blog') }}" class="link-arrow back-link">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="vertical-align: middle; margin-right: 4px;">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      Back to Blog
+    </a>
+    <div class="post-hero__meta reveal">
+      <span class="mono blog-card__date">{{ post.created_at.strftime('%B %d, %Y') }}</span>
+      <span class="mono">&middot; by {{ post.author.name }}</span>
+    </div>
+    <h1 class="post-hero__title reveal" id="post-title">{{ post.title }}</h1>
+  </div>
+</section>
+
+<section class="section" aria-label="Blog post content">
+  <div class="container container--narrow">
+
+    {% if post.images %}
+    <div class="post-image-bundle reveal">
+      <div class="image-stack image-stack--large" onclick="openGallery()">
+        {% for img in post.images[:3] %}
+          <div class="image-stack__item stack-{{ loop.index }}">
+            <img src="{{ url_for('static', filename='uploads/blog_images/' + img.image_path) }}" alt="Analysis Visual" />
+          </div>
+        {% endfor %}
+        
+        <button class="gallery-trigger btn btn--teal-blur">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="3" y1="9" x2="21" y2="9"></line>
+            <line x1="9" y1="21" x2="9" y2="9"></line>
+          </svg>
+          <span>Explore {{ post.images|length }} Full-Res Visuals</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="gallery-data" style="display:none;" aria-hidden="true">
+      {% for img in post.images %}
+        <span class="gallery-item-url">{{ url_for('static', filename='uploads/blog_images/' + img.image_path) }}</span>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="post-content reveal">
+      {{ post.content | nl2br | safe }}
+    </div>
+
+    <div class="comments reveal" aria-labelledby="comments-heading">
+      <header class="comments__header">
+        <h3 class="comments__title" id="comments-heading">
+          Discussion <span class="comments__count">[{{ comments|length }}]</span>
+        </h3>
+      </header>
+
+      {% if comments %}
+      <div class="comments__list">
+        {% for c in comments %}
+        <div class="comment-card">
+          <div class="comment-card__aside">
+            <div class="comment-avatar mono">{{ c.author.name[0] | upper }}</div>
+          </div>
+          <div class="comment-card__main">
+            <div class="comment-card__meta">
+              <span class="comment-author">{{ c.author.name }}</span>
+              <span class="comment-date mono">{{ c.created_at.strftime('%b %d, %Y') }}</span>
+            </div>
+            <div class="comment-text">
+              <p>{{ c.content }}</p>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="comments__empty-state">
+        <p class="mono opacity-50">// No comments yet. Start the conversation.</p>
+      </div>
+      {% endif %}
+
+      <div class="comment-form-wrapper">
+        {% if current_user.is_authenticated %}
+        <form class="comment-form" method="POST">
+          <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+          <div class="form-group">
+            <label for="comment-content" class="form-label mono">Write a response</label>
+            <textarea id="comment-content" name="content" class="form-control" rows="4" placeholder="Share your perspective..." required></textarea>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn--primary btn--glow">
+              Post Comment
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </button>
+          </div>
+        </form>
+        {% else %}
+        <div class="comment-auth-prompt">
+          <p class="mono">Join the discussion</p>
+          <div class="auth-buttons">
+            <a href="{{ url_for('login', next=request.url) }}" class="btn btn--ghost btn--sm">Log In</a>
+            <a href="{{ url_for('signup') }}" class="btn btn--primary btn--sm">Sign Up</a>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div id="fullscreenGallery" class="gallery-modal" role="dialog" aria-label="Image Gallery">
+  <span class="gallery-close" onclick="closeGallery()">&times;</span>
+  <button class="gallery-nav prev" onclick="changeImage(-1)" aria-label="Previous Image">&#10094;</button>
+  <div class="gallery-content">
+    <img id="galleryImg" src="" alt="Full Resolution Visual">
+    <div class="gallery-counter mono"></div>
+  </div>
+  <button class="gallery-nav next" onclick="changeImage(1)" aria-label="Next Image">&#10095;</button>
+</div>
+
+<script>
+let currentGalleryImages = [];
+let currentIdx = 0;
+
+function openGallery() {
+  // Capture URLs from the hidden spans
+  const urls = document.getElementsByClassName('gallery-item-url');
+  currentGalleryImages = Array.from(urls).map(span => span.innerText.trim());
+  
+  if(currentGalleryImages.length > 0) {
+    updateGallery();
+    document.getElementById('fullscreenGallery').classList.add('active');
+    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+  }
+}
+
+function closeGallery() {
+  document.getElementById('fullscreenGallery').classList.remove('active');
+  document.body.style.overflow = 'auto';
+}
+
+function changeImage(dir) {
+  currentIdx = (currentIdx + dir + currentGalleryImages.length) % currentGalleryImages.length;
+  updateGallery();
+}
+
+function updateGallery() {
+  const img = document.getElementById('galleryImg');
+  const counter = document.querySelector('.gallery-counter');
+  img.src = currentGalleryImages[currentIdx];
+  counter.innerText = `${currentIdx + 1} / ${currentGalleryImages.length}`;
+}
+
+// Close modal when clicking on the dark background
+document.getElementById('fullscreenGallery').addEventListener('click', function(e) {
+  if (e.target.id === 'fullscreenGallery') closeGallery();
+});
+
+// Keyboard Navigation
+document.addEventListener('keydown', (e) => {
+  if (!document.getElementById('fullscreenGallery').classList.contains('active')) return;
+  if (e.key === "ArrowLeft") changeImage(-1);
+  if (e.key === "ArrowRight") changeImage(1);
+  if (e.key === "Escape") closeGallery();
+});
+</script>
+
+{% endblock %}

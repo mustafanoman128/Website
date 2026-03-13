@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login — Mustafa Noman</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <style>
+    body { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--ink); }
+    body::after { content: ''; position: fixed; inset: 0; background-image: repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.018) 39px, rgba(255,255,255,0.018) 40px), repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(255,255,255,0.018) 79px, rgba(255,255,255,0.018) 80px); pointer-events: none; }
+    .login-wrap { padding: 2rem; width: 100%; max-width: 440px; position: relative; z-index: 1; }
+    .login-card { background: var(--surface); border: 1px solid var(--border-2); border-radius: 20px; padding: 2.5rem; box-shadow: var(--shadow-xl); position: relative; overflow: hidden; }
+    .login-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--teal), transparent); }
+    .login-logo { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--white); text-align: center; margin-bottom: 0.5rem; }
+    .login-logo span { color: var(--teal); }
+    .login-sub { display: block; font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: var(--teal); letter-spacing: 0.2em; text-align: center; text-transform: uppercase; margin-bottom: 2rem; }
+    .flash { padding: 0.75rem 1rem; border-radius: 8px; font-size: 0.82rem; margin-bottom: 1rem; font-family: 'IBM Plex Mono', monospace; }
+    .flash--danger  { background: rgba(239,68,68,0.12); color: #f87171; border: 1px solid rgba(239,68,68,0.2); }
+    .flash--success { background: var(--teal-lo); color: var(--teal); border: 1px solid rgba(0,212,170,0.2); }
+    .back-link { display: flex; align-items: center; justify-content: center; gap: 0.4rem; margin-top: 1.5rem; font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; color: var(--text-4); text-decoration: none; transition: color 0.2s; }
+    .back-link:hover { color: var(--teal); }
+  </style>
+</head>
+<body>
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="login-logo"><span>[</span>MN<span>]</span></div>
+      <span class="login-sub">Admin Access</span>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for cat, msg in messages %}
+      <div class="flash flash--{{ cat }}">{{ msg }}</div>
+      {% endfor %}
+      {% endwith %}
+
+      <form method="POST">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+        <div class="form-group">
+          <label class="form-label">Admin Email</label>
+          <input type="email" name="email" class="form-control" placeholder="admin@example.com" required autofocus autocomplete="email" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" name="password" class="form-control" placeholder="••••••••" required autocomplete="current-password" />
+        </div>
+        <label class="form-check" style="margin: 1rem 0;">
+          <input type="checkbox" name="remember" id="remember"> <span style="font-size:0.85rem;color:var(--text-2)">Remember Me</span>
+        </label>
+        <button type="submit" class="btn btn--primary btn--full" style="margin-top:0.5rem;">
+          Access Dashboard
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </form>
+      <a href="{{ url_for('home') }}" class="back-link">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Back to site
+      </a>
+    </div>
+  </div>
+</body>
+</html>

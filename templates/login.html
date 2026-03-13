@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Login — Mustafa Noman{% endblock %}
+
+{% block content %}
+
+<section class="auth-section section" aria-labelledby="login-heading">
+  <div class="container">
+    <div class="auth-card reveal">
+      
+      <div class="auth-card__header">
+        <span class="mono section-label">Account Access</span>
+        <h2 id="login-heading">Welcome Back</h2>
+      </div>
+      
+      <form class="auth-form" method="POST" aria-label="Login form">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+        
+        <div class="form-group">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" id="email" name="email" class="form-control" placeholder="your@email.com" required autocomplete="email" />
+        </div>
+        
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" id="password" name="password" class="form-control" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" required autocomplete="current-password" />
+        </div>
+        
+        <label class="form-check">
+          <input type="checkbox" name="remember" />
+          <span>Remember me</span>
+        </label>
+        
+        <button type="submit" class="btn btn--primary btn--full mt-4">
+          Log In
+          <svg class="btn__icon btn__icon--arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </form>
+      
+      <p class="auth-card__foot">Don't have an account? <a href="{{ url_for('signup') }}">Sign up</a></p>
+      
+    </div>
+  </div>
+</section>
+
+{% endblock %}

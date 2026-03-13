@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+{% block title %}Blog — Mustafa Noman{% endblock %}
+
+{% block content %}
+
+<section class="page-hero section--dark" aria-labelledby="blog-title">
+  <div class="container">
+    <span class="section-label">Writing</span>
+    <h1 class="page-hero__title reveal" id="blog-title">Blog <em>Posts</em></h1>
+    <p class="page-hero__sub reveal">Thoughts on Python, Data Science, Crypto, and Machine Learning.</p>
+  </div>
+</section>
+
+<section class="section" aria-label="Blog posts">
+  <div class="container">
+
+    {# ── Category Filter Tabs ─────────────────────────────────────────────── #}
+    <nav class="cat-tabs" aria-label="Filter by category">
+      <a href="{{ url_for('blog') }}"
+         class="cat-tab {% if not active_category %}cat-tab--active{% endif %}">
+        All Posts
+      </a>
+      {% for cat in CATEGORIES %}
+      <a href="{{ url_for('blog', category=cat) }}"
+         class="cat-tab {% if active_category == cat %}cat-tab--active{% endif %}">
+        {{ cat }}
+      </a>
+      {% endfor %}
+    </nav>
+
+    {% if posts.items %}
+      <div class="blog-grid">
+        {% for post in posts.items %}
+        <article class="blog-card blog-card--full reveal">
+
+          <div class="blog-card__img-container">
+            {% if post.images %}
+              <div class="image-stack" onclick="openGallery('{{ post.id }}')">
+                {% for img in post.images[:3] %}
+                  <div class="image-stack__item stack-{{ loop.index }}">
+                    <img src="{{ url_for('static', filename='uploads/blog_images/' + img.image_path) }}"
+                         alt="{{ post.title }}" loading="lazy" />
+                  </div>
+                {% endfor %}
+
+                {% if post.images|length > 1 %}
+                <button class="gallery-trigger btn btn--teal-blur">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="3" y1="9" x2="21" y2="9"></line>
+                    <line x1="9" y1="21" x2="9" y2="9"></line>
+                  </svg>
+                  <span>View {{ post.images|length }} Images</span>
+                </button>
+                {% endif %}
+              </div>
+
+              <div id="gallery-data-{{ post.id }}" style="display:none;">
+                {% for img in post.images %}
+                  <span class="gallery-item-url">{{ url_for('static', filename='uploads/blog_images/' + img.image_path) }}</span>
+                {% endfor %}
+              </div>
+            {% else %}
+              <div class="blog-card__img blog-card__img--placeholder">
+                <span class="mono">{{ post.title[0] }}</span>
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="blog-card__body">
+            {# ── Category badge + date row ────────────────────────────────── #}
+            <div class="blog-card__meta-row">
+              <span class="blog-card__date mono">{{ post.created_at.strftime('%B %d, %Y') }}</span>
+              {% if post.category %}
+              <a href="{{ url_for('blog', category=post.category) }}"
+                 class="blog-cat-badge"
+                 title="Filter by {{ post.category }}">
+                {{ post.category }}
+              </a>
+              {% endif %}
+            </div>
+
+            <h2><a href="{{ url_for('blog_post', post_id=post.id) }}">{{ post.title }}</a></h2>
+            <p>{{ post.content[:200] }}{% if post.content|length > 200 %}&hellip;{% endif %}</p>
+            <div class="blog-card__footer">
+              <span class="mono blog-card__author">by {{ post.author.name }}</span>
+              <a href="{{ url_for('blog_post', post_id=post.id) }}" class="link-arrow">
+                Read
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+
+      {# ── Fullscreen Gallery Modal (unchanged) ─────────────────────────── #}
+      <div id="fullscreenGallery" class="gallery-modal">
+        <span class="gallery-close" onclick="closeGallery()">&times;</span>
+        <button class="gallery-nav prev" onclick="changeImage(-1)">&#10094;</button>
+        <div class="gallery-content">
+          <img id="galleryImg" src="" alt="Full view">
+          <div class="gallery-counter mono"></div>
+        </div>
+        <button class="gallery-nav next" onclick="changeImage(1)">&#10095;</button>
+      </div>
+
+      {# ── Pagination — preserves ?category= param ──────────────────────── #}
+      {% if posts.pages > 1 %}
+      <nav class="pagination reveal" aria-label="Blog pagination">
+        {% if posts.has_prev %}
+          <a href="{{ url_for('blog', page=posts.prev_num, category=active_category or None) }}"
+             class="btn btn--ghost btn--sm">Previous</a>
+        {% endif %}
+        <span class="mono pagination__info">Page {{ posts.page }} of {{ posts.pages }}</span>
+        {% if posts.has_next %}
+          <a href="{{ url_for('blog', page=posts.next_num, category=active_category or None) }}"
+             class="btn btn--ghost btn--sm">Next</a>
+        {% endif %}
+      </nav>
+      {% endif %}
+
+    {% else %}
+      <div class="empty-state">
+        <div class="empty-state__icon">✦</div>
+        {% if active_category %}
+          <h3>No posts in <em>{{ active_category }}</em> yet.</h3>
+          <p>Check back soon, or <a href="{{ url_for('blog') }}" class="link-arrow" style="display:inline-flex;gap:4px;">browse all posts</a>.</p>
+        {% else %}
+          <h3>No posts yet.</h3>
+        {% endif %}
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+<script>
+let currentGalleryImages = [];
+let currentIdx = 0;
+
+function openGallery(postId) {
+  const data = document.getElementById(`gallery-data-${postId}`);
+  const urls = data.getElementsByClassName('gallery-item-url');
+  currentGalleryImages = Array.from(urls).map(span => span.innerText);
+  currentIdx = 0;
+  if (currentGalleryImages.length > 0) {
+    updateGallery();
+    document.getElementById('fullscreenGallery').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function closeGallery() {
+  document.getElementById('fullscreenGallery').classList.remove('active');
+  document.body.style.overflow = 'auto';
+}
+
+function changeImage(dir) {
+  currentIdx += dir;
+  if (currentIdx >= currentGalleryImages.length) currentIdx = 0;
+  if (currentIdx < 0) currentIdx = currentGalleryImages.length - 1;
+  updateGallery();
+}
+
+function updateGallery() {
+  document.getElementById('galleryImg').src = currentGalleryImages[currentIdx];
+  document.querySelector('.gallery-counter').innerText =
+    `${currentIdx + 1} / ${currentGalleryImages.length}`;
+}
+
+document.getElementById('fullscreenGallery').addEventListener('click', function(e) {
+  if (e.target === this) closeGallery();
+});
+</script>
+
+{% endblock %}

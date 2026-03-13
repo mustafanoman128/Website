@@ -1,0 +1,286 @@
+{% extends 'base.html' %}
+{% block title %}About — Mustafa Noman{% endblock %}
+
+{% block content %}
+
+<!-- Page Hero -->
+<section class="page-hero section--dark" aria-labelledby="about-title">
+  <div class="container">
+    <h1 class="page-hero__title reveal" id="about-title">About <em>me</em></h1>
+  </div>
+</section>
+
+<!-- Bio Section -->
+<section class="bio section" aria-labelledby="bio-heading">
+  <div class="container">
+    <div class="bio__grid">
+
+      <!-- Portrait & Contact -->
+      <div class="bio__portrait reveal">
+        <div class="bio__portrait-frame">
+          <div class="bio__portrait-inner">
+            <img src="{{ url_for('static', filename='img/mustafa-portrait.jpeg') }}" alt="Mustafa Noman"
+              class="bio__portrait-img">
+          </div>
+          <div class="bio__portrait-badge">
+            <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"
+              style="vertical-align: middle; margin-right: 4px;">
+              <path
+                d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+            </svg>
+            Available for Projects
+          </div>
+        </div>
+        
+      </div>
+
+      <div class="bio__contact-list">
+        <a href="mailto:mustafanoman128@gmail.com" class="bio__contact-item">
+          <span class="mono">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+            </svg>
+          </span>
+          mustafanoman128@gmail.com
+        </a>
+       
+        <a href="https://linkedin.com/in/mustafanoman128" target="_blank" rel="noopener noreferrer"
+          class="bio__contact-item">
+          <span class="mono">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+            </svg>
+          </span>
+          linkedin.com/in/mustafanoman128
+        </a>
+      </div>
+    </div>
+
+    <!-- Bio Text -->
+    <div class="bio__text reveal">
+      <p class="bio__lead">About me</p>
+      <p>Some people see spreadsheets and quietly look for the exit. I tend to lean in instead. Patterns inside messy
+        datasets, strange revenue fluctuations, campaign performance that doesn't quite add up — those are the kinds of
+        puzzles that pull my attention.</p>
+      <p>Based in Chicago, I work as a data analyst focused on translating large, often chaotic data environments into
+        insights that business leaders can actually use — without needing a statistics textbook on their desk.</p>
+      <p>Academically, my path ran through the <strong>University of Illinois at Chicago</strong>, where I completed a
+        Master's degree in Analytics. Economics formed the earlier backbone of my education, which probably explains why
+        I tend to think about numbers in terms of incentives, behavior, and real economic outcomes rather than just
+        charts.</p>
+      <p>What colleagues tend to mention first is something simpler: I ask good questions. Sometimes too many, maybe,
+        but usually the useful kind.</p>
+    </div>
+
+  </div>
+  </div>
+</section>
+
+<!-- Career Timeline -->
+<section class="timeline section section--dark" id="experience" aria-labelledby="experience-heading">
+  <div class="container">
+
+    <div class="section-header reveal">
+      <span class="section-label mono">Experience</span>
+      <h2 class="section-title" id="experience-heading">Career Journey</h2>
+    </div>
+
+    <div class="timeline__track">
+
+      <!-- Pregis -->
+      <div class="timeline__item reveal">
+        <div class="timeline__marker">
+          <span class="mono">2024</span>
+          <div class="timeline__dot"></div>
+        </div>
+        <div class="timeline__card">
+          <div class="timeline__card-head">
+            <h3>Revenue Operations Analyst</h3>
+            <span class="timeline__company">Pregis</span>
+          </div>
+          <ul class="timeline__list">
+            <li>Built executive Tableau revenue dashboard combining CRM, marketing platforms, and pipeline data with
+              advanced LOD calculations and rolling benchmarks — boosted reporting engagement by <strong>17%</strong>.
+            </li>
+            <li>Engineered a 75+ KPI lead funnel analytics framework connecting operational activity to revenue outcomes
+              — achieved <strong>7% QoQ lead growth</strong>.</li>
+            <li>Improved forecasting accuracy, enabling confident resource allocation and expansion strategy decisions
+              for leadership.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Stericycle -->
+      <div class="timeline__item reveal">
+        <div class="timeline__marker">
+          <span class="mono">2023</span>
+          <div class="timeline__dot"></div>
+        </div>
+        <div class="timeline__card">
+          <div class="timeline__card-head">
+            <h3>Marketing Operations Data Analyst</h3>
+            <span class="timeline__company">Stericycle</span>
+          </div>
+          <ul class="timeline__list">
+            <li>Engineered SQL + Alteryx ETL pipelines automating campaign analytics and lead routing across <strong>6
+                sales teams</strong>.</li>
+            <li>Reduced reporting response times by <strong>30%</strong> through query optimization and indexing
+              improvements.</li>
+            <li>Improved lead distribution efficiency, contributing approximately <strong>$2.3M</strong> in additional
+              revenue.</li>
+            <li>Resolved 30+ internal data requests in a 4-month window; certified in Alteryx Designer and ML
+              Fundamentals.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- The Henry Ford -->
+      <div class="timeline__item reveal">
+        <div class="timeline__marker">
+          <span class="mono">2022</span>
+          <div class="timeline__dot"></div>
+        </div>
+        <div class="timeline__card">
+          <div class="timeline__card-head">
+            <h3>Data Analyst — Nonprofit &amp; Operations</h3>
+            <span class="timeline__company">The Henry Ford</span>
+          </div>
+          <ul class="timeline__list">
+            <li>Addressed operational forecasting using historical attendance patterns and seasonal demand signals for
+              staffing and capacity planning.</li>
+            <li>Rebuilt a dataset of <strong>500,000+ records</strong> using Azure Synapse and fuzzy matching logic —
+              reduced processing time by <strong>12 hours</strong>.</li>
+            <li>Lowered external vendor costs by approximately <strong>$10,000/month</strong> through optimized data
+              pipelines.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- US Mobile -->
+      <div class="timeline__item reveal">
+        <div class="timeline__marker">
+          <span class="mono">2021</span>
+          <div class="timeline__dot"></div>
+        </div>
+        <div class="timeline__card">
+          <div class="timeline__card-head">
+            <h3>Revenue &amp; Pricing Analyst</h3>
+            <span class="timeline__company">US Mobile</span>
+          </div>
+          <ul class="timeline__list">
+            <li>Conducted revenue and pricing analysis influencing subscription strategy — promotion adjustments
+              increased annual subscription revenue by over <strong>$200,000</strong>.</li>
+            <li>Maintained customer satisfaction at approximately <strong>97%</strong> during pricing transitions.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Skills Section -->
+<section class="skills-section section" id="skills" aria-labelledby="skills-heading">
+  <div class="container">
+
+    <div class="section-header reveal">
+      <span class="section-label mono">Toolkit</span>
+      <h2 class="section-title" id="skills-heading">Skills &amp; Tools</h2>
+    </div>
+
+    <div class="skills-grid">
+
+      <div class="skill-group reveal">
+        <h4 class="skill-group__title mono">Programming</h4>
+        <div class="skill-tags">
+          <span>Python</span><span>SQL</span><span>JavaScript</span>
+          <span>Pandas</span><span>NumPy</span><span>Scikit-learn</span>
+          <span>Matplotlib</span><span>Seaborn</span>
+        </div>
+      </div>
+
+      <div class="skill-group reveal">
+        <h4 class="skill-group__title mono">BI &amp; ETL Tools</h4>
+        <div class="skill-tags">
+          <span>Tableau</span><span>Alteryx</span><span>Azure Synapse</span>
+          <span>Flask</span><span>Power BI</span>
+        </div>
+      </div>
+
+      <div class="skill-group reveal">
+        <h4 class="skill-group__title mono">Domains</h4>
+        <div class="skill-tags">
+          <span>Machine Learning</span><span>ETL Pipelines</span>
+          <span>Revenue Operations</span><span>Predictive Modeling</span>
+          <span>Data Storytelling</span><span>Business Intelligence</span>
+        </div>
+      </div>
+
+      <div class="skill-group reveal">
+        <h4 class="skill-group__title mono">Soft Skills</h4>
+        <div class="skill-tags">
+          <span>Cross-functional Collaboration</span><span>Executive Communication</span>
+          <span>Problem-Solving</span><span>Team Leadership</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Education Section -->
+<section class="education section section--dark" id="education" aria-labelledby="education-heading">
+  <div class="container">
+
+    <div class="section-header reveal">
+      <span class="section-label mono">Education</span>
+      <h2 class="section-title" id="education-heading">Academic Background</h2>
+    </div>
+
+    <div class="edu-grid">
+
+      <div class="edu-card reveal">
+        <div class="edu-card__degree mono">M.S.</div>
+        <div class="edu-card__info">
+          <h3>Master of Science in Analytics</h3>
+          <p>University of Illinois at Chicago</p>
+          <span class="mono edu-card__focus">Data Research &middot; Business Communication &middot; Team
+            Leadership</span>
+        </div>
+      </div>
+
+      <div class="edu-card reveal">
+        <div class="edu-card__degree mono">B.S.</div>
+        <div class="edu-card__info">
+          <h3>Bachelor of Science in Economics</h3>
+          <p>Foundation in Quantitative Analysis &amp; Behavioral Economics</p>
+          <span class="mono edu-card__focus">Incentives &middot; Markets &middot; Quantitative Methods</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section section" aria-labelledby="cta-heading">
+  <div class="container">
+    <div class="cta-box reveal">
+      <div class="cta-box__glow"></div>
+      <span class="section-label mono">Let's Connect</span>
+      <h2 id="cta-heading">Interested in Working Together?</h2>
+      <p>I'm always open to collaborative projects that combine data analysis with real business impact.</p>
+      <a href="{{ url_for('contact') }}" class="btn btn--primary btn--lg">
+        Reach Out
+        <svg class="btn__icon btn__icon--arrow" width="16" height="16" fill="none" stroke="currentColor"
+          stroke-width="2" viewBox="0 0 24 24">
+          <path d="M5 12h14M12 5l7 7-7 7" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

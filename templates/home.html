@@ -1,0 +1,609 @@
+{% extends 'base.html' %}
+{% block title %}Mustafa Noman — Data Analyst Portfolio{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero" id="hero" aria-label="Introduction">
+  
+  <!-- Background Effects -->
+  <div class="hero__bg">
+    <div class="hero__grid"></div>
+    <div class="hero__glow hero__glow--1"></div>
+    <div class="hero__glow hero__glow--2"></div>
+    <div class="hero__watermark" aria-hidden="true">MN</div>
+  </div>
+
+  <!-- Hero Content -->
+  <div class="hero__inner">
+    
+    <!-- Left Column -->
+    <div class="hero__left">
+      
+      
+
+      <!-- Main Title -->
+      <h1 class="hero__title reveal">
+        <span class="hero__title-normal">Transforming</span>
+        <span class="hero__title-outline" data-text="Raw Data"><span class="hero__title-cursor"></span></span>
+        <span class="hero__title-normal">Into Impact.</span>
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="hero__sub reveal">
+        I transform complex datasets into actionable insights and build
+        analytics systems that drive measurable revenue growth through
+        intelligent BI &amp; machine learning.
+      </p>
+
+      <!-- CTA Buttons -->
+      <div class="hero__actions reveal">
+        <a href="{{ url_for('projects') }}" class="btn btn--hero">
+          View My Work
+          <svg class="btn__icon btn__icon--arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+        <a href="{{ url_for('contact') }}" class="btn btn--hero-ghost">
+          Contact Now
+          <svg class="btn__icon btn__icon--arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Tech Stack Icons -->
+      <div class="hero__stack reveal">
+        <span class="hero__stack-label mono">Tech Stack</span>
+        <div class="hero__stack-icons">
+          
+          <!-- Python -->
+          <div class="stack-icon" title="Python">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M11.914 0C5.82 0 6.2 2.656 6.2 2.656l.007 2.752h5.814v.826H3.9S0 5.789 0 11.969c0 6.18 3.403 5.96 3.403 5.96h2.031v-2.867s-.11-3.403 3.347-3.403h5.768s3.237.052 3.237-3.13V3.13S18.296 0 11.914 0zM8.708 1.81a1.046 1.046 0 1 1 0 2.091 1.046 1.046 0 0 1 0-2.091z" fill="currentColor"/>
+              <path d="M12.086 24c6.094 0 5.714-2.656 5.714-2.656l-.007-2.752h-5.814v-.826h8.121S24 18.211 24 12.031c0-6.18-3.403-5.96-3.403-5.96h-2.031v2.867s.11 3.403-3.347 3.403H9.451s-3.237-.052-3.237 3.13v5.4S5.704 24 12.086 24zm3.206-1.81a1.046 1.046 0 1 1 0-2.091 1.046 1.046 0 0 1 0 2.091z" fill="currentColor"/>
+            </svg>
+          </div>
+          
+          <!-- SQL -->
+          <div class="stack-icon" title="SQL">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="12" cy="5" rx="9" ry="3" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M3 5v4c0 1.657 4.03 3 9 3s9-1.343 9-3V5" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M3 9v4c0 1.657 4.03 3 9 3s9-1.343 9-3V9" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M3 13v4c0 1.657 4.03 3 9 3s9-1.343 9-3v-4" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+          </div>
+          
+          <!-- Tableau -->
+          <div class="stack-icon" title="Tableau">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="14" width="4" height="8" rx="1" fill="currentColor" opacity=".4"/>
+              <rect x="8" y="9" width="4" height="13" rx="1" fill="currentColor" opacity=".7"/>
+              <rect x="14" y="5" width="4" height="17" rx="1" fill="currentColor" opacity=".9"/>
+              <rect x="20" y="2" width="2" height="20" rx="1" fill="currentColor"/>
+              <path d="M2 22h20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          
+          <!-- Alteryx -->
+          <div class="stack-icon" title="Alteryx">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="5" cy="5" r="3" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="19" cy="5" r="3" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="12" cy="19" r="3" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M8 5h8M6.5 7.5l4 9M17.5 7.5l-4 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          
+          <!-- Azure -->
+          <div class="stack-icon" title="Azure Synapse">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6.5 19A4.5 4.5 0 0 1 6.5 10a4.5 4.5 0 0 1 .75.063A6 6 0 0 1 18 11.5a4 4 0 0 1-1 7.875" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9 16l3 3 3-3M12 19v-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          
+          <!-- Machine Learning -->
+          <div class="stack-icon" title="Machine Learning">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M4.93 19.07l2.12-2.12M16.95 7.05l2.12-2.12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          
+        </div>
+      </div>
+
+    </div><!-- /hero__left -->
+
+    <!-- Right Column -->
+    <div class="hero__right reveal">
+      
+      <!-- Available Badge -->
+      <div class="hero__avail" aria-label="Available for work">
+        <span class="hero__avail-pulse"></span>
+        <span class="hero__avail-text mono">Available<br>for Work</span>
+      </div>
+
+      <!-- Image Frame -->
+      <div class="hero__frame">
+        <div class="hero__frame-corners">
+          <span class="corner corner--tl"></span>
+          <span class="corner corner--tr"></span>
+          <span class="corner corner--bl"></span>
+          <span class="corner corner--br"></span>
+        </div>
+        <div class="hero__frame-img">
+          <img src="{{ url_for('static', filename='img/hero.jpeg') }}" alt="Mustafa Noman — Data Analyst" loading="eager" />
+          <div class="hero__frame-overlay"></div>
+        </div>
+        <div class="hero__frame-scan" aria-hidden="true"></div>
+      </div>
+
+      <!-- Floating Stat Cards -->
+      <div class="hero__float hero__float--left">
+        <span class="hero__float-val mono stat__num">$2.3M+</span>
+        <span class="hero__float-label">Revenue Impact</span>
+        <span class="hero__float-trend">
+          <svg width="10" height="10" fill="currentColor" viewBox="0 0 24 24" style="vertical-align: middle; margin-right: 2px;">
+            <path d="M7 14l5-5 5 5H7z"/>
+          </svg>
+          Q-o-Q
+        </span>
+      </div>
+
+      <div class="hero__float hero__float--right">
+        <span class="hero__float-val mono">4+</span>
+        <span class="hero__float-label">Projects</span>
+        <span class="hero__float-trend">
+          <span style="color: var(--teal);">&#9679;</span> Active
+        </span>
+      </div>
+
+    </div><!-- /hero__right -->
+
+  </div><!-- /hero__inner -->
+
+  <!-- Scroll Indicator -->
+  <div class="hero__scroll-side" aria-hidden="true">
+    <span class="mono">Scroll</span>
+    <div class="hero__scroll-bar">
+      <div class="hero__scroll-bar-fill"></div>
+    </div>
+  </div>
+
+</section>
+
+<div class="wrappp">  <!-- Skills Strip -->
+<section class="skills-strip" aria-label="Technical skills">
+  <div class="skills-strip__inner">
+    <div class="skills-strip__track">
+      {% set tools = ['Python','SQL','Tableau','Alteryx','Azure Synapse','Flask','Pandas','NumPy','Scikit-learn','Power BI','ETL Pipelines','Machine Learning','Data Visualization','Revenue Operations','Predictive Modeling'] %}
+      {% for t in tools %}<span class="skills-strip__item mono">{{ t }}</span><span class="skills-strip__dot">&#9670;</span>{% endfor %}
+      {% for t in tools %}<span class="skills-strip__item mono">{{ t }}</span><span class="skills-strip__dot">&#9670;</span>{% endfor %}
+    </div>
+  </div></div>
+
+<!-- About Teaser -->
+<section class="about-teaser section" id="about" aria-labelledby="about-heading">
+  <div class="container">
+    <div class="about-teaser__grid">
+      
+      <div class="about-teaser__content reveal">
+        <span class="section-label mono">Numbers First Titles Later</span>
+        <h2 class="section-title" id="about-heading">About <em>Me</em></h2>
+        <p>I'm a data-driven analyst based in Chicago with a Master's in Analytics from the University of Illinois. My work lives at the intersection of financial analytics, revenue operations, and business intelligence — transforming complex, chaotic datasets into decisions that move organizations forward.</p>
+        <p>From building ETL pipelines at Stericycle to crafting executive revenue dashboards at Pregis, I bridge raw data with business strategy so stakeholders can make confident, evidence-backed decisions.</p>
+        <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:2rem;">
+          <a href="{{ url_for('about') }}" class="btn btn--primary">
+            My Full Story
+            <svg class="btn__icon btn__icon--arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+          <a href="{{ url_for('projects') }}" class="btn btn--ghost">
+            See Projects
+            <svg class="btn__icon btn__icon--arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+      
+      <div class="about-teaser__right reveal">
+        <div class="about-img-wrap">
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=700&h=460&fit=crop&q=80" alt="Data analytics workspace with charts and dashboards" class="about-img" loading="lazy" />
+          <div class="about-img__overlay">
+            <span class="mono">75+</span>
+            <span>KPIs Tracked</span>
+          </div>
+        </div>
+        
+        <div class="about-teaser__cards">
+          
+          <div class="mini-card">
+            <div class="mini-card__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+              </svg>
+            </div>
+            <h4>Analytics</h4>
+            <p>ETL pipelines, executive dashboards, 75+ KPI frameworks</p>
+          </div>
+          
+          <div class="mini-card">
+            <div class="mini-card__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+              </svg>
+            </div>
+            <h4>ML Modeling</h4>
+            <p>Random Forest, Linear Regression, predictive systems</p>
+          </div>
+          
+          <div class="mini-card">
+            <div class="mini-card__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/>
+              </svg>
+            </div>
+            <h4>Visualization</h4>
+            <p>Tableau LOD, Azure Synapse, operational forecasting</p>
+          </div>
+          
+          <div class="mini-card">
+            <div class="mini-card__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <h4>Revenue Ops</h4>
+            <p>Lead funnel analytics, pricing strategy, CRM integration</p>
+          </div>
+          
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<!-- Projects Section -->
+<section class="projects section section--dark" id="projects" aria-labelledby="projects-heading">
+  <div class="container">
+    
+    <div class="section-header reveal">
+      <span class="section-label mono">Selected Work</span>
+      <h2 class="section-title" id="projects-heading">My <em>Projects</em></h2>
+      <p class="section-sub">Delivering measurable business impact through analytics, ML, and BI.</p>
+    </div>
+    
+    <div class="projects__grid">
+      
+      <!-- Project 1 -->
+      <article class="project-card reveal">
+        <div class="project-card__img">
+          <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&h=320&fit=crop&q=80" alt="Bangalore House Price Prediction project visualization" loading="lazy" />
+          <div class="project-card__img-overlay">
+            <a href="https://github.com/mustafanoman128/Cross-Sell-Prediction.git" target="_blank" rel="noopener noreferrer" class="project-card__github">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+              </svg>
+              View on GitHub
+            </a>
+          </div>
+        </div>
+        <div class="project-card__body">
+          <div class="project-card__num mono">01</div>
+          <h3>Bangalore House Price Prediction</h3>
+          <p>Linear Regression model on Bengaluru housing data — data cleaning, feature engineering, Flask web app with AJAX price estimation.</p>
+          <div class="project-card__tags">
+            <span>Python</span><span>Scikit-learn</span><span>Flask</span><span>Pandas</span>
+          </div>
+        </div>
+        <div class="project-card__foot">
+          <span class="project-card__metric mono">R&#178; Score: 0.86</span>
+          <a href="https://github.com/mustafanoman128/Cross-Sell-Prediction.git" target="_blank" rel="noopener noreferrer" class="project-card__link mono">
+            GitHub
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="vertical-align: middle; margin-left: 2px;">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Project 2 -->
+      <article class="project-card reveal">
+        <div class="project-card__img">
+          <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&h=320&fit=crop&q=80" alt="Healthcare Insurance Cost Prediction visualization" loading="lazy" />
+          <div class="project-card__img-overlay">
+            <a href="https://github.com/mustafanoman128/Healthcare-Project.git" target="_blank" rel="noopener noreferrer" class="project-card__github">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+              </svg>
+              View on GitHub
+            </a>
+          </div>
+        </div>
+        <div class="project-card__body">
+          <div class="project-card__num mono">02</div>
+          <h3>Healthcare Insurance Cost Prediction</h3>
+          <p>Random Forest regression predicting individual medical costs. Full EDA with Seaborn, One-Hot Encoding, PCA, MAE/RMSE evaluation.</p>
+          <div class="project-card__tags">
+            <span>Random Forest</span><span>EDA</span><span>PCA</span><span>Seaborn</span>
+          </div>
+        </div>
+        <div class="project-card__foot">
+          <span class="project-card__metric mono">~85% Accuracy</span>
+          <a href="https://github.com/mustafanoman128/Healthcare-Project.git" target="_blank" rel="noopener noreferrer" class="project-card__link mono">
+            GitHub
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="vertical-align: middle; margin-left: 2px;">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Project 3 -->
+      <article class="project-card reveal">
+        <div class="project-card__img">
+          <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&h=320&fit=crop&q=80" alt="One Oncology Dashboard visualization" loading="lazy" />
+          <div class="project-card__img-overlay">
+            <a href="https://public.tableau.com/app/profile/mustafanoman128" target="_blank" rel="noopener noreferrer" class="project-card__github" style="background: #e97627;">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8 2a6 6 0 1 0 0 12A6 6 0 0 0 8 2zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
+                <path d="M7 4h2v5H7zm0 6h2v2H7z"/>
+              </svg>
+              View on Tableau
+            </a>
+          </div>
+        </div>
+        <div class="project-card__body">
+          <div class="project-card__num mono">03</div>
+          <h3>One Oncology Performance Dashboard</h3>
+          <p>Tableau dashboard examining service types, payer distribution, payment trends, and patient patterns — saved $10K/month.</p>
+          <div class="project-card__tags">
+            <span>Tableau</span><span>SQL</span><span>Alteryx</span><span>Healthcare</span>
+          </div>
+        </div>
+        <div class="project-card__foot">
+          <span class="project-card__metric mono">$10K/mo Saved</span>
+          <a href="https://public.tableau.com/app/profile/mustafanoman128" target="_blank" rel="noopener noreferrer" class="project-card__link mono">
+            Tableau
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="vertical-align: middle; margin-left: 2px;">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Project 4 -->
+      <article class="project-card reveal">
+        <div class="project-card__img">
+          <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&h=320&fit=crop&q=80" alt="Airline Satisfaction Analysis visualization" loading="lazy" />
+          <div class="project-card__img-overlay">
+            <a href="https://public.tableau.com/app/profile/mustafanoman128" target="_blank" rel="noopener noreferrer" class="project-card__github" style="background: #e97627;">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8 2a6 6 0 1 0 0 12A6 6 0 0 0 8 2zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
+                <path d="M7 4h2v5H7zm0 6h2v2H7z"/>
+              </svg>
+              View on Tableau
+            </a>
+          </div>
+        </div>
+        <div class="project-card__body">
+          <div class="project-card__num mono">04</div>
+          <h3>Airline Passenger Satisfaction Analysis</h3>
+          <p>Tableau workbook analyzing seat comfort, cabin service, food, and value ratings. Identified 45% of complaints tied to delays and IFE.</p>
+          <div class="project-card__tags">
+            <span>Tableau</span><span>Python</span><span>EDA</span><span>NPS</span>
+          </div>
+        </div>
+        <div class="project-card__foot">
+          <span class="project-card__metric mono">45% Root Cause ID</span>
+          <a href="https://public.tableau.com/app/profile/mustafanoman128" target="_blank" rel="noopener noreferrer" class="project-card__link mono">
+            Tableau
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="vertical-align: middle; margin-left: 2px;">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </article>
+
+    </div>
+    
+    <div class="text-center mt-16 reveal">
+      <a href="{{ url_for('projects') }}" class="btn btn--ghost">
+        All Projects &amp; Certifications
+        <svg class="btn__icon btn__icon--arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+    
+  </div>
+</section>
+
+<!-- Tools Section -->
+<section class="tools-visual section" id="tools" aria-labelledby="tools-heading">
+  <div class="container">
+    
+    <div class="section-header reveal">
+      <span class="section-label mono">Toolkit</span>
+      <h2 class="section-title" id="tools-heading">Built With These Tools</h2>
+    </div>
+    
+    <div class="tools-grid reveal">
+      
+      <div class="tool-card">
+        <div class="tool-card__abbr mono">PY</div>
+        <h4>Python</h4>
+        <p class="mono">Pandas &middot; NumPy &middot; Scikit-learn</p>
+      </div>
+      
+      <div class="tool-card">
+        <div class="tool-card__abbr mono">SQL</div>
+        <h4>SQL</h4>
+        <p class="mono">Queries &middot; Indexing &middot; Optimization</p>
+      </div>
+      
+      <div class="tool-card">
+        <div class="tool-card__abbr mono">TBL</div>
+        <h4>Tableau</h4>
+        <p class="mono">LOD Calcs &middot; Dashboards</p>
+      </div>
+      
+      <div class="tool-card">
+        <div class="tool-card__abbr mono">ALTX</div>
+        <h4>Alteryx</h4>
+        <p class="mono">ETL &middot; Blending &middot; ML Workflows</p>
+      </div>
+      
+      <div class="tool-card">
+        <div class="tool-card__abbr mono">AZ</div>
+        <h4>Azure Synapse</h4>
+        <p class="mono">Big Data &middot; Pipelines</p>
+      </div>
+      
+      <div class="tool-card">
+        <div class="tool-card__abbr mono">ML</div>
+        <h4>Machine Learning</h4>
+        <p class="mono">RF &middot; Regression &middot; PCA</p>
+      </div>
+      
+    </div>
+    
+  </div>
+</section>
+
+<!-- Certifications Section -->
+<section class="certs section section--dark" id="certifications" aria-labelledby="certs-heading">
+  <div class="container">
+    
+    <div class="section-header reveal">
+      <span class="section-label mono">Credentials</span>
+      <h2 class="section-title" id="certs-heading">Certifications</h2>
+    </div>
+    
+    <div class="certs__grid certs__grid--home">
+      
+      <div class="cert-card cert-card--featured reveal">
+        <div class="cert-card__img-wrap">
+          <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&h=240&fit=crop&q=80" alt="Alteryx Designer Core Certification" loading="lazy" />
+          <div class="cert-card__img-badge mono">Verified</div>
+        </div>
+        <div class="cert-card__content">
+          <div class="cert-card__badge mono">ALTX</div>
+          <div class="cert-card__info">
+            <h4>Alteryx Designer Core</h4>
+            <p>ETL workflows, data blending, predictive tools</p>
+            <span class="mono cert-card__date">Issued: Oct 24, 2024 &middot; Exp: Oct 24, 2026</span>
+          </div>
+          <div class="cert-card__actions">
+            <a href="{{ url_for('static', filename='pdfs/alteryx-core.pdf') }}" target="_blank" class="btn--outline-teall">
+              View PDF <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="cert-card cert-card--featured reveal">
+        <div class="cert-card__img-wrap">
+          <img src="https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=500&h=240&fit=crop&q=80" alt="Alteryx Machine Learning Certification" loading="lazy" />
+          <div class="cert-card__img-badge mono">Verified</div>
+        </div>
+        <div class="cert-card__content">
+          <div class="cert-card__badge mono">ALML</div>
+          <div class="cert-card__info">
+            <h4>Alteryx Machine Learning Fundamentals</h4>
+            <p>Model building, evaluation, and deployment in Alteryx</p>
+            <span class="mono cert-card__date">Alteryx Academy</span>
+          </div>
+          <div class="cert-card__actions">
+            <a href="{{ url_for('static', filename='pdfs/alteryx-ml.pdf') }}" target="_blank" class="btn--outline-teall">
+              View PDF <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="cert-card cert-card--featured reveal">
+        <div class="cert-card__img-wrap">
+          <img src="https://images.unsplash.com/photo-1543286386-2e659306cd6c?w=500&h=240&fit=crop&q=80" alt="Tableau Desktop Foundations Certification" loading="lazy" />
+          <div class="cert-card__img-badge mono">Verified</div>
+        </div>
+        <div class="cert-card__content">
+          <div class="cert-card__badge mono">TBLO</div>
+          <div class="cert-card__info">
+            <h4>Tableau Desktop Foundations</h4>
+            <p>Data visualization, dashboards, and storytelling</p>
+            <span class="mono cert-card__date">Issued: Aug 07, 2025 &middot; ID: 6653705</span>
+          </div>
+          <div class="cert-card__actions">
+            <a href="{{ url_for('static', filename='pdfs/tableau-foundations.pdf') }}" target="_blank" class="cert-linkbtn--outline-teall">
+              View PDF <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+
+<!-- CTA Section -->
+<section class="cta-section section section--dark" aria-labelledby="cta-heading">
+  <div class="container">
+    <div class="cta-box reveal">
+      <div class="cta-box__glow"></div>
+      <span class="section-label mono">Let's Work Together</span>
+      <h2 id="cta-heading">Ready to Turn Your Data<br><em>Into a Competitive Advantage?</em></h2>
+      <p>Whether you need a dashboard, a predictive model, or end-to-end analytics infrastructure — let's talk.</p>
+      <div class="cta-box__actions">
+        <a href="{{ url_for('contact') }}" class="btn btn--primary btn--lg">
+          Start a Conversation
+          <svg class="btn__icon btn__icon--arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+        <a href="{{ url_for('projects') }}" class="btn btn--ghost btn--lg">
+          Browse Projects
+          <svg class="btn__icon btn__icon--arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<style>
+/* Floating animation for more movement */
+@keyframes floatUpDown {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-30px); } /* increased movement */
+  100% { transform: translateY(0); }
+}
+
+/* Floating animation in opposite direction */
+@keyframes floatDownUp {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(30px); } /* moves opposite */
+  100% { transform: translateY(0); }
+}
+
+/* Apply animations to the stat cards */
+.hero__float--left {
+  animation: floatUpDown 6s ease-in-out infinite;
+}
+
+.hero__float--right {
+  animation: floatDownUp 6s ease-in-out infinite;
+}
+</style>
+
+{% endblock %}

@@ -1,0 +1,102 @@
+{% extends 'admin/_base.html' %}
+{% block title %}Users{% endblock %}
+{% block page_title %}User Management{% endblock %}
+{% include "components/navbar.html" %}
+{% block content %}
+
+<div class="adm-section">
+  <div class="adm-section__head">
+    <h2 class="adm-section__title">Authenticated Members ({{ users|length }})</h2>
+  </div>
+  
+  <table class="adm-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>User Identity</th>
+        <th>Contact Address</th>
+        <th>Registration Date</th>
+        <th style="text-align:right">Access Control</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for u in users %}
+      <tr>
+        <td class="mono" style="font-size:0.75rem; color: var(--text-muted);">#{{ u.id }}</td>
+        <td style="white-space:nowrap;">
+          <div style="display:flex; align-items:center; gap:12px">
+            <div class="comment-avatar mono" style="width:28px; height:28px; font-size:0.7rem;">{{ u.name[0] | upper }}</div>
+            <span style="font-weight: 500; color: var(--white);">{{ u.name }}</span>
+          </div>
+        </td>
+        <td>
+          <a href="mailto:{{ u.email }}" style="color:var(--teal); font-size:0.85rem; text-decoration:none">{{ u.email }}</a>
+        </td>
+        <td>
+          <span class="mono" style="font-size:0.75rem; color: var(--text-muted);">
+            {{ u.created_at.strftime('%b %d, %Y') }}
+          </span>
+        </td>
+        <td style="text-align:right">
+          <button type="button" class="btn-danger btn--sm" 
+                  onclick="showDeleteModal('{{ url_for('admin_delete_user', user_id=u.id) }}', '{{ u.name }}')">
+            Revoke Access
+          </button>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="5" style="text-align:center;color:var(--text-muted);padding:4rem">
+          <p class="mono opacity-50">No registered users found in database.</p>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div id="deleteModal" class="adm-modal">
+  <div class="adm-modal__content">
+    <div class="adm-modal__icon">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ff4d4d" stroke-width="2">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+        <circle cx="8.5" cy="7" r="4"></circle>
+        <line x1="18" y1="8" x2="23" y2="13"></line>
+        <line x1="23" y1="8" x2="18" y2="13"></line>
+      </svg>
+    </div>
+    <h3 class="adm-modal__title">Terminate User Account?</h3>
+    <p class="adm-modal__text">You are about to delete <span id="modalTargetName" style="color:var(--white); font-weight:600;"></span>. This user will lose all access and their comments will be orphaned. This cannot be undone.</p>
+    
+    <div class="adm-modal__actions">
+      <button type="button" class="btn-cancel" onclick="closeDeleteModal()">Cancel</button>
+      <form id="deleteConfirmForm" method="POST" style="margin:0">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+        <button type="submit" class="btn-confirm-delete">Confirm Termination</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+function showDeleteModal(url, name) {
+    const modal = document.getElementById('deleteModal');
+    const form = document.getElementById('deleteConfirmForm');
+    const nameSpan = document.getElementById('modalTargetName');
+    
+    form.action = url;
+    nameSpan.textContent = name;
+    modal.classList.add('active');
+}
+
+function closeDeleteModal() {
+    document.getElementById('deleteModal').classList.remove('active');
+}
+
+// Close if clicking the blurred background
+document.getElementById('deleteModal').addEventListener('click', function(e) {
+    if (e.target === this) closeDeleteModal();
+});
+</script>
+
+{% endblock %}

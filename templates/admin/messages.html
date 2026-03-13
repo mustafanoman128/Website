@@ -1,0 +1,115 @@
+{% extends 'admin/_base.html' %}
+{% block title %}Messages{% endblock %}
+{% block page_title %}Contact Messages{% endblock %}
+{% include "components/navbar.html" %}
+{% block content %}
+
+<div class="adm-section">
+  <div class="adm-section__head">
+    <h2 class="adm-section__title">All Contact Messages ({{ messages|length }})</h2>
+  </div>
+  
+  <table class="adm-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Message</th>
+        <th>Date</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for m in messages %}
+      <tr>
+        <td class="mono" style="font-size:0.72rem;color:var(--text-muted)">{{ m.id }}</td>
+        <td style="white-space:nowrap;font-weight:500;color:var(--white)">{{ m.name }}</td>
+        <td>
+          <a href="mailto:{{ m.email }}" style="color:var(--teal);font-size:0.85rem">{{ m.email }}</a>
+        </td>
+        <td style="max-width:360px">
+          <div class="msg-preview" id="msg-{{ m.id }}">
+            <span class="msg-short">{{ m.message[:100] }}{% if m.message|length > 100 %}&hellip;{% endif %}</span>
+            {% if m.message|length > 100 %}
+            <span class="msg-full" style="display:none">{{ m.message }}</span>
+            <button class="msg-toggle mono" onclick="toggleMsg({{ m.id }})">more</button>
+            {% endif %}
+          </div>
+        </td>
+        <td>
+          <span class="mono" style="font-size:0.72rem;white-space:nowrap">
+            {{ m.created_at.strftime('%b %d, %Y') }}<br>{{ m.created_at.strftime('%H:%M') }}
+          </span>
+        </td>
+        <td>
+          <button type="button" class="btn-danger" 
+                  onclick="showDeleteModal('{{ url_for('admin_delete_message', message_id=m.id) }}', '{{ m.name }}')">
+            Delete
+          </button>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="6" style="text-align:center;color:var(--text-muted);padding:2rem">No messages yet.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div id="deleteModal" class="adm-modal">
+  <div class="adm-modal__content">
+    <div class="adm-modal__icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff4d4d" stroke-width="2">
+        <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/>
+      </svg>
+    </div>
+    <h3 class="adm-modal__title">Confirm Deletion</h3>
+    <p class="adm-modal__text">Are you sure you want to delete the message from <span id="modalTargetName" style="color:var(--white);font-weight:600"></span>? This action cannot be undone.</p>
+    
+    <div class="adm-modal__actions">
+      <button type="button" class="btn-cancel" onclick="closeDeleteModal()">Cancel</button>
+      <form id="deleteConfirmForm" method="POST" style="margin:0">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+        <button type="submit" class="btn-confirm-delete">Delete Permanently</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+let currentDeleteUrl = '';
+
+function showDeleteModal(url, name) {
+    const modal = document.getElementById('deleteModal');
+    const form = document.getElementById('deleteConfirmForm');
+    const nameSpan = document.getElementById('modalTargetName');
+    
+    form.action = url;
+    nameSpan.textContent = name;
+    modal.classList.add('active');
+}
+
+function closeDeleteModal() {
+    document.getElementById('deleteModal').classList.remove('active');
+}
+
+// Close if clicking background
+document.getElementById('deleteModal').addEventListener('click', function(e) {
+    if (e.target === this) closeDeleteModal();
+});
+
+function toggleMsg(id) {
+    const wrap = document.getElementById('msg-' + id);
+    const short = wrap.querySelector('.msg-short');
+    const full = wrap.querySelector('.msg-full');
+    const btn = wrap.querySelector('.msg-toggle');
+    const isExpanded = full.style.display !== 'none';
+    short.style.display = isExpanded ? '' : 'none';
+    full.style.display = isExpanded ? 'none' : '';
+    btn.textContent = isExpanded ? 'more' : 'less';
+}
+</script>
+
+{% endblock %}
