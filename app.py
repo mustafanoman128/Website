@@ -46,9 +46,14 @@ if not SECRET_KEY:
     raise RuntimeError("SECRET_KEY missing")
 
 app.config["SECRET_KEY"] = SECRET_KEY
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
-    "DATABASE_URL", "sqlite:///portfolio.db"
-)
+mport os
+
+# Persistent disk path
+db_path = os.path.join("/mnt/data", "portfolio.db")
+
+# Flask config
+app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{db_path}"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["UPLOAD_FOLDER"] = os.path.join("static", "uploads", "blog_images")
 app.config["ALLOWED_EXTENSIONS"] = {"png", "jpg", "jpeg", "gif", "webp"}
