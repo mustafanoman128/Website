@@ -46,7 +46,7 @@ if not SECRET_KEY:
     raise RuntimeError("SECRET_KEY missing")
 
 app.config["SECRET_KEY"] = SECRET_KEY
-mport os
+import os
 
 # Persistent disk path
 db_path = os.path.join("/mnt/data", "portfolio.db")
