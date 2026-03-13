@@ -33,27 +33,15 @@ load_dotenv()
 
 app = Flask(__name__)
 
-@app.template_filter('nl2br')
-def nl2br(value):
-    """Convert newlines to <br> tags safely"""
-    if not value:
-        return ""
-    return Markup(value.replace('\n', '<br>\n'))
-
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 if not SECRET_KEY:
     raise RuntimeError("SECRET_KEY missing")
 
 app.config["SECRET_KEY"] = SECRET_KEY
-import os
-
-# Persistent disk path
-db_path = os.path.join("/mnt/data", "portfolio.db")
-
-# Flask config
-app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{db_path}"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
+    "DATABASE_URL", "sqlite:///portfolio.db"
+)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["UPLOAD_FOLDER"] = os.path.join("static", "uploads", "blog_images")
 app.config["ALLOWED_EXTENSIONS"] = {"png", "jpg", "jpeg", "gif", "webp"}
