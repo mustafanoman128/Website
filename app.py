@@ -39,9 +39,26 @@ if not SECRET_KEY:
     raise RuntimeError("SECRET_KEY missing")
 
 app.config["SECRET_KEY"] = SECRET_KEY
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
-    "DATABASE_URL", "sqlite:///portfolio.db"
-)
+db_url = os.getenv("DATABASE_URL")
+
+if db_url:
+    # Fix Render / Heroku style "postgres://" → SQLAlchemy wants "postgresql://"
+    if db_url.startswith("postgres://"):
+        db_url = db_url.replace("postgres://", "postgresql://", 1)
+
+    app.config["SQLALCHEMY_DATABASE_URI"] = db_url
+
+    # Recommended: disable pooling or recycle connections (Render kills idle ones)
+    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+        "pool_pre_ping": True,          # detect broken connections
+        "pool_recycle": 300,            # recycle every 5 minutes
+        # "poolclass": NullPool,        # alternative: no pooling at all (simplest)
+    }
+else:
+    # fallback only for local development
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///portfolio.db"
+
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["UPLOAD_FOLDER"] = os.path.join("static", "uploads", "blog_images")
 app.config["ALLOWED_EXTENSIONS"] = {"png", "jpg", "jpeg", "gif", "webp"}
