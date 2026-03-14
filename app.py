@@ -563,5 +563,26 @@ def seed_admin():
     print(f"Admin {email} created successfully.")
 
 
+# ── FREE-TIER ONE-TIME SETUP ROUTE (delete after first use) ───────────────────
+@app.route("/create-admin")
+def create_admin():
+    """Visit this URL ONCE after first deploy to create admin account"""
+    email = os.getenv("ADMIN_EMAIL")
+    password = os.getenv("ADMIN_PASSWORD")
+    name = os.getenv("ADMIN_NAME", "Mustafa Noman")
+    
+    if not email or not password:
+        return "ERROR: ADMIN_EMAIL and ADMIN_PASSWORD not set in environment variables!", 400
+    
+    existing = User.query.filter_by(email=email).first()
+    if existing:
+        return f"Admin {email} already exists. You can now delete this route."
+    
+    admin = User(name=name, email=email, is_admin=True)
+    admin.set_password(password)
+    db.session.add(admin)
+    db.session.commit()
+    return f"✅ Admin {email} created successfully!<br><br>You can now delete this route from app.py and redeploy."
+
 if __name__ == "__main__":
     app.run(debug=False)
