@@ -39,26 +39,9 @@ if not SECRET_KEY:
     raise RuntimeError("SECRET_KEY missing")
 
 app.config["SECRET_KEY"] = SECRET_KEY
-db_url = os.getenv("DATABASE_URL")
-
-if db_url:
-    # Fix Render / Heroku style "postgres://" → SQLAlchemy wants "postgresql://"
-    if db_url.startswith("postgres://"):
-        db_url = db_url.replace("postgres://", "postgresql://", 1)
-
-    app.config["SQLALCHEMY_DATABASE_URI"] = db_url
-
-    # Recommended: disable pooling or recycle connections (Render kills idle ones)
-    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
-        "pool_pre_ping": True,          # detect broken connections
-        "pool_recycle": 300,            # recycle every 5 minutes
-        # "poolclass": NullPool,        # alternative: no pooling at all (simplest)
-    }
-else:
-    # fallback only for local development
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///portfolio.db"
-
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
+    "DATABASE_URL", "sqlite:///portfolio.db"
+)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["UPLOAD_FOLDER"] = os.path.join("static", "uploads", "blog_images")
 app.config["ALLOWED_EXTENSIONS"] = {"png", "jpg", "jpeg", "gif", "webp"}
@@ -562,27 +545,6 @@ def seed_admin():
     db.session.commit()
     print(f"Admin {email} created successfully.")
 
-
-# ── FREE-TIER ONE-TIME SETUP ROUTE (delete after first use) ───────────────────
-@app.route("/create-admin")
-def create_admin():
-    """Visit this URL ONCE after first deploy to create admin account"""
-    email = os.getenv("ADMIN_EMAIL")
-    password = os.getenv("ADMIN_PASSWORD")
-    name = os.getenv("ADMIN_NAME", "Mustafa Noman")
-    
-    if not email or not password:
-        return "ERROR: ADMIN_EMAIL and ADMIN_PASSWORD not set in environment variables!", 400
-    
-    existing = User.query.filter_by(email=email).first()
-    if existing:
-        return f"Admin {email} already exists. You can now delete this route."
-    
-    admin = User(name=name, email=email, is_admin=True)
-    admin.set_password(password)
-    db.session.add(admin)
-    db.session.commit()
-    return f"✅ Admin {email} created successfully!<br><br>You can now delete this route from app.py and redeploy."
 
 if __name__ == "__main__":
     app.run(debug=False)
