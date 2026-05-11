@@ -2936,4 +2936,56 @@ h3 { font-weight: 700; }
   .nav__logo { font-size: 0.78rem; }
 }
 
+/* ─── iOS & Android Polish ───────────────────────────────────── */
+
+/* Remove iOS blue tap flash on all interactive elements */
+a, button, input, select, textarea, [role="button"] {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Speed up tap response — removes 300ms delay on touch devices */
+a, button, .btn, .nav__links a, .project-card, .cert-card {
+  touch-action: manipulation;
+}
+
+/* Prevent iOS from auto-styling inputs and selects */
+input, textarea, select {
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: var(--r-md);
+}
+
+/* Active states for touch (replaces :hover on phones) */
+@media (hover: none) and (pointer: coarse) {
+  .btn:active { opacity: 0.8; transform: scale(0.97); }
+  .project-card:active { border-color: rgba(0,212,170,0.3); }
+  .nav__links a:active { color: var(--teal); }
+  .bio__contact-item:active { color: var(--teal); }
+  .contact-detail:active { opacity: 0.75; }
+}
+
+/* iOS notch / home bar safe areas */
+@supports (padding: env(safe-area-inset-left)) {
+  .nav__inner {
+    padding-left: max(var(--sp-5), env(safe-area-inset-left));
+    padding-right: max(var(--sp-5), env(safe-area-inset-right));
+  }
+  .footer__inner {
+    padding-left: max(var(--sp-6), env(safe-area-inset-left));
+    padding-right: max(var(--sp-6), env(safe-area-inset-right));
+  }
+}
+
+/* Prevent long-press saving/copy on portrait image */
+.bio__portrait-img,
+.hero__frame img,
+.proj-detail__img-wrap img {
+  -webkit-touch-callout: none;
+}
+
+/* Smooth momentum scrolling on iOS */
+html {
+  -webkit-overflow-scrolling: touch;
+}
+
 
