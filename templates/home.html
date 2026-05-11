@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Mustafa Noman — Data Analyst Portfolio{% endblock %}
+{% block title %}Mustafa Noman — Data Analyst & AI Engineer{% endblock %}
 
 {% block content %}
 
@@ -24,16 +24,18 @@
 
       <!-- Main Title -->
       <h1 class="hero__title reveal">
-        <span class="hero__title-normal">Transforming</span>
-        <span class="hero__title-outline" data-text="Raw Data"><span class="hero__title-cursor"></span></span>
-        <span class="hero__title-normal">Into Impact.</span>
+        <span class="hero__title-normal">Turning</span>
+        <span style="white-space: nowrap;">
+          <span class="hero__title-outline" data-text="Data"><span class="hero__title-cursor"></span></span>
+          <span class="hero__title-normal">into Decisions.</span>
+        </span>
       </h1>
 
       <!-- Subtitle -->
       <p class="hero__sub reveal">
-        I transform complex datasets into actionable insights and build
-        analytics systems that drive measurable revenue growth through
-        intelligent BI &amp; machine learning.
+        I transform complex datasets into actionable insights, building
+        analytics systems — from ETL pipelines and executive dashboards
+        to ML models and AI-powered applications.
       </p>
 
       <!-- CTA Buttons -->
@@ -44,8 +46,8 @@
             <path d="M5 12h14M12 5l7 7-7 7"/>
           </svg>
         </a>
-        <a href="{{ url_for('contact') }}" class="btn btn--hero-ghost">
-          Contact Now
+        <a href="{{ url_for('about') }}" class="btn btn--hero-ghost">
+          My Full Story
           <svg class="btn__icon btn__icon--arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path d="M5 12h14M12 5l7 7-7 7"/>
           </svg>
@@ -144,18 +146,18 @@
       <!-- Floating Stat Cards -->
       <div class="hero__float hero__float--left">
         <span class="hero__float-val mono stat__num">$2.3M+</span>
-        <span class="hero__float-label">Revenue Impact</span>
+        <span class="hero__float-label">Revenue Generated</span>
         <span class="hero__float-trend">
           <svg width="10" height="10" fill="currentColor" viewBox="0 0 24 24" style="vertical-align: middle; margin-right: 2px;">
             <path d="M7 14l5-5 5 5H7z"/>
           </svg>
-          Q-o-Q
+          via ETL &amp; Campaigns
         </span>
       </div>
 
       <div class="hero__float hero__float--right">
-        <span class="hero__float-val mono">4+</span>
-        <span class="hero__float-label">Projects</span>
+        <span class="hero__float-val mono">3+</span>
+        <span class="hero__float-label">Years Experience</span>
         <span class="hero__float-trend">
           <span style="color: var(--teal);">&#9679;</span> Active
         </span>
@@ -175,96 +177,12 @@
 
 </section>
 
-<div class="wrappp">  <!-- Skills Strip -->
 <section class="skills-strip" aria-label="Technical skills">
   <div class="skills-strip__inner">
     <div class="skills-strip__track">
-      {% set tools = ['Python','SQL','Tableau','Alteryx','Azure Synapse','Flask','Pandas','NumPy','Scikit-learn','Power BI','ETL Pipelines','Machine Learning','Data Visualization','Revenue Operations','Predictive Modeling'] %}
+      {% set tools = ['Python','SQL','Tableau','Power BI','Alteryx','Azure Synapse','Flask','Pandas','NumPy','Scikit-learn','Google BigQuery','AWS Redshift','Machine Learning','ETL Pipelines','Data Visualization','Revenue Operations','Generative AI','LLMs'] %}
       {% for t in tools %}<span class="skills-strip__item mono">{{ t }}</span><span class="skills-strip__dot">&#9670;</span>{% endfor %}
       {% for t in tools %}<span class="skills-strip__item mono">{{ t }}</span><span class="skills-strip__dot">&#9670;</span>{% endfor %}
-    </div>
-  </div></div>
-
-<!-- About Teaser -->
-<section class="about-teaser section" id="about" aria-labelledby="about-heading">
-  <div class="container">
-    <div class="about-teaser__grid">
-      
-      <div class="about-teaser__content reveal">
-        <span class="section-label mono">Numbers First Titles Later</span>
-        <h2 class="section-title" id="about-heading">About <em>Me</em></h2>
-        <p>I'm a data-driven analyst based in Chicago with a Master's in Analytics from the University of Illinois. My work lives at the intersection of financial analytics, revenue operations, and business intelligence — transforming complex, chaotic datasets into decisions that move organizations forward.</p>
-        <p>From building ETL pipelines at Stericycle to crafting executive revenue dashboards at Pregis, I bridge raw data with business strategy so stakeholders can make confident, evidence-backed decisions.</p>
-        <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:2rem;">
-          <a href="{{ url_for('about') }}" class="btn btn--primary">
-            My Full Story
-            <svg class="btn__icon btn__icon--arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </a>
-          <a href="{{ url_for('projects') }}" class="btn btn--ghost">
-            See Projects
-            <svg class="btn__icon btn__icon--arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </a>
-        </div>
-      </div>
-      
-      <div class="about-teaser__right reveal">
-        <div class="about-img-wrap">
-          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=700&h=460&fit=crop&q=80" alt="Data analytics workspace with charts and dashboards" class="about-img" loading="lazy" />
-          <div class="about-img__overlay">
-            <span class="mono">75+</span>
-            <span>KPIs Tracked</span>
-          </div>
-        </div>
-        
-        <div class="about-teaser__cards">
-          
-          <div class="mini-card">
-            <div class="mini-card__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-              </svg>
-            </div>
-            <h4>Analytics</h4>
-            <p>ETL pipelines, executive dashboards, 75+ KPI frameworks</p>
-          </div>
-          
-          <div class="mini-card">
-            <div class="mini-card__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
-              </svg>
-            </div>
-            <h4>ML Modeling</h4>
-            <p>Random Forest, Linear Regression, predictive systems</p>
-          </div>
-          
-          <div class="mini-card">
-            <div class="mini-card__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/>
-              </svg>
-            </div>
-            <h4>Visualization</h4>
-            <p>Tableau LOD, Azure Synapse, operational forecasting</p>
-          </div>
-          
-          <div class="mini-card">
-            <div class="mini-card__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-            </div>
-            <h4>Revenue Ops</h4>
-            <p>Lead funnel analytics, pricing strategy, CRM integration</p>
-          </div>
-          
-        </div>
-      </div>
-      
     </div>
   </div>
 </section>
@@ -276,7 +194,7 @@
     <div class="section-header reveal">
       <span class="section-label mono">Selected Work</span>
       <h2 class="section-title" id="projects-heading">My <em>Projects</em></h2>
-      <p class="section-sub">Delivering measurable business impact through analytics, ML, and BI.</p>
+      <p class="section-sub">Things I've actually built.</p>
     </div>
     
     <div class="projects__grid">
@@ -284,9 +202,9 @@
       <!-- Project 1 -->
       <article class="project-card reveal">
         <div class="project-card__img">
-          <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&h=320&fit=crop&q=80" alt="Bangalore House Price Prediction project visualization" loading="lazy" />
+          <img src="{{ url_for('static', filename='img/project-bhp.jpg') }}" alt="Bangalore House Price Prediction project visualization" loading="lazy" />
           <div class="project-card__img-overlay">
-            <a href="https://github.com/mustafanoman128/Cross-Sell-Prediction.git" target="_blank" rel="noopener noreferrer" class="project-card__github">
+            <a href="https://github.com/mustafanoman128/BHP" target="_blank" rel="noopener noreferrer" class="project-card__github">
               <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                 <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
               </svg>
@@ -303,9 +221,9 @@
           </div>
         </div>
         <div class="project-card__foot">
-          <span class="project-card__metric mono">R&#178; Score: 0.86</span>
-          <a href="https://github.com/mustafanoman128/Cross-Sell-Prediction.git" target="_blank" rel="noopener noreferrer" class="project-card__link mono">
-            GitHub
+          <span class="project-card__metric mono">R&#178; Score: 0.85</span>
+          <a href="https://bhp-y0gi.onrender.com/" target="_blank" rel="noopener noreferrer" class="project-card__link mono" style="color: var(--teal);">
+            Try Live
             <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="vertical-align: middle; margin-left: 2px;">
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
@@ -316,28 +234,34 @@
       <!-- Project 2 -->
       <article class="project-card reveal">
         <div class="project-card__img">
-          <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&h=320&fit=crop&q=80" alt="Healthcare Insurance Cost Prediction visualization" loading="lazy" />
+          <img src="{{ url_for('static', filename='img/project-finance.jpg') }}" alt="Personal Finance App" loading="lazy" />
           <div class="project-card__img-overlay">
-            <a href="https://github.com/mustafanoman128/Healthcare-Project.git" target="_blank" rel="noopener noreferrer" class="project-card__github">
+            <a href="https://github.com/mustafanoman128/personal-finance" target="_blank" rel="noopener noreferrer" class="project-card__github">
               <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                 <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
               </svg>
               View on GitHub
             </a>
+            <a href="https://mustafanoman128.github.io/personal-finance/demo.html" target="_blank" rel="noopener noreferrer" class="project-card__github" style="background: var(--teal); color: var(--ink);">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+              Try Live
+            </a>
           </div>
         </div>
         <div class="project-card__body">
           <div class="project-card__num mono">02</div>
-          <h3>Healthcare Insurance Cost Prediction</h3>
-          <p>Random Forest regression predicting individual medical costs. Full EDA with Seaborn, One-Hot Encoding, PCA, MAE/RMSE evaluation.</p>
+          <h3>Personal Finance App</h3>
+          <p>Full-stack finance tracker with 11 production-ready features — Node.js/Express REST API, SQLite database, and mobile-responsive vanilla JS frontend.</p>
           <div class="project-card__tags">
-            <span>Random Forest</span><span>EDA</span><span>PCA</span><span>Seaborn</span>
+            <span>Node.js</span><span>Express</span><span>SQLite</span><span>REST API</span>
           </div>
         </div>
         <div class="project-card__foot">
-          <span class="project-card__metric mono">~85% Accuracy</span>
-          <a href="https://github.com/mustafanoman128/Healthcare-Project.git" target="_blank" rel="noopener noreferrer" class="project-card__link mono">
-            GitHub
+          <span class="project-card__metric mono">11 Features</span>
+          <a href="https://mustafanoman128.github.io/personal-finance/demo.html" target="_blank" rel="noopener noreferrer" class="project-card__link mono" style="color: var(--teal);">
+            Try Live
             <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="vertical-align: middle; margin-left: 2px;">
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
@@ -348,29 +272,28 @@
       <!-- Project 3 -->
       <article class="project-card reveal">
         <div class="project-card__img">
-          <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&h=320&fit=crop&q=80" alt="One Oncology Dashboard visualization" loading="lazy" />
+          <img src="{{ url_for('static', filename='img/project-cancer-center.jpg') }}" alt="Chicago Cancer Center Performance Dashboard" loading="lazy" />
           <div class="project-card__img-overlay">
-            <a href="https://public.tableau.com/app/profile/mustafanoman128" target="_blank" rel="noopener noreferrer" class="project-card__github" style="background: #e97627;">
+            <a href="https://github.com/mustafanoman128/ChicagoCancerCenter-CCC-" target="_blank" rel="noopener noreferrer" class="project-card__github">
               <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M8 2a6 6 0 1 0 0 12A6 6 0 0 0 8 2zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
-                <path d="M7 4h2v5H7zm0 6h2v2H7z"/>
+                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
               </svg>
-              View on Tableau
+              View on GitHub
             </a>
           </div>
         </div>
         <div class="project-card__body">
           <div class="project-card__num mono">03</div>
-          <h3>One Oncology Performance Dashboard</h3>
-          <p>Tableau dashboard examining service types, payer distribution, payment trends, and patient patterns — saved $10K/month.</p>
+          <h3>Chicago Cancer Center Dashboard</h3>
+          <p>Cross-functional analysis of 8K+ patients, 48K visits, and $14.5M revenue — provider performance, payer mix, staffing, and patient retention insights.</p>
           <div class="project-card__tags">
-            <span>Tableau</span><span>SQL</span><span>Alteryx</span><span>Healthcare</span>
+            <span>Power BI</span><span>SQL</span><span>DAX</span><span>Healthcare</span>
           </div>
         </div>
         <div class="project-card__foot">
-          <span class="project-card__metric mono">$10K/mo Saved</span>
-          <a href="https://public.tableau.com/app/profile/mustafanoman128" target="_blank" rel="noopener noreferrer" class="project-card__link mono">
-            Tableau
+          <span class="project-card__metric mono">$14.5M Revenue</span>
+          <a href="https://github.com/mustafanoman128/ChicagoCancerCenter-CCC-" target="_blank" rel="noopener noreferrer" class="project-card__link mono">
+            GitHub
             <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="vertical-align: middle; margin-left: 2px;">
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
@@ -381,9 +304,9 @@
       <!-- Project 4 -->
       <article class="project-card reveal">
         <div class="project-card__img">
-          <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&h=320&fit=crop&q=80" alt="Airline Satisfaction Analysis visualization" loading="lazy" />
+          <img src="{{ url_for('static', filename='img/project-airline.jpg') }}" alt="Airline Passenger Satisfaction Analytics visualization" loading="lazy" />
           <div class="project-card__img-overlay">
-            <a href="https://public.tableau.com/app/profile/mustafanoman128" target="_blank" rel="noopener noreferrer" class="project-card__github" style="background: #e97627;">
+            <a href="https://public.tableau.com/app/profile/mustafanoman128/viz/AirlineDashboard_17519136087230/Dashboard1" target="_blank" rel="noopener noreferrer" class="project-card__github" style="background: #e97627;">
               <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                 <path d="M8 2a6 6 0 1 0 0 12A6 6 0 0 0 8 2zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
                 <path d="M7 4h2v5H7zm0 6h2v2H7z"/>
@@ -402,7 +325,7 @@
         </div>
         <div class="project-card__foot">
           <span class="project-card__metric mono">45% Root Cause ID</span>
-          <a href="https://public.tableau.com/app/profile/mustafanoman128" target="_blank" rel="noopener noreferrer" class="project-card__link mono">
+          <a href="https://public.tableau.com/app/profile/mustafanoman128/viz/AirlineDashboard_17519136087230/Dashboard1" target="_blank" rel="noopener noreferrer" class="project-card__link mono">
             Tableau
             <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="vertical-align: middle; margin-left: 2px;">
               <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -425,58 +348,6 @@
   </div>
 </section>
 
-<!-- Tools Section -->
-<section class="tools-visual section" id="tools" aria-labelledby="tools-heading">
-  <div class="container">
-    
-    <div class="section-header reveal">
-      <span class="section-label mono">Toolkit</span>
-      <h2 class="section-title" id="tools-heading">Built With These Tools</h2>
-    </div>
-    
-    <div class="tools-grid reveal">
-      
-      <div class="tool-card">
-        <div class="tool-card__abbr mono">PY</div>
-        <h4>Python</h4>
-        <p class="mono">Pandas &middot; NumPy &middot; Scikit-learn</p>
-      </div>
-      
-      <div class="tool-card">
-        <div class="tool-card__abbr mono">SQL</div>
-        <h4>SQL</h4>
-        <p class="mono">Queries &middot; Indexing &middot; Optimization</p>
-      </div>
-      
-      <div class="tool-card">
-        <div class="tool-card__abbr mono">TBL</div>
-        <h4>Tableau</h4>
-        <p class="mono">LOD Calcs &middot; Dashboards</p>
-      </div>
-      
-      <div class="tool-card">
-        <div class="tool-card__abbr mono">ALTX</div>
-        <h4>Alteryx</h4>
-        <p class="mono">ETL &middot; Blending &middot; ML Workflows</p>
-      </div>
-      
-      <div class="tool-card">
-        <div class="tool-card__abbr mono">AZ</div>
-        <h4>Azure Synapse</h4>
-        <p class="mono">Big Data &middot; Pipelines</p>
-      </div>
-      
-      <div class="tool-card">
-        <div class="tool-card__abbr mono">ML</div>
-        <h4>Machine Learning</h4>
-        <p class="mono">RF &middot; Regression &middot; PCA</p>
-      </div>
-      
-    </div>
-    
-  </div>
-</section>
-
 <!-- Certifications Section -->
 <section class="certs section section--dark" id="certifications" aria-labelledby="certs-heading">
   <div class="container">
@@ -489,8 +360,8 @@
     <div class="certs__grid certs__grid--home">
       
       <div class="cert-card cert-card--featured reveal">
-        <div class="cert-card__img-wrap">
-          <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&h=240&fit=crop&q=80" alt="Alteryx Designer Core Certification" loading="lazy" />
+        <div class="cert-card__img-wrap cert-card__img-wrap--contain">
+          <img src="{{ url_for('static', filename='img/alteryx-designer-core.png') }}" alt="Alteryx Designer Core Certification" loading="lazy" />
           <div class="cert-card__img-badge mono">Verified</div>
         </div>
         <div class="cert-card__content">
@@ -509,8 +380,8 @@
       </div>
       
       <div class="cert-card cert-card--featured reveal">
-        <div class="cert-card__img-wrap">
-          <img src="https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=500&h=240&fit=crop&q=80" alt="Alteryx Machine Learning Certification" loading="lazy" />
+        <div class="cert-card__img-wrap cert-card__img-wrap--contain">
+          <img src="{{ url_for('static', filename='img/alteryx-ml.webp') }}" alt="Alteryx Machine Learning Certification" loading="lazy" />
           <div class="cert-card__img-badge mono">Verified</div>
         </div>
         <div class="cert-card__content">
@@ -529,8 +400,8 @@
       </div>
       
       <div class="cert-card cert-card--featured reveal">
-        <div class="cert-card__img-wrap">
-          <img src="https://images.unsplash.com/photo-1543286386-2e659306cd6c?w=500&h=240&fit=crop&q=80" alt="Tableau Desktop Foundations Certification" loading="lazy" />
+        <div class="cert-card__img-wrap cert-card__img-wrap--contain">
+          <img src="{{ url_for('static', filename='img/tableau-desktop.png') }}" alt="Tableau Desktop Foundations Certification" loading="lazy" />
           <div class="cert-card__img-badge mono">Verified</div>
         </div>
         <div class="cert-card__content">
@@ -580,30 +451,5 @@
   </div>
 </section>
 
-
-<style>
-/* Floating animation for more movement */
-@keyframes floatUpDown {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-30px); } /* increased movement */
-  100% { transform: translateY(0); }
-}
-
-/* Floating animation in opposite direction */
-@keyframes floatDownUp {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(30px); } /* moves opposite */
-  100% { transform: translateY(0); }
-}
-
-/* Apply animations to the stat cards */
-.hero__float--left {
-  animation: floatUpDown 6s ease-in-out infinite;
-}
-
-.hero__float--right {
-  animation: floatDownUp 6s ease-in-out infinite;
-}
-</style>
 
 {% endblock %}
