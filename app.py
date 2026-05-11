@@ -18,6 +18,7 @@ from flask import (
 )
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_mail import Mail, Message
 from flask_login import (
     LoginManager,
     UserMixin,
@@ -50,8 +51,17 @@ app.config["SESSION_COOKIE_SECURE"] = True
 app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=30)
+
+app.config["MAIL_SERVER"] = "smtp.gmail.com"
+app.config["MAIL_PORT"] = 587
+app.config["MAIL_USE_TLS"] = True
+app.config["MAIL_USERNAME"] = os.getenv("MAIL_USERNAME")
+app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD")
+app.config["MAIL_DEFAULT_SENDER"] = os.getenv("MAIL_USERNAME")
+
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+mail = Mail(app)
 login_manager = LoginManager(app)
 login_manager.login_view = "login"
 login_manager.login_message_category = "info"
@@ -59,7 +69,7 @@ login_manager.login_message_category = "info"
 ALLOWED_EXT = {"png", "jpg", "jpeg", "gif", "webp"}
 
 # ── Blog Categories ───────────────────────────────────────────────────────────
-CATEGORIES = ["Python", "Data Science", "Crypto", "Machine Learning"]
+CATEGORIES = ["Data Analytics", "Data Science & AI", "Career"]
 
 
 def allowed_file(filename):
@@ -242,6 +252,7 @@ def contact():
     if request.method == "POST":
         name = sanitize_html(request.form.get("name", "").strip())
         email = sanitize_html(request.form.get("email", "").strip())
+        inquiry_type = sanitize_html(request.form.get("inquiry_type", "").strip())
         message = sanitize_html(request.form.get("message", "").strip())
         if not name or not email or not message:
             flash("All fields are required.", "danger")
@@ -251,6 +262,23 @@ def contact():
             msg = ContactMessage(name=name, email=email, message=message)
             db.session.add(msg)
             db.session.commit()
+            try:
+                inquiry_label = inquiry_type.replace("job", "Job Opportunity").replace("freelance", "Freelance / Consulting").replace("collab", "Collaboration").replace("general", "General") if inquiry_type else "Not specified"
+                email_body = (
+                    f"Name: {name}\n"
+                    f"Email: {email}\n"
+                    f"Inquiry Type: {inquiry_label}\n\n"
+                    f"Message:\n{message}"
+                )
+                notification = Message(
+                    subject=f"Portfolio Contact: {name}",
+                    recipients=["mustafanoman128@gmail.com"],
+                    body=email_body,
+                    reply_to=email,
+                )
+                mail.send(notification)
+            except Exception:
+                pass  # don't block the user if email fails
             flash("Message sent! I will get back to you soon.", "success")
             return redirect(url_for("contact"))
     return render_template("contact.html")

@@ -4,9 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{% block title %}Mustafa Noman — Data Analyst{% endblock %}</title>
+  <title>{% block title %}Mustafa Noman — Data Analyst & AI Engineer{% endblock %}</title>
   <meta name="description"
-    content="Mustafa Noman — Data Analyst specializing in Revenue Operations, Business Intelligence, and Machine Learning. Chicago, IL." />
+    content="Mustafa Noman — Data Analyst & AI Engineer specializing in Revenue Operations, Business Intelligence, Machine Learning, and AI-powered applications." />
   <meta name="keywords"
     content="Data Analyst, Business Intelligence, Machine Learning, Tableau, SQL, Python, Revenue Operations" />
   <meta name="author" content="Mustafa Noman" />
@@ -21,7 +21,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Roboto+Slab:wght@300;400;500;600&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
   {% block extra_css %}{% endblock %}
@@ -31,7 +31,7 @@
   <nav class="nav" id="nav" role="navigation" aria-label="Main navigation">
     <div class="nav__inner">
       <a href="{{ url_for('home') }}" class="nav__logo" aria-label="Mustafa Noman Home">
-        <span class="nav__logo-bracket"></span>MUSTAFA NOMAN<span class="nav__logo-bracket"></span>
+        <span class="nav__logo-bracket"></span>MUSTAFA&nbsp;&nbsp;NOMAN<span class="nav__logo-bracket"></span>
       </a>
       <button class="nav__burger" id="navBurger" aria-label="Toggle menu" aria-expanded="false"
         aria-controls="navLinks">
@@ -47,14 +47,15 @@
         <li><a href="{{ url_for('contact') }}" {% if request.endpoint=='contact' %}class="active" {% endif
             %}>Contact</a></li>
         {% if current_user.is_authenticated %}
-        {% if current_user.is_admin %}
-        <li><a href="{{ url_for('admin_dashboard') }}" class="nav__cta">Admin</a></li>
-        {% endif %}
-        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+          {% if current_user.is_admin %}
+          <li><a href="{{ url_for('admin_dashboard') }}" class="nav__cta">Admin</a></li>
+          {% endif %}
+          <li><a href="{{ url_for('logout') }}">Logout</a></li>
         {% else %}
-        <li><a href="{{ url_for('login') }}">Login</a></li>
-        <li><a href="{{ url_for('signup') }}" class="nav__cta">Sign Up</a></li>
+          <li><a href="{{ url_for('login') }}" {% if request.endpoint=='login' %}class="active"{% endif %}>Login</a></li>
+          <li><a href="{{ url_for('signup') }}" class="nav__cta">Sign Up</a></li>
         {% endif %}
+        <li><a href="{{ url_for('static', filename='pdfs/Mustafa_Resume.pdf') }}" target="_blank" rel="noopener noreferrer" class="nav__cta nav__resume">↓ Resume</a></li>
       </ul>
     </div>
   </nav>
@@ -81,7 +82,7 @@
           style="font-family:var(--font-display);font-size:1.1rem;font-weight:800;color:var(--white)">Mustafa
           Noman</span><span
           style="font-family:var(--font-display);font-size:1.1rem;font-weight:800;color:var(--teal)"></span>
-        <p>Data Analyst &middot; Chicago, IL</p>
+        <p>Data Analyst &middot; Karachi, PK</p>
       </div>
       <nav class="footer__nav" aria-label="Footer navigation">
         <a href="{{ url_for('home') }}">Home</a>
