@@ -2787,22 +2787,40 @@ select.form-control option { background: var(--ink-2); color: var(--white); }
 
 /* J. Projects page — proj-detail */
 @media (max-width: 768px) {
-  .proj-detail { gap: 2rem; }
+  .proj-detail { gap: 2.5rem; }
   .proj-detail__title { font-size: clamp(1.5rem, 5vw, 2rem) !important; }
-  .proj-detail__desc { font-size: 0.92rem; }
-  .proj-detail__outcomes { grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
-  .proj-outcome__val { font-size: 1.1rem; }
-  .proj-outcome__label { font-size: 0.7rem; }
-  .proj-detail__list li { font-size: 0.9rem; }
-  .proj-detail__tags { gap: 0.4rem; }
-  .proj-detail__tags span { font-size: 0.75rem; padding: 0.25rem 0.6rem; }
+  .proj-detail__desc { font-size: 0.9rem; line-height: 1.75; margin-bottom: 1.5rem; }
+
+  /* Outcomes: full width, wrap into 2-per-row tiles */
+  .proj-detail__outcomes {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    width: 100%;
+    padding: 1rem;
+  }
+  .proj-outcome {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    padding: 0.75rem 1rem;
+    gap: 4px;
+  }
+  .proj-outcome__val { font-size: 1.2rem; }
+  .proj-outcome__label { font-size: 0.68rem; }
+
+  .proj-detail__section-title { font-size: 0.68rem; margin-top: 1.5rem; }
+  .proj-detail__list { margin-bottom: 1.5rem; }
+  .proj-detail__list li { font-size: 0.88rem; line-height: 1.7; padding-left: 1.25rem; }
+  .proj-detail__tags { gap: 0.5rem; }
+  .proj-detail__tags span { font-size: 0.75rem; padding: 0.3rem 0.65rem; }
   .proj-detail__links { flex-direction: column; gap: 0.75rem; }
-  .proj-link { text-align: center; justify-content: center; }
+  .proj-link { text-align: center; justify-content: center; width: 100%; }
 }
 
 @media (max-width: 480px) {
-  .proj-detail__outcomes { grid-template-columns: 1fr; gap: 0.5rem; }
-  .proj-outcome { flex-direction: row; justify-content: space-between; align-items: center; }
+  .proj-detail__outcomes { grid-template-columns: 1fr; }
+  .proj-outcome { flex-direction: row; justify-content: space-between; align-items: center; padding: 0.65rem 1rem; }
 }
 
 /* K. Project cards — homepage grid */
