@@ -212,6 +212,16 @@ ul { list-style: none; }
   transform: none;
 }
 
+/* Page hero content is always above the fold — skip the reveal animation entirely */
+.page-hero .reveal,
+.page-hero .reveal-left,
+.page-hero .reveal-right,
+.page-hero .reveal-scale {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+
 /* ─── Navigation ─────────────────────────────────────────────── */
 .nav {
   position: fixed;
@@ -828,15 +838,9 @@ btn--outline-teall{
 
 /* ─── Page Hero ──────────────────────────────────────────────── */
 .page-hero {
-  padding: calc(72px + var(--sp-20)) 0 var(--sp-20);
+  padding: calc(72px + var(--sp-16)) 0 var(--sp-16);
   position: relative;
   overflow: hidden;
-  max-height: 230px;
-  
-  display: flex;
-  justify-content: center;
-  padding-top: 111px;
-  align-items: center;
 }
 .page-hero::after {
   content: '';
