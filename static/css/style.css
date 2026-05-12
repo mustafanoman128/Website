@@ -312,6 +312,7 @@ ul { list-style: none; }
   letter-spacing: 0.04em;
   padding: 0.45rem 1rem !important;
   border-radius: var(--r-full) !important;
+  margin-left: var(--sp-3);
 }
 .nav__burger {
   display: none;
