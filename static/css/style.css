@@ -77,6 +77,7 @@ body {
   line-height: 1.8;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  overscroll-behavior-y: none;
 }
 
 /* Noise texture overlay */
@@ -212,11 +213,15 @@ ul { list-style: none; }
   transform: none;
 }
 
-/* Page hero content is always above the fold — skip the reveal animation entirely */
+/* Page hero and main hero content is always above the fold — skip reveal animation */
 .page-hero .reveal,
 .page-hero .reveal-left,
 .page-hero .reveal-right,
-.page-hero .reveal-scale {
+.page-hero .reveal-scale,
+.hero .reveal,
+.hero .reveal-left,
+.hero .reveal-right,
+.hero .reveal-scale {
   opacity: 1 !important;
   transform: none !important;
   transition: none !important;
@@ -340,7 +345,7 @@ ul { list-style: none; }
 /* ─── Flash Messages ─────────────────────────────────────────── */
 .flash-container {
   position: fixed;
-  top: 84px; right: var(--sp-6);
+  bottom: var(--sp-8); right: var(--sp-6);
   z-index: 900;
   display: flex;
   flex-direction: column;
@@ -771,6 +776,23 @@ ul { list-style: none; }
 .btn--primary, .btn--hero {
   background: var(--teal);
   color: var(--ink);
+  overflow: hidden;
+}
+.btn--primary::after, .btn--hero::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(105deg, transparent 20%, rgba(255,255,255,0.35) 50%, transparent 80%);
+  transform: skewX(-15deg);
+  animation: shimmerCta 3.5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes shimmerCta {
+  0%   { left: -100%; }
+  60%  { left: 220%; }
+  100% { left: 220%; }
 }
 .btn--primary:hover, .btn--hero:hover {
   background: var(--teal-hi);
@@ -2315,6 +2337,15 @@ select.form-control option { background: var(--ink-2); color: var(--white); }
   border-color: var(--teal-hi);
 }
 
+.cat-count {
+  font-size: 0.72rem;
+  color: var(--text-3);
+  letter-spacing: 0.08em;
+  margin-bottom: var(--sp-8);
+  margin-top: calc(var(--sp-2) * -1);
+}
+.cat-count em { color: var(--teal); font-style: normal; }
+
 /* ─── Blog Card — meta row (date + badge on same line) ──────── */
 .blog-card__meta-row {
   display: flex;
@@ -2677,6 +2708,19 @@ select.form-control option { background: var(--ink-2); color: var(--white); }
 
 /* A. Global mobile resets */
 @media (max-width: 768px) {
+  .flash-container {
+    bottom: var(--sp-6);
+    right: 50%;
+    transform: translateX(50%);
+    width: calc(100vw - var(--sp-8));
+    max-width: 400px;
+    align-items: center;
+  }
+  .flash {
+    width: 100%;
+    max-width: 100%;
+  }
+
   .section { padding: 3.5rem 0 !important; }
 
   .btn, .btn--hero, .btn--hero-ghost, .btn--primary,
@@ -2930,6 +2974,16 @@ h3 { font-weight: 700; }
   margin-bottom: var(--sp-6);
 }
 
+/* 4. has-value: visual confirmation that a form field is filled */
+.form-control.has-value {
+  color: var(--white);
+  border-color: rgba(0,212,170,0.35);
+}
+select.form-control.has-value {
+  color: var(--teal);
+  font-weight: 500;
+}
+
 /* Q. Very small phones ≤ 390px — catch-all */
 @media (max-width: 390px) {
   .container, .container--narrow {
@@ -2991,6 +3045,31 @@ input, textarea, select {
 /* Smooth momentum scrolling on iOS */
 html {
   -webkit-overflow-scrolling: touch;
+}
+
+/* ─── Reduced Motion ─────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  /* Kill all CSS keyframe animations */
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  /* Restore intentional transitions that improve usability */
+  .nav { transition: background 0.3s !important; }
+  .flash { animation: none !important; }
+  .btn--primary::after, .btn--hero::after { display: none; }
+  .skills-strip__track { animation: none !important; }
+  .hero__title-cursor { animation: none !important; opacity: 1 !important; }
+
+  /* Reveal elements are already visible via the .hero / .page-hero overrides;
+     make sure any remaining reveal elements are instantly visible */
+  .reveal, .reveal-left, .reveal-right, .reveal-scale {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
 
 
