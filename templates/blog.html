@@ -28,6 +28,15 @@
       {% endfor %}
     </nav>
 
+    {# Post count feedback line #}
+    <p class="cat-count mono">
+      {% if active_category %}
+        {{ posts.total }} post{{ 's' if posts.total != 1 }} in <em>{{ active_category }}</em>
+      {% else %}
+        {{ posts.total }} post{{ 's' if posts.total != 1 }} total
+      {% endif %}
+    </p>
+
     {% if posts.items %}
       <div class="blog-grid">
         {% for post in posts.items %}

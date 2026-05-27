@@ -377,23 +377,25 @@
   };
 
   /* ── Flash Messages ──────────────────────────────────────── */
+  const dismissFlash = (flash) => {
+    flash.style.opacity = '0';
+    flash.style.transform = 'translateX(110%)';
+    flash.style.transition = 'all 0.4s ease';
+    setTimeout(() => flash.remove(), 420);
+  };
+
   const initFlash = () => {
     document.querySelectorAll('.flash').forEach(flash => {
-      setTimeout(() => {
-        flash.style.opacity = '0';
-        flash.style.transform = 'translateX(110%)';
-        flash.style.transition = 'all 0.4s ease';
-        setTimeout(() => flash.remove(), 420);
-      }, 5000);
+      const isError = flash.classList.contains('flash--danger') || flash.classList.contains('flash--warning');
+
+      // Errors and warnings persist until manually closed
+      if (!isError) {
+        setTimeout(() => dismissFlash(flash), 5000);
+      }
 
       const btn = flash.querySelector('.flash__close');
       if (btn) {
-        btn.addEventListener('click', () => {
-          flash.style.opacity = '0';
-          flash.style.transform = 'translateX(110%)';
-          flash.style.transition = 'all 0.3s ease';
-          setTimeout(() => flash.remove(), 320);
-        });
+        btn.addEventListener('click', () => dismissFlash(flash));
       }
     });
   };
@@ -463,8 +465,17 @@
     document.querySelectorAll('.form-control').forEach(input => {
       const g = input.closest('.form-group');
       if (!g) return;
+
+      const updateHasValue = () => {
+        const filled = input.value.trim().length > 0;
+        input.classList.toggle('has-value', filled);
+      };
+
       input.addEventListener('focus',  () => g.classList.add('focused'));
       input.addEventListener('blur',   () => g.classList.remove('focused'));
+      input.addEventListener('input',  updateHasValue);
+      input.addEventListener('change', updateHasValue);
+      updateHasValue();
     });
   };
 
