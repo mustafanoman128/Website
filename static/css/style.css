@@ -2927,19 +2927,22 @@ select.form-control option { background: var(--ink-2); color: var(--white); }
 /* B. Nav — mobile overlay layout + Resume pill */
 @media (max-width: 768px) {
   .nav__links {
-    justify-content: flex-start;
-    padding-top: max(5.5rem, calc(env(safe-area-inset-top, 0px) + 4.5rem));
-    padding-bottom: max(3rem, calc(env(safe-area-inset-bottom, 0px) + 2rem));
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    justify-content: space-evenly;
+    padding-top: max(3.5rem, calc(env(safe-area-inset-top, 0px) + 3rem));
+    padding-bottom: max(1.5rem, calc(env(safe-area-inset-bottom, 0px) + 1rem));
+    overflow-y: hidden;
+  }
+  .nav__links a {
+    font-size: 1.05rem;
+    padding: 0.3rem var(--sp-8);
   }
   .nav__resume {
     display: inline-flex;
-    margin-top: var(--sp-3);
-    padding: 0.6rem 1.4rem !important;
+    margin-top: 0;
+    padding: 0.5rem 1.4rem !important;
     font-size: 0.85rem !important;
     border-radius: var(--r-full) !important;
-    min-height: 44px;
+    min-height: 40px;
     align-items: center;
     justify-content: center;
   }
