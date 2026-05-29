@@ -2924,11 +2924,18 @@ select.form-control option { background: var(--ink-2); color: var(--white); }
   .footer { padding-bottom: max(1.5rem, env(safe-area-inset-bottom)); }
 }
 
-/* B. Nav — Resume pill in mobile overlay */
+/* B. Nav — mobile overlay layout + Resume pill */
 @media (max-width: 768px) {
+  .nav__links {
+    justify-content: flex-start;
+    padding-top: max(5.5rem, calc(env(safe-area-inset-top, 0px) + 4.5rem));
+    padding-bottom: max(3rem, calc(env(safe-area-inset-bottom, 0px) + 2rem));
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
   .nav__resume {
     display: inline-flex;
-    margin-top: 0.5rem;
+    margin-top: var(--sp-3);
     padding: 0.6rem 1.4rem !important;
     font-size: 0.85rem !important;
     border-radius: var(--r-full) !important;
