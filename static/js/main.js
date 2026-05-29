@@ -247,14 +247,18 @@
       }
     }
 
+    const isMobile = window.matchMedia('(pointer: coarse)').matches;
+
     const init = () => {
       resize();
-      const count = Math.min(140, Math.floor(W * H / 8000));
+      const count = isMobile
+        ? Math.min(35, Math.floor(W * H / 20000))
+        : Math.min(140, Math.floor(W * H / 8000));
       nodes = Array.from({ length: count }, () => new Node());
     };
 
     const connect = () => {
-      const maxDist = 180;
+      const maxDist = isMobile ? 110 : 180;
       for (let i = 0; i < nodes.length; i++) {
         for (let j = i + 1; j < nodes.length; j++) {
           const dx = nodes[i].x - nodes[j].x;
@@ -637,6 +641,7 @@
 
   /* ── ScrollTrigger Parallax ──────────────────────────────── */
   const initScrollParallax = () => {
+    if (window.matchMedia('(pointer: coarse)').matches) return;
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
     gsap.registerPlugin(ScrollTrigger);
 

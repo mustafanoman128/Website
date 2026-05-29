@@ -3180,6 +3180,49 @@ select.form-control.has-value {
   .nav__logo { font-size: 0.78rem; }
 }
 
+/* R. New redesign components — mobile */
+@media (max-width: 768px) {
+  /* Skill groups: single column, reduced padding */
+  .skills-grid { grid-template-columns: 1fr; gap: var(--sp-4); }
+  .skill-group { padding: var(--sp-5); }
+
+  /* Page loader: slightly smaller monogram */
+  .loader__monogram { font-size: 1.4rem; margin-bottom: 1rem; }
+  .loader__bar-wrap { width: 100px; }
+
+  /* Bio portrait: simplify ring to single outline, no ambient blur */
+  .bio__portrait-inner {
+    box-shadow: 0 0 0 2px rgba(0,229,184,0.22);
+  }
+
+  /* CTA box: hide gradient border ring (stacking context issues on mobile) */
+  .cta-box::before { display: none; }
+
+  /* Hero glow orbs: smaller on mobile to reduce GPU overdraw */
+  .hero__glow--1 { width: 400px; height: 400px; }
+  .hero__glow--2 { width: 350px; height: 350px; }
+  .hero__glow--3 { width: 200px; height: 200px; }
+
+  /* Section label: swap clip-path wipe for simple fade (avoids gradient flicker on Android) */
+  .section-header.visible .section-label {
+    animation: subFade 0.6s var(--ease-out) 0.05s both;
+  }
+}
+
+/* Touch-action: fast tap response on new card types */
+.skill-group, .timeline__card, .cert-detail-card, .edu-card {
+  touch-action: manipulation;
+}
+
+/* Active states for new elements on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  .skill-group:active    { border-color: rgba(0,229,184,0.30); }
+  .timeline__card:active { border-color: rgba(0,229,184,0.25); }
+  .cert-detail-card:active { border-color: rgba(0,229,184,0.25); }
+  .edu-card:active       { opacity: 0.85; }
+  .hero__float:active    { border-color: rgba(0,229,184,0.50); }
+}
+
 /* ─── iOS & Android Polish ───────────────────────────────────── */
 
 /* Remove iOS blue tap flash on all interactive elements */
