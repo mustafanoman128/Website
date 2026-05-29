@@ -580,41 +580,21 @@
     imgs.forEach(i => obs.observe(i));
   };
 
-  /* ── Lenis Smooth Scroll ─────────────────────────────────── */
-  const initLenis = () => {
-    if (typeof Lenis === 'undefined') return;
-
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smooth: true,
-      smoothTouch: false,
-    });
-
-    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-      gsap.registerPlugin(ScrollTrigger);
-      lenis.on('scroll', ScrollTrigger.update);
-      gsap.ticker.add(time => lenis.raf(time * 1000));
-      gsap.ticker.lagSmoothing(0);
-    } else {
-      const raf = time => { lenis.raf(time); requestAnimationFrame(raf); };
-      requestAnimationFrame(raf);
-    }
-
+  /* ── Smooth Scroll ───────────────────────────────────────── */
+  const initSmoothScroll = () => {
     const nav = document.getElementById('nav');
     document.querySelectorAll('a[href^="#"]').forEach(a => {
-      a.addEventListener('click', e => {
-        const id = a.getAttribute('href');
+      a.addEventListener('click', function(e) {
+        const id = this.getAttribute('href');
         if (id === '#') return;
         const target = document.querySelector(id);
         if (!target) return;
         e.preventDefault();
         const offset = (nav ? nav.offsetHeight : 0) + 20;
-        lenis.scrollTo(target, { offset: -offset });
+        const top = target.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top, behavior: 'smooth' });
       });
     });
-
-    return lenis;
   };
 
   /* ── Timeline Line Animation ─────────────────────────────── */
@@ -658,6 +638,7 @@
   /* ── ScrollTrigger Parallax ──────────────────────────────── */
   const initScrollParallax = () => {
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+    gsap.registerPlugin(ScrollTrigger);
 
     const glow1 = document.querySelector('.hero__glow--1');
     const glow2 = document.querySelector('.hero__glow--2');
@@ -734,7 +715,7 @@
   initForms();
   initCopy();
   initLazy();
-  initLenis();
+  initSmoothScroll();
   initScrollParallax();
   initTimeline();
   initMagnetic();
