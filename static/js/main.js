@@ -20,6 +20,44 @@
     return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
   };
 
+  /* ── Page Loader ─────────────────────────────────────────── */
+  const initLoader = () => {
+    const loader = document.getElementById('page-loader');
+    if (!loader) return;
+    const hide = () => {
+      loader.classList.add('hidden');
+      setTimeout(() => {
+        loader.remove();
+        initHeroEntrance();
+      }, 520);
+    };
+    if (document.readyState === 'complete') {
+      setTimeout(hide, 800);
+    } else {
+      window.addEventListener('load', () => setTimeout(hide, 800));
+      setTimeout(hide, 2200);
+    }
+  };
+
+  /* ── GSAP Hero Entrance ──────────────────────────────────── */
+  const initHeroEntrance = () => {
+    if (typeof gsap === 'undefined') return;
+    if (!document.querySelector('.hero')) return;
+
+    gsap.set('.hero__left',         { y: 70, opacity: 0 });
+    gsap.set('.hero__right',        { x: 60, opacity: 0 });
+    gsap.set('.hero__avail',        { y: -24, opacity: 0 });
+    gsap.set('.hero__float--left',  { x: -30, y: 16, opacity: 0 });
+    gsap.set('.hero__float--right', { x: 30, y: -16, opacity: 0 });
+
+    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+    tl.to('.hero__left',         { y: 0, opacity: 1, duration: 1.0 })
+      .to('.hero__right',        { x: 0, opacity: 1, duration: 1.0 }, '-=0.75')
+      .to('.hero__avail',        { y: 0, opacity: 1, duration: 0.6, ease: 'back.out(2)' }, '-=0.5')
+      .to('.hero__float--left',  { x: 0, y: 0, opacity: 1, duration: 0.65, ease: 'back.out(1.8)' }, '-=0.45')
+      .to('.hero__float--right', { x: 0, y: 0, opacity: 1, duration: 0.65, ease: 'back.out(1.8)' }, '-=0.55');
+  };
+
   /* ── Custom Cursor ───────────────────────────────────────── */
   const initCursor = () => {
     if (window.matchMedia('(pointer: coarse)').matches) return;
@@ -160,9 +198,14 @@
     hero.prepend(canvas);
     const ctx = canvas.getContext('2d');
 
-    const teal = '0, 212, 170';
-    const violet = '139, 92, 246';
+    const teal = '0, 229, 184';
+    const violet = '168, 85, 247';
+    const amber = '245, 158, 11';
     let W, H, nodes, animId;
+    let _mx = null, _my = null;
+
+    hero.addEventListener('mousemove', e => { _mx = e.clientX; _my = e.clientY; });
+    hero.addEventListener('mouseleave', () => { _mx = null; _my = null; });
 
     const resize = () => {
       W = canvas.width  = hero.offsetWidth;
@@ -174,13 +217,23 @@
       reset() {
         this.x = Math.random() * W;
         this.y = Math.random() * H;
-        this.vx = (Math.random() - 0.5) * 0.4;
-        this.vy = (Math.random() - 0.5) * 0.4;
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
         this.r  = Math.random() * 2 + 1;
-        this.color = Math.random() > 0.7 ? violet : teal;
+        const rand = Math.random();
+        this.color = rand > 0.91 ? amber : rand > 0.82 ? violet : teal;
         this.life = Math.random();
       }
       update() {
+        if (_mx !== null) {
+          const rect = canvas.getBoundingClientRect();
+          const mx = _mx - rect.left;
+          const my = _my - rect.top;
+          const dx = this.x - mx, dy = this.y - my;
+          const d = Math.sqrt(dx * dx + dy * dy);
+          if (d < 90) { const f = (90 - d) / 90 * 0.28; this.vx += (dx / d) * f; this.vy += (dy / d) * f; }
+        }
+        this.vx *= 0.98; this.vy *= 0.98;
         this.x += this.vx;
         this.y += this.vy;
         this.life += 0.003;
@@ -189,26 +242,26 @@
       draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${this.color}, ${0.4 + Math.sin(this.life) * 0.2})`;
+        ctx.fillStyle = `rgba(${this.color}, ${0.55 + Math.sin(this.life) * 0.25})`;
         ctx.fill();
       }
     }
 
     const init = () => {
       resize();
-      const count = Math.min(60, Math.floor(W * H / 15000));
+      const count = Math.min(140, Math.floor(W * H / 8000));
       nodes = Array.from({ length: count }, () => new Node());
     };
 
     const connect = () => {
-      const maxDist = 140;
+      const maxDist = 180;
       for (let i = 0; i < nodes.length; i++) {
         for (let j = i + 1; j < nodes.length; j++) {
           const dx = nodes[i].x - nodes[j].x;
           const dy = nodes[i].y - nodes[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < maxDist) {
-            const alpha = (1 - dist / maxDist) * 0.15;
+            const alpha = (1 - dist / maxDist) * 0.28;
             ctx.beginPath();
             ctx.moveTo(nodes[i].x, nodes[i].y);
             ctx.lineTo(nodes[j].x, nodes[j].y);
@@ -232,33 +285,40 @@
 
     window.addEventListener('resize', debounce(() => { init(); }, 200));
 
-    // Cleanup on visibility change
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) cancelAnimationFrame(animId);
       else tick();
     });
   };
 
-  /* ── Hero Typing Effect ──────────────────────────────────── */
-  const initTyping = () => {
-    const cursor = document.querySelector('.hero__title-cursor');
+  /* ── Hero Word Cycler ────────────────────────────────────── */
+  const initHeroWord = () => {
     const outline = document.querySelector('.hero__title-outline');
-    if (!cursor || !outline) return;
+    if (!outline) return;
+    const words = ['Data', 'Numbers', 'Insights', 'Stories', 'Patterns'];
+    const chars = '!<>-_\\/[]{}—=+*^?#@$%';
+    let idx = 0;
 
-    const text = outline.dataset.text || outline.textContent.trim();
-    outline.textContent = '';
-    outline.appendChild(cursor);
-
-    let i = 0;
-    const type = () => {
-      if (i <= text.length) {
-        outline.textContent = text.slice(0, i);
-        outline.appendChild(cursor);
-        i++;
-        setTimeout(type, 80);
-      }
+    const scramble = (target, cb) => {
+      let iter = 0;
+      const total = target.length * 3;
+      const iv = setInterval(() => {
+        outline.textContent = Array.from(target).map((ch, i) =>
+          i < Math.floor(iter / 3)
+            ? ch
+            : chars[Math.floor(Math.random() * chars.length)]
+        ).join('');
+        if (++iter >= total) { clearInterval(iv); outline.textContent = target; cb && cb(); }
+      }, 35);
     };
-    setTimeout(type, 600);
+
+    scramble(words[0], () => {
+      const cycle = () => {
+        idx = (idx + 1) % words.length;
+        scramble(words[idx], () => setTimeout(cycle, 2800));
+      };
+      setTimeout(cycle, 3000);
+    });
   };
 
   /* ── Number Counters ─────────────────────────────────────── */
@@ -344,7 +404,10 @@
   /* ── 3D Tilt ─────────────────────────────────────────────── */
   const initTilt = () => {
     if (window.matchMedia('(pointer: coarse)').matches) return;
-    const cards = document.querySelectorAll('.project-card, .cert-card, .tool-card, .mini-card');
+    const cards = document.querySelectorAll(
+      '.project-card, .cert-card, .tool-card, .mini-card, ' +
+      '.cert-detail-card, .timeline__card, .edu-card, .skill-group'
+    );
 
     cards.forEach(card => {
       card.addEventListener('mousemove', (e) => {
@@ -353,9 +416,9 @@
         const y = e.clientY - rect.top;
         const cx = rect.width  / 2;
         const cy = rect.height / 2;
-        const rx = (y - cy) / 60;
-        const ry = (cx - x) / 60;
-        card.style.transform = `perspective(1200px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-6px)`;
+        const rx = (y - cy) / 50;
+        const ry = (cx - x) / 50;
+        card.style.transform = `perspective(1200px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-8px)`;
       });
       card.addEventListener('mouseleave', () => {
         card.style.transform = 'perspective(1200px) rotateX(0) rotateY(0) translateY(0)';
@@ -517,21 +580,41 @@
     imgs.forEach(i => obs.observe(i));
   };
 
-  /* ── Smooth Scroll ───────────────────────────────────────── */
-  const initSmoothScroll = () => {
+  /* ── Lenis Smooth Scroll ─────────────────────────────────── */
+  const initLenis = () => {
+    if (typeof Lenis === 'undefined') return;
+
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smooth: true,
+      smoothTouch: false,
+    });
+
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add(time => lenis.raf(time * 1000));
+      gsap.ticker.lagSmoothing(0);
+    } else {
+      const raf = time => { lenis.raf(time); requestAnimationFrame(raf); };
+      requestAnimationFrame(raf);
+    }
+
     const nav = document.getElementById('nav');
     document.querySelectorAll('a[href^="#"]').forEach(a => {
-      a.addEventListener('click', function(e) {
-        const id = this.getAttribute('href');
+      a.addEventListener('click', e => {
+        const id = a.getAttribute('href');
         if (id === '#') return;
         const target = document.querySelector(id);
         if (!target) return;
         e.preventDefault();
         const offset = (nav ? nav.offsetHeight : 0) + 20;
-        const top = target.getBoundingClientRect().top + window.scrollY - offset;
-        window.scrollTo({ top, behavior: 'smooth' });
+        lenis.scrollTo(target, { offset: -offset });
       });
     });
+
+    return lenis;
   };
 
   /* ── Timeline Line Animation ─────────────────────────────── */
@@ -572,6 +655,54 @@
     });
   };
 
+  /* ── ScrollTrigger Parallax ──────────────────────────────── */
+  const initScrollParallax = () => {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+    const glow1 = document.querySelector('.hero__glow--1');
+    const glow2 = document.querySelector('.hero__glow--2');
+    const glow3 = document.querySelector('.hero__glow--3');
+    const heroCanvas = document.querySelector('.hero__canvas');
+
+    if (glow1) {
+      gsap.to(glow1, {
+        y: -120,
+        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1.5 }
+      });
+    }
+    if (glow2) {
+      gsap.to(glow2, {
+        y: -80, x: 40,
+        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 2 }
+      });
+    }
+    if (glow3) {
+      gsap.to(glow3, {
+        y: -60,
+        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1 }
+      });
+    }
+    if (heroCanvas) {
+      gsap.to(heroCanvas, {
+        opacity: 0,
+        scrollTrigger: { trigger: '.hero', start: '60% top', end: 'bottom top', scrub: true }
+      });
+    }
+
+    document.querySelectorAll('.section--dark').forEach(section => {
+      gsap.to(section, {
+        backgroundPositionY: '30px',
+        ease: 'none',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: true,
+        }
+      });
+    });
+  };
+
   /* ── Console Signature ───────────────────────────────────── */
   const initConsole = () => {
     const styles = [
@@ -585,13 +716,14 @@
   };
 
   /* ── Init All ────────────────────────────────────────────── */
+  initLoader();
   initCursor();
   initScrollProgress();
   initNav();
   initBurger();
   initReveal();
   initHeroCanvas();
-  initTyping();
+  initHeroWord();
   initCounters();
   initSkillBars();
   initParallax();
@@ -602,7 +734,8 @@
   initForms();
   initCopy();
   initLazy();
-  initSmoothScroll();
+  initLenis();
+  initScrollParallax();
   initTimeline();
   initMagnetic();
   respectReducedMotion();

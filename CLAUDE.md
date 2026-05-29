@@ -4,24 +4,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
-```bash
+```powershell
 # Set up environment
 python -m venv venv
-venv\Scripts\activate          # Windows
+venv\Scripts\activate
 pip install -r requirements.txt
 
 # Database
 flask db upgrade               # Apply migrations
-flask db migrate -m "message"  # Generate new migration after model changes
+flask db migrate -m "message"  # Generate migration after model changes
 
 # Create admin account
 flask seed-admin               # Uses ADMIN_EMAIL / ADMIN_PASSWORD env vars
-
-# Run dev server
-flask run                      # Uses .env for config
-
-# Production (PythonAnywhere)
-gunicorn app:app
 ```
 
 Required `.env` file:
@@ -30,10 +24,12 @@ SECRET_KEY=your-secret-key
 ADMIN_EMAIL=admin@example.com
 ADMIN_PASSWORD=yourpassword
 ADMIN_NAME=Your Name
-DATABASE_URL=sqlite:///portfolio.db   # or postgresql://...
+DATABASE_URL=sqlite:///portfolio.db
+MAIL_USERNAME=you@gmail.com
+MAIL_PASSWORD=your-gmail-app-password
 ```
 
-**Windows dev server note:** Multiple Flask processes can silently stack on port 5000 and serve stale content. Always kill before restarting:
+**Windows dev server — always kill before restarting** (stale processes stack silently on port 5000 and serve old content):
 ```powershell
 Get-NetTCPConnection -LocalPort 5000 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess | ForEach-Object { taskkill /PID $_ /F 2>$null }
 Start-Process -FilePath "venv\Scripts\python.exe" -ArgumentList "-m flask run" -WorkingDirectory (Get-Location) -WindowStyle Hidden
@@ -41,32 +37,38 @@ Start-Process -FilePath "venv\Scripts\python.exe" -ArgumentList "-m flask run" -
 
 ## Architecture
 
-Single-file Flask app (`app.py`) — all models, routes, and config live in one file. No blueprints, no packages.
+Single-file Flask app (`app.py`) — all models, routes, and config in one file. No blueprints.
 
-**Database models:** `User`, `BlogPost`, `BlogImage`, `Comment`, `ContactMessage` — managed by Flask-SQLAlchemy + Flask-Migrate. Cascading deletes wire User→Comments and BlogPost→Comments/BlogImages.
+**Database models:** `User`, `BlogPost`, `BlogImage`, `Comment`, `ContactMessage` — Flask-SQLAlchemy + Flask-Migrate. Cascading deletes: User→Comments, BlogPost→Comments/BlogImages.
 
-**Auth:** Two separate login flows — regular users via `/login` and admins via `/admin/login`. The `@admin_required` decorator enforces admin-only access; it checks `current_user.is_admin`, not just login state.
+**Auth:** Two separate login flows — public users via `/login`, admins via `/admin/login`. `@admin_required` checks `current_user.is_admin`, not just auth state. Admin accounts are created only via `flask seed-admin`.
 
-**CSRF protection:** A token generated per-session is checked on all POST routes. The token is injected into templates via `@app.context_processor` as `csrf_token`. New forms must include `{{ csrf_token() }}` and the route must call `validate_csrf()`.
+**CSRF:** Token generated per-session, checked on every POST. Injected into all templates via `@app.context_processor` as `csrf_token`. New forms need `{{ csrf_token() }}` hidden input; the `admin_login` route is explicitly exempted in `csrf_protect()`.
 
-**File uploads:** Blog images upload to `static/uploads/blog_images/` at runtime. This path is gitignored and must exist on the server. Files are sanitized via `secure_filename()`. Max size 10 MB; allowed types: png, jpg, jpeg, gif, webp.
+**File uploads:** Blog images go to `static/uploads/blog_images/` (gitignored, must exist on server). Sanitized via `secure_filename()`. Max 10 MB; allowed: png, jpg, jpeg, gif, webp.
 
-**HTML sanitization:** User-facing text input (comments, contact messages) passes through `sanitize_html()` which strips HTML tags via regex. Applied at save time, not render time.
+**HTML sanitization:** `sanitize_html()` strips tags via regex. Applied at save time on all user-facing text inputs (comments, contact form). Blog post content is not sanitized — admin-only.
 
-**Frontend:** Pure CSS (no frameworks) in `static/css/style.css` (~2950 lines). Vanilla JS in `static/js/main.js`. The design system uses CSS variables — `--teal` (#00d4aa) is the primary accent. Fonts are Montserrat (display), Roboto Slab (body), IBM Plex Mono (mono).
+**Frontend:** Pure CSS (~3000 lines) in `static/css/style.css`, vanilla JS in `static/js/main.js`. Primary accent is `--teal` (#00d4aa). Three-font system: Montserrat (display/headings), Roboto Slab (body), IBM Plex Mono (labels/tags/mono).
 
-**CSS structure:** Base variables and resets at the top, component styles in the middle, then responsive breakpoints (mostly `max-width: 900px` and `max-width: 768px`), then a large mobile overrides block (sections A–Q) appended at the end covering every page component down to 390px. iOS/Android-specific polish (tap highlights, safe-area insets, touch-action) lives at the very end.
+**CSS structure:** Design tokens → base/reset → components → responsive breakpoints (900px, 768px) → mobile override blocks A–Q (390px floor) → iOS/Android polish → `prefers-reduced-motion` override block at the very end. Append new mobile overrides to the labeled blocks, not inline with components.
 
-**Scroll reveal:** Elements with `.reveal` start at `opacity: 0` + `translateY(32px)` and get `.visible` added by an IntersectionObserver in `main.js`. Elements inside `.page-hero` override this with `opacity: 1 !important` since they're always above the fold.
+**Scroll reveal:** `.reveal`, `.reveal-left`, `.reveal-right`, `.reveal-scale` start hidden and become visible via IntersectionObserver (`threshold: 0.08`, `rootMargin: 0px 0px -40px 0px`, 80ms sibling stagger). Above-fold elements — anything inside `.hero` or `.page-hero` — have a CSS override forcing `opacity: 1 !important` so they are never invisible on load. Do not add `.reveal` to hero elements.
 
-**Blog categories** are a fixed set defined in templates: Python, Data Science, Crypto, Machine Learning. Stored as freeform strings in the DB — no enum constraint.
+**Flash messages:** Rendered server-side by Flask, positioned bottom-right (desktop) / bottom-center (mobile). Success/info auto-dismiss after 5s; danger/warning persist until manually closed.
+
+**Blog categories:** Fixed list defined in `app.py` as `CATEGORIES = ["Data Analytics", "Data Science & AI", "Career"]`. Stored as freeform strings — no DB enum. The blog page shows a post count below the filter tabs using `posts.total` from the paginator.
+
+**Form inputs:** `.has-value` class is toggled by JS when a field has content — targets `color: var(--teal)` via CSS for visual confirmation. Select elements additionally get `font-weight: 500`.
+
+**CTA buttons:** `.btn--primary` and `.btn--hero` have a shimmer `::after` sweep animation (3.5s loop). Disabled via the `prefers-reduced-motion` block in CSS.
 
 ## Deployment
 
-Hosted on PythonAnywhere. Deploy by pushing to GitHub then pulling on PythonAnywhere:
+Hosted on PythonAnywhere. Deploy:
 ```bash
 cd ~/Website && git pull origin main
+# Then reload via the PythonAnywhere Web tab
 ```
-Then reload the web app from the PythonAnywhere dashboard. `DATABASE_URL` switches between SQLite (default) and PostgreSQL — `psycopg2-binary` is installed for Postgres support.
 
-There are no automated tests or CI pipelines in this repo.
+No pip installs or migrations needed for frontend-only changes. `DATABASE_URL` env var switches between SQLite (default) and PostgreSQL. There are no automated tests or CI pipelines.
