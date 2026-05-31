@@ -34,8 +34,8 @@
     if (document.readyState === 'complete') {
       setTimeout(hide, 800);
     } else {
-      window.addEventListener('load', () => setTimeout(hide, 800));
-      setTimeout(hide, 2200);
+      let fallback = setTimeout(hide, 2200);
+      window.addEventListener('load', () => { clearTimeout(fallback); setTimeout(hide, 800); }, { once: true });
     }
   };
 
