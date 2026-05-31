@@ -73,7 +73,8 @@
           <div style="display:flex; gap:0.6rem; align-items:center;">
             <a href="{{ url_for('admin_edit_blog', post_id=post.id) }}" class="btn-ghost btn--sm">Edit</a>
             <button type="button" class="btn-danger btn--sm"
-                    onclick="showDeleteModal('{{ url_for('admin_delete_blog', post_id=post.id) }}', '{{ post.title }}')">
+                    data-url="{{ url_for('admin_delete_blog', post_id=post.id) }}"
+                    data-name="{{ post.title }}">
               Delete
             </button>
           </div>
@@ -114,11 +115,13 @@
 </div>
 
 <script>
-function showDeleteModal(url, title) {
-  document.getElementById('deleteConfirmForm').action = url;
-  document.getElementById('modalTargetName').textContent = `"${title}"`;
-  document.getElementById('deleteModal').classList.add('active');
-}
+document.querySelectorAll('.btn-danger[data-url]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.getElementById('deleteConfirmForm').action = btn.dataset.url;
+    document.getElementById('modalTargetName').textContent = `"${btn.dataset.name}"`;
+    document.getElementById('deleteModal').classList.add('active');
+  });
+});
 
 function closeDeleteModal() {
   document.getElementById('deleteModal').classList.remove('active');

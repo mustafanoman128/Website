@@ -38,8 +38,9 @@
           </span>
         </td>
         <td style="text-align:right">
-          <button type="button" class="btn-danger btn--sm" 
-                  onclick="showDeleteModal('{{ url_for('admin_delete_user', user_id=u.id) }}', '{{ u.name }}')">
+          <button type="button" class="btn-danger btn--sm"
+                  data-url="{{ url_for('admin_delete_user', user_id=u.id) }}"
+                  data-name="{{ u.name }}">
             Revoke Access
           </button>
         </td>
@@ -66,7 +67,7 @@
       </svg>
     </div>
     <h3 class="adm-modal__title">Terminate User Account?</h3>
-    <p class="adm-modal__text">You are about to delete <span id="modalTargetName" style="color:var(--white); font-weight:600;"></span>. This user will lose all access and their comments will be orphaned. This cannot be undone.</p>
+    <p class="adm-modal__text">You are about to delete <span id="modalTargetName" style="color:var(--white); font-weight:600;"></span>. This user will lose all access and their comments will be permanently deleted. This cannot be undone.</p>
     
     <div class="adm-modal__actions">
       <button type="button" class="btn-cancel" onclick="closeDeleteModal()">Cancel</button>
@@ -79,21 +80,19 @@
 </div>
 
 <script>
-function showDeleteModal(url, name) {
-    const modal = document.getElementById('deleteModal');
-    const form = document.getElementById('deleteConfirmForm');
-    const nameSpan = document.getElementById('modalTargetName');
-    
-    form.action = url;
-    nameSpan.textContent = name;
-    modal.classList.add('active');
-}
+document.querySelectorAll('.btn-danger[data-url]').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const modal = document.getElementById('deleteModal');
+        document.getElementById('deleteConfirmForm').action = btn.dataset.url;
+        document.getElementById('modalTargetName').textContent = btn.dataset.name;
+        modal.classList.add('active');
+    });
+});
 
 function closeDeleteModal() {
     document.getElementById('deleteModal').classList.remove('active');
 }
 
-// Close if clicking the blurred background
 document.getElementById('deleteModal').addEventListener('click', function(e) {
     if (e.target === this) closeDeleteModal();
 });
