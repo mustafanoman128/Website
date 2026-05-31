@@ -43,8 +43,9 @@
           </span>
         </td>
         <td>
-          <button type="button" class="btn-danger" 
-                  onclick="showDeleteModal('{{ url_for('admin_delete_message', message_id=m.id) }}', '{{ m.name }}')">
+          <button type="button" class="btn-danger"
+                  data-url="{{ url_for('admin_delete_message', message_id=m.id) }}"
+                  data-name="{{ m.name }}">
             Delete
           </button>
         </td>
@@ -79,23 +80,19 @@
 </div>
 
 <script>
-let currentDeleteUrl = '';
-
-function showDeleteModal(url, name) {
-    const modal = document.getElementById('deleteModal');
-    const form = document.getElementById('deleteConfirmForm');
-    const nameSpan = document.getElementById('modalTargetName');
-    
-    form.action = url;
-    nameSpan.textContent = name;
-    modal.classList.add('active');
-}
+document.querySelectorAll('.btn-danger[data-url]').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const modal = document.getElementById('deleteModal');
+        document.getElementById('deleteConfirmForm').action = btn.dataset.url;
+        document.getElementById('modalTargetName').textContent = btn.dataset.name;
+        modal.classList.add('active');
+    });
+});
 
 function closeDeleteModal() {
     document.getElementById('deleteModal').classList.remove('active');
 }
 
-// Close if clicking background
 document.getElementById('deleteModal').addEventListener('click', function(e) {
     if (e.target === this) closeDeleteModal();
 });

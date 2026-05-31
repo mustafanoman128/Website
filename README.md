@@ -1,6 +1,6 @@
 # Mustafa Noman — Portfolio Website
 
-> A full-stack personal portfolio built with Flask — dark editorial design, electric teal accents, and everything a serious data analyst needs to make an impression.
+> A full-stack personal portfolio built with Flask — dimensional dark aesthetic with electric teal-to-violet gradients, cinematic GSAP entrance animations, and everything a serious data analyst needs to make an impression.
 
 Live at **[mustafanoman128.pythonanywhere.com](https://mustafanoman128.pythonanywhere.com)**
 
@@ -9,7 +9,7 @@ Live at **[mustafanoman128.pythonanywhere.com](https://mustafanoman128.pythonany
 ## What's Inside
 
 ### Pages
-- **Home** — Hero with animated stat cards, scrolling tech stack strip, featured projects, certifications, blog teaser, and CTA
+- **Home** — Hero with particle canvas, GSAP entrance sequence, word-scramble cycling headline, animated stat cards, scrolling tech stack strip, featured projects, certifications, blog teaser, and CTA
 - **About** — Full biography, career timeline, skills & tools grid, education, contact links
 - **Projects** — Detailed project breakdowns with outcome metrics, tech tags, GitHub and live demo links
 - **Blog** — Full CMS: create, edit, delete posts with image uploads, categories, and pagination
@@ -31,7 +31,8 @@ Live at **[mustafanoman128.pythonanywhere.com](https://mustafanoman128.pythonany
 | ORM        | Flask-SQLAlchemy · Flask-Migrate                    |
 | Auth       | Flask-Login · Werkzeug                              |
 | Email      | Flask-Mail · Gmail SMTP                             |
-| Frontend   | HTML · Vanilla CSS (2600+ lines) · Vanilla JS       |
+| Frontend   | HTML · Vanilla CSS (~3200 lines) · Vanilla JS       |
+| Animation  | GSAP 3.12 · ScrollTrigger · Canvas 2D               |
 | Typography | Montserrat · Roboto Slab · IBM Plex Mono            |
 | Deployment | PythonAnywhere                                      |
 
@@ -140,12 +141,12 @@ Website/
 ```bash
 cd ~/Website
 git pull origin main
-pip install -r requirements.txt
-flask db upgrade
 # Reload via Web tab
 ```
 
-Set all environment variables in your PythonAnywhere WSGI config before reloading.
+For frontend-only changes (CSS, JS, templates), `git pull` + reload is all that's needed — no pip install or migrations. Run those only when `requirements.txt` or database models change.
+
+Set all environment variables in your PythonAnywhere WSGI config before the first deploy.
 
 ---
 

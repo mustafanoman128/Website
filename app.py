@@ -1,9 +1,10 @@
 import os
 import re
-from datetime import datetime
+import secrets
+import uuid
+from datetime import datetime, timedelta, timezone
 from functools import wraps
-from datetime import timedelta
-from markupsafe import Markup
+from markupsafe import Markup, escape
 
 from dotenv import load_dotenv
 from flask import (
@@ -45,7 +46,6 @@ app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
 )
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["UPLOAD_FOLDER"] = os.path.join("static", "uploads", "blog_images")
-app.config["ALLOWED_EXTENSIONS"] = {"png", "jpg", "jpeg", "gif", "webp"}
 app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024
 app.config["SESSION_COOKIE_SECURE"] = True
 app.config["SESSION_COOKIE_HTTPONLY"] = True
@@ -72,14 +72,62 @@ ALLOWED_EXT = {"png", "jpg", "jpeg", "gif", "webp"}
 CATEGORIES = ["Data Analytics", "Data Science & AI", "Career"]
 
 
+@app.template_filter("nl2br")
+def nl2br_filter(value):
+    """Jinja2 filter: HTML-escape value then replace newlines with <br> tags."""
+    return escape(value or "").replace("\n", Markup("<br>\n"))
+
+
+# Maps contact-form inquiry_type field values to human-readable labels used in the notification email.
+INQUIRY_LABELS = {
+    "job": "Job Opportunity",
+    "freelance": "Freelance / Consulting",
+    "collab": "Collaboration",
+    "general": "General",
+}
+
+
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXT
+
+
+def save_uploaded_images(files, post_id):
+    """Save each valid uploaded file to UPLOAD_FOLDER and return a list of unsaved BlogImage instances."""
+    upload_dir = app.config["UPLOAD_FOLDER"]
+    os.makedirs(upload_dir, exist_ok=True)
+    images = []
+    for f in files:
+        if f.filename and allowed_file(f.filename):
+            fname = f"{post_id}_{uuid.uuid4().hex}_{secure_filename(f.filename)}"
+            f.save(os.path.join(upload_dir, fname))
+            images.append(BlogImage(image_path=fname, post_id=post_id))
+    return images
+
+
+def delete_image_file(image_path):
+    """Delete an image file from disk; log an error if the deletion fails."""
+    full_path = os.path.join(app.root_path, app.config["UPLOAD_FOLDER"], image_path)
+    try:
+        os.remove(full_path)
+    except FileNotFoundError:
+        pass  # already gone — desired state achieved
+    except OSError:
+        app.logger.error(
+            "Failed to delete image file %s — orphaned file may remain on disk",
+            image_path,
+            exc_info=True,
+        )
 
 
 def sanitize_html(text):
     if not text:
         return text
     return re.sub(r"<[^>]+>", "", text)
+
+
+def sanitize_header(value):
+    """Strip characters that would allow SMTP header injection."""
+    return (value or "").replace("\r", "").replace("\n", "").replace("\0", "")
 
 
 def admin_required(f):
@@ -99,7 +147,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(180), unique=True, nullable=False)
     password_hash = db.Column(db.String(256), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     comments = db.relationship(
         "Comment", backref="author", lazy=True, cascade="all, delete-orphan"
     )
@@ -116,9 +164,9 @@ class BlogPost(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), nullable=False)
     content = db.Column(db.Text, nullable=False)
-    # ── NEW: category column (nullable so existing posts are not broken) ──────
+    # nullable so existing posts without a category are not broken
     category = db.Column(db.String(50), nullable=True, default=None)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     author_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     author = db.relationship("User", backref="posts")
     images = db.relationship(
@@ -142,7 +190,7 @@ class Comment(db.Model):
     content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     post_id = db.Column(db.Integer, db.ForeignKey("blog_post.id"), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
 
 class ContactMessage(db.Model):
@@ -151,7 +199,7 @@ class ContactMessage(db.Model):
     name = db.Column(db.String(120), nullable=False)
     email = db.Column(db.String(180), nullable=False)
     message = db.Column(db.Text, nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
 
 @login_manager.user_loader
@@ -159,27 +207,20 @@ def load_user(user_id):
     return db.session.get(User, int(user_id))
 
 
-import secrets as _secrets
-
-
 @app.before_request
-def csrf_protect():
-    if request.method == "POST" and request.endpoint not in ("admin_login",):
+def csrf_handler():
+    if "_csrf_token" not in session:
+        session["_csrf_token"] = secrets.token_hex(32)
+    if request.method == "POST":
         token = session.pop("_csrf_token", None)
         form_token = request.form.get("_csrf_token")
         if not token or token != form_token:
             abort(403)
 
 
-@app.before_request
-def generate_csrf():
-    if "_csrf_token" not in session:
-        session["_csrf_token"] = _secrets.token_hex(32)
-
-
 @app.context_processor
 def inject_globals():
-    """Make csrf_token and CATEGORIES available in every template."""
+    """Inject csrf_token (plain string, not callable) and CATEGORIES list into every template context."""
     return dict(
         csrf_token=session.get("_csrf_token", ""),
         CATEGORIES=CATEGORIES,
@@ -208,7 +249,6 @@ def projects():
 @app.route("/blog", methods=["GET"])
 def blog():
     page = request.args.get("page", 1, type=int)
-    # ── NEW: read ?category= param and filter ────────────────────────────────
     active_category = request.args.get("category", "").strip()
     if active_category not in CATEGORIES:
         active_category = ""   # treat unknown / missing as "All"
@@ -227,7 +267,7 @@ def blog():
 
 @app.route("/blog/<int:post_id>", methods=["GET", "POST"])
 def blog_post(post_id):
-    post = BlogPost.query.get_or_404(post_id)
+    post = db.get_or_404(BlogPost, post_id)
     if request.method == "POST":
         if not current_user.is_authenticated:
             flash("Please log in to comment.", "warning")
@@ -250,8 +290,8 @@ def blog_post(post_id):
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
     if request.method == "POST":
-        name = sanitize_html(request.form.get("name", "").strip())
-        email = sanitize_html(request.form.get("email", "").strip())
+        name = sanitize_header(sanitize_html(request.form.get("name", "").strip()))
+        email = sanitize_header(sanitize_html(request.form.get("email", "").strip()))
         inquiry_type = sanitize_html(request.form.get("inquiry_type", "").strip())
         message = sanitize_html(request.form.get("message", "").strip())
         if not name or not email or not message:
@@ -263,7 +303,7 @@ def contact():
             db.session.add(msg)
             db.session.commit()
             try:
-                inquiry_label = inquiry_type.replace("job", "Job Opportunity").replace("freelance", "Freelance / Consulting").replace("collab", "Collaboration").replace("general", "General") if inquiry_type else "Not specified"
+                inquiry_label = INQUIRY_LABELS.get(inquiry_type, "Not specified")
                 email_body = (
                     f"Name: {name}\n"
                     f"Email: {email}\n"
@@ -278,7 +318,7 @@ def contact():
                 )
                 mail.send(notification)
             except Exception:
-                pass  # don't block the user if email fails
+                app.logger.error("Contact form email failed (sender: %s)", email, exc_info=True)
             flash("Message sent! I will get back to you soon.", "success")
             return redirect(url_for("contact"))
     return render_template("contact.html")
@@ -394,7 +434,7 @@ def admin_users():
 @login_required
 @admin_required
 def admin_delete_user(user_id):
-    user = User.query.get_or_404(user_id)
+    user = db.get_or_404(User, user_id)
     if user.is_admin:
         flash("Cannot delete admin accounts.", "danger")
     else:
@@ -419,7 +459,6 @@ def admin_new_blog():
     if request.method == "POST":
         title = sanitize_html(request.form.get("title", "").strip())
         content = request.form.get("content", "").strip()
-        # ── NEW: read and validate category ──────────────────────────────────
         category = request.form.get("category", "").strip()
         if category not in CATEGORIES:
             category = None
@@ -434,15 +473,8 @@ def admin_new_blog():
             )
             db.session.add(post)
             db.session.flush()
-            files = request.files.getlist("images")
-            for f in files:
-                if f and f.filename and allowed_file(f.filename):
-                    fname = secure_filename(f.filename)
-                    save_path = os.path.join(app.config["UPLOAD_FOLDER"], fname)
-                    os.makedirs(os.path.dirname(save_path), exist_ok=True)
-                    f.save(save_path)
-                    img = BlogImage(image_path=fname, post_id=post.id)
-                    db.session.add(img)
+            for img in save_uploaded_images(request.files.getlist("images"), post.id):
+                db.session.add(img)
             db.session.commit()
             flash("Blog post created!", "success")
             return redirect(url_for("admin_blogs"))
@@ -453,22 +485,14 @@ def admin_new_blog():
 @login_required
 @admin_required
 def admin_edit_blog(post_id):
-    post = BlogPost.query.get_or_404(post_id)
+    post = db.get_or_404(BlogPost, post_id)
     if request.method == "POST":
         post.title = sanitize_html(request.form.get("title", "").strip())
         post.content = request.form.get("content", "").strip()
-        # ── NEW: update category ──────────────────────────────────────────────
         category = request.form.get("category", "").strip()
         post.category = category if category in CATEGORIES else None
-        files = request.files.getlist("images")
-        for f in files:
-            if f and f.filename and allowed_file(f.filename):
-                fname = secure_filename(f.filename)
-                save_path = os.path.join(app.config["UPLOAD_FOLDER"], fname)
-                os.makedirs(os.path.dirname(save_path), exist_ok=True)
-                f.save(save_path)
-                img = BlogImage(image_path=fname, post_id=post.id)
-                db.session.add(img)
+        for img in save_uploaded_images(request.files.getlist("images"), post.id):
+            db.session.add(img)
         db.session.commit()
         flash("Blog post updated!", "success")
         return redirect(url_for("admin_blogs"))
@@ -479,17 +503,10 @@ def admin_edit_blog(post_id):
 @login_required
 @admin_required
 def admin_delete_blog(post_id):
-    post = BlogPost.query.get_or_404(post_id)
+    post = db.get_or_404(BlogPost, post_id)
 
     for img in post.images:
-        try:
-            file_path = os.path.join(
-                app.root_path, app.config["UPLOAD_FOLDER"], img.image_path
-            )
-            if os.path.exists(file_path):
-                os.remove(file_path)
-        except Exception as e:
-            print(f"Error deleting file {img.image_path}: {e}")
+        delete_image_file(img.image_path)
 
     db.session.delete(post)
     db.session.commit()
@@ -501,13 +518,8 @@ def admin_delete_blog(post_id):
 @login_required
 @admin_required
 def admin_delete_image(image_id):
-    img = BlogImage.query.get_or_404(image_id)
-    try:
-        path = os.path.join(app.config["UPLOAD_FOLDER"], img.image_path)
-        if os.path.exists(path):
-            os.remove(path)
-    except Exception:
-        pass
+    img = db.get_or_404(BlogImage, image_id)
+    delete_image_file(img.image_path)
     db.session.delete(img)
     db.session.commit()
     flash("Image deleted.", "success")
@@ -526,7 +538,7 @@ def admin_comments():
 @login_required
 @admin_required
 def admin_delete_comment(comment_id):
-    comment = Comment.query.get_or_404(comment_id)
+    comment = db.get_or_404(Comment, comment_id)
     db.session.delete(comment)
     db.session.commit()
     flash("Comment deleted.", "success")
@@ -545,7 +557,7 @@ def admin_messages():
 @login_required
 @admin_required
 def admin_delete_message(message_id):
-    msg = ContactMessage.query.get_or_404(message_id)
+    msg = db.get_or_404(ContactMessage, message_id)
     db.session.delete(msg)
     db.session.commit()
     flash("Message deleted.", "success")
