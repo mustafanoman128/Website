@@ -933,9 +933,6 @@ ul { list-style: none; }
   border: 1px solid rgba(0,212,170,0.25);
 }
 
-btn--outline-teall{
-  color: white;
-}
 .btn--outline-teal:hover {
   background: rgba(0,212,170,0.18);
   border-color: var(--teal);
@@ -2909,7 +2906,7 @@ select.form-control option { background: var(--ink-2); color: var(--white); }
   .section { padding: 3.5rem 0 !important; }
 
   .btn, .btn--hero, .btn--hero-ghost, .btn--primary,
-  .btn--ghost, .btn--outline-teall, .nav__cta {
+  .btn--ghost, .btn--outline-teal, .nav__cta {
     min-height: 44px;
   }
 
@@ -3308,6 +3305,164 @@ html {
     transform: none !important;
     transition: none !important;
   }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   UI/UX ENHANCEMENTS — v3.1
+   ════════════════════════════════════════════════════════════════ */
+
+/* ─── Scroll-to-Top Button ────────────────────────────────────── */
+.scroll-top {
+  position: fixed;
+  bottom: 2.5rem;
+  right: 2rem;
+  width: 44px;
+  height: 44px;
+  background: rgba(11, 16, 32, 0.88);
+  border: 1px solid rgba(0, 229, 184, 0.25);
+  border-radius: 50%;
+  color: var(--teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 400;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.35s var(--ease-out), transform 0.35s var(--ease-out),
+              background 0.25s, box-shadow 0.25s, border-color 0.25s;
+  pointer-events: none;
+  backdrop-filter: blur(12px);
+}
+.scroll-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.scroll-top:hover {
+  background: var(--teal-lo);
+  border-color: var(--teal);
+  box-shadow: 0 0 22px rgba(0, 229, 184, 0.22), 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+@media (max-width: 768px) {
+  .scroll-top { bottom: 1.5rem; right: 1rem; width: 40px; height: 40px; }
+}
+
+/* ─── Nav Active — gradient underline replaces single dot ────── */
+.nav__links a.active::after {
+  width: 20px;
+  height: 2px;
+  border-radius: var(--r-full);
+  bottom: 4px;
+  background: linear-gradient(90deg, var(--teal), var(--violet-hi));
+  box-shadow: 0 0 6px rgba(0, 229, 184, 0.5);
+}
+
+/* ─── Page Hero — ambient glow behind title ─────────────────── */
+.page-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(ellipse 520px 260px at 50% 35%, rgba(0, 229, 184, 0.055) 0%, transparent 70%),
+    repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.02) 39px, rgba(255,255,255,0.02) 40px);
+  pointer-events: none;
+  z-index: 0;
+}
+.page-hero > .container { position: relative; z-index: 1; }
+
+/* ─── Post Content — rich reading typography ─────────────────── */
+.post-content h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.5vw, 1.65rem);
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -0.02em;
+  margin: 2.5rem 0 0.9rem;
+  line-height: 1.25;
+}
+.post-content h3 {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -0.01em;
+  margin: 2rem 0 0.65rem;
+}
+.post-content ul, .post-content ol {
+  padding-left: 1.4rem;
+  margin-bottom: var(--sp-5);
+}
+.post-content ul li, .post-content ol li {
+  font-size: 0.95rem;
+  color: var(--text-2);
+  margin-bottom: var(--sp-2);
+  line-height: 1.75;
+}
+.post-content code {
+  font-family: var(--font-mono);
+  font-size: 0.83em;
+  background: var(--ink-2);
+  border: 1px solid var(--border-2);
+  padding: 0.15em 0.45em;
+  border-radius: var(--r-sm);
+  color: var(--teal);
+}
+.post-content blockquote {
+  border-left: 3px solid var(--teal);
+  padding: var(--sp-4) var(--sp-6);
+  background: var(--surface);
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+  margin: var(--sp-6) 0;
+  font-style: italic;
+  color: var(--text-1);
+}
+
+/* ─── Reading Time Badge ──────────────────────────────────────── */
+.post-reading-time {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-4);
+  letter-spacing: 0.08em;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+.post-reading-time:not(:empty)::before {
+  content: '·';
+  font-size: 1.1em;
+  opacity: 0.45;
+}
+
+/* ─── Blog Card Excerpt — consistent 3-line clamp ───────────── */
+.blog-card__body > p {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 0;
+}
+
+/* ─── Empty State — icon + heading polish ────────────────────── */
+.empty-state__icon {
+  font-size: 2rem;
+  color: var(--teal);
+  opacity: 0.35;
+  margin-bottom: var(--sp-5);
+  display: block;
+}
+.empty-state h3 {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: var(--sp-3);
+}
+.empty-state p { font-size: 0.9rem; color: var(--text-3); }
+
+/* ─── Skill Tags — glow on hover ─────────────────────────────── */
+.skill-tags span:hover {
+  box-shadow: 0 0 10px rgba(0, 229, 184, 0.10);
 }
 
 

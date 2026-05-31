@@ -15,6 +15,7 @@
     <div class="post-hero__meta reveal">
       <span class="mono blog-card__date">{{ post.created_at.strftime('%B %d, %Y') }}</span>
       <span class="mono">&middot; by {{ post.author.name }}</span>
+      <span class="post-reading-time mono" id="reading-time"></span>
     </div>
     <h1 class="post-hero__title reveal" id="post-title">{{ post.title }}</h1>
   </div>
