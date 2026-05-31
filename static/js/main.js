@@ -689,6 +689,29 @@
     });
   };
 
+  /* ── Scroll-to-Top Button ───────────────────────────────────── */
+  const initScrollTop = () => {
+    const btn = document.getElementById('scrollTop');
+    if (!btn) return;
+
+    const toggle = throttle(() => {
+      btn.classList.toggle('visible', window.scrollY > 500);
+    }, 100);
+
+    window.addEventListener('scroll', toggle, { passive: true });
+    btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  };
+
+  /* ── Reading Time Estimate ───────────────────────────────────── */
+  const initReadingTime = () => {
+    const content = document.querySelector('.post-content');
+    const badge = document.getElementById('reading-time');
+    if (!content || !badge) return;
+    const words = content.innerText.trim().split(/\s+/).filter(Boolean).length;
+    const mins = Math.max(1, Math.round(words / 200));
+    badge.textContent = `${mins} min read`;
+  };
+
   /* ── Console Signature ───────────────────────────────────── */
   const initConsole = () => {
     const styles = [
@@ -725,6 +748,8 @@
   initTimeline();
   initMagnetic();
   respectReducedMotion();
+  initScrollTop();
+  initReadingTime();
   initConsole();
 
 })();
