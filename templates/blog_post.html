@@ -12,12 +12,12 @@
       </svg>
       Back to Blog
     </a>
-    <div class="post-hero__meta reveal">
+    <div class="post-hero__meta">
       <span class="mono blog-card__date">{{ post.created_at.strftime('%B %d, %Y') }}</span>
       <span class="mono">&middot; by {{ post.author.name }}</span>
       <span class="post-reading-time mono" id="reading-time"></span>
     </div>
-    <h1 class="post-hero__title reveal" id="post-title">{{ post.title }}</h1>
+    <h1 class="post-hero__title" id="post-title">{{ post.title }}</h1>
   </div>
 </section>
 
@@ -26,7 +26,7 @@
 
     {% if post.images %}
     <div class="post-image-bundle reveal">
-      <div class="image-stack image-stack--large" onclick="openGallery()">
+      <div class="image-stack image-stack--large" id="galleryTrigger">
         {% for img in post.images[:3] %}
           <div class="image-stack__item stack-{{ loop.index }}">
             <img src="{{ url_for('static', filename='uploads/blog_images/' + img.image_path) }}" alt="Analysis Visual" />
@@ -120,60 +120,61 @@
 </section>
 
 <div id="fullscreenGallery" class="gallery-modal" role="dialog" aria-label="Image Gallery">
-  <span class="gallery-close" onclick="closeGallery()">&times;</span>
-  <button class="gallery-nav prev" onclick="changeImage(-1)" aria-label="Previous Image">&#10094;</button>
+  <span class="gallery-close" id="galleryClose">&times;</span>
+  <button class="gallery-nav prev" id="galleryPrev" aria-label="Previous Image">&#10094;</button>
   <div class="gallery-content">
     <img id="galleryImg" src="" alt="Full Resolution Visual">
     <div class="gallery-counter mono"></div>
   </div>
-  <button class="gallery-nav next" onclick="changeImage(1)" aria-label="Next Image">&#10095;</button>
+  <button class="gallery-nav next" id="galleryNext" aria-label="Next Image">&#10095;</button>
 </div>
 
 <script>
-let currentGalleryImages = [];
-let currentIdx = 0;
+(function () {
+  const modal   = document.getElementById('fullscreenGallery');
+  const imgEl   = document.getElementById('galleryImg');
+  const counter = modal.querySelector('.gallery-counter');
+  let images = [];
+  let idx = 0;
 
-function openGallery() {
-  // Capture URLs from the hidden spans
-  const urls = document.getElementsByClassName('gallery-item-url');
-  currentGalleryImages = Array.from(urls).map(span => span.innerText.trim());
-  
-  if(currentGalleryImages.length > 0) {
-    updateGallery();
-    document.getElementById('fullscreenGallery').classList.add('active');
-    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+  function show() {
+    imgEl.src = images[idx];
+    counter.innerText = `${idx + 1} / ${images.length}`;
   }
-}
 
-function closeGallery() {
-  document.getElementById('fullscreenGallery').classList.remove('active');
-  document.body.style.overflow = 'auto';
-}
+  function open() {
+    images = Array.from(document.getElementsByClassName('gallery-item-url'))
+      .map(s => s.innerText.trim());
+    if (!images.length) return;
+    idx = 0;
+    show();
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
 
-function changeImage(dir) {
-  currentIdx = (currentIdx + dir + currentGalleryImages.length) % currentGalleryImages.length;
-  updateGallery();
-}
+  function close() {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
 
-function updateGallery() {
-  const img = document.getElementById('galleryImg');
-  const counter = document.querySelector('.gallery-counter');
-  img.src = currentGalleryImages[currentIdx];
-  counter.innerText = `${currentIdx + 1} / ${currentGalleryImages.length}`;
-}
+  function step(dir) {
+    idx = (idx + dir + images.length) % images.length;
+    show();
+  }
 
-// Close modal when clicking on the dark background
-document.getElementById('fullscreenGallery').addEventListener('click', function(e) {
-  if (e.target.id === 'fullscreenGallery') closeGallery();
-});
-
-// Keyboard Navigation
-document.addEventListener('keydown', (e) => {
-  if (!document.getElementById('fullscreenGallery').classList.contains('active')) return;
-  if (e.key === "ArrowLeft") changeImage(-1);
-  if (e.key === "ArrowRight") changeImage(1);
-  if (e.key === "Escape") closeGallery();
-});
+  const trigger = document.getElementById('galleryTrigger');
+  if (trigger) trigger.addEventListener('click', open);
+  document.getElementById('galleryClose').addEventListener('click', close);
+  document.getElementById('galleryPrev').addEventListener('click', () => step(-1));
+  document.getElementById('galleryNext').addEventListener('click', () => step(1));
+  modal.addEventListener('click', e => { if (e.target === modal) close(); });
+  document.addEventListener('keydown', e => {
+    if (!modal.classList.contains('active')) return;
+    if (e.key === 'ArrowLeft')  step(-1);
+    if (e.key === 'ArrowRight') step(1);
+    if (e.key === 'Escape')     close();
+  });
+})();
 </script>
 
 {% endblock %}

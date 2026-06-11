@@ -205,6 +205,7 @@ class ContactMessage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), nullable=False)
     email = db.Column(db.String(180), nullable=False)
+    inquiry_type = db.Column(db.String(40), nullable=True)
     message = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
@@ -239,8 +240,7 @@ def inject_globals():
 
 @app.route("/")
 def home():
-    posts = BlogPost.query.order_by(BlogPost.created_at.desc()).limit(3).all()
-    return render_template("home.html", posts=posts)
+    return render_template("home.html")
 
 
 @app.route("/about")
@@ -306,7 +306,7 @@ def contact():
         elif "@" not in email:
             flash("Please enter a valid email address.", "danger")
         else:
-            msg = ContactMessage(name=name, email=email, message=message)
+            msg = ContactMessage(name=name, email=email, inquiry_type=inquiry_type or None, message=message)
             db.session.add(msg)
             db.session.commit()
             try:
