@@ -85,7 +85,7 @@
     };
     followCursor();
 
-    const hoverEls = 'a, button, .project-card, .cert-card, .tool-card, .mini-card, .stack-icon, .skill-tags span';
+    const hoverEls = 'a, button, .project-card, .cert-card, .stack-icon, .skill-tags span';
     document.querySelectorAll(hoverEls).forEach(el => {
       el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
       el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
@@ -325,7 +325,7 @@
 
   /* ── Number Counters ─────────────────────────────────────── */
   const initCounters = () => {
-    const els = document.querySelectorAll('.stat__num, .hero__float-val, .counter, .stat-card__num');
+    const els = document.querySelectorAll('.stat__num, .hero__float-val, .stat-card__num');
     if (!els.length) return;
 
     const ease = t => 1 - Math.pow(1 - t, 3);
@@ -360,24 +360,6 @@
     }, { threshold: 0.5 });
 
     els.forEach(el => obs.observe(el));
-  };
-
-  /* ── Skill Bar Animations ────────────────────────────────── */
-  const initSkillBars = () => {
-    const bars = document.querySelectorAll('.skill-bar__fill');
-    if (!bars.length) return;
-
-    const obs = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          const target = e.target.dataset.width || '80%';
-          setTimeout(() => { e.target.style.width = target; }, 200);
-          obs.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.3 });
-
-    bars.forEach(bar => obs.observe(bar));
   };
 
   /* ── Parallax / Mouse Movement ───────────────────────────── */
@@ -591,15 +573,6 @@
     });
   };
 
-  /* ── Reduced Motion ──────────────────────────────────────── */
-  const respectReducedMotion = () => {
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
-      el.style.opacity = '1';
-      el.style.transform = 'none';
-    });
-  };
-
   /* ── ScrollTrigger Parallax ──────────────────────────────── */
   const initScrollParallax = () => {
     if (window.matchMedia('(pointer: coarse)').matches) return;
@@ -670,7 +643,6 @@
   initHeroCanvas();
   initHeroWord();
   initCounters();
-  initSkillBars();
   initParallax();
   initTilt();
   initSkillsStrip();
@@ -681,7 +653,6 @@
   initSmoothScroll();
   initScrollParallax();
   initMagnetic();
-  respectReducedMotion();
   initScrollTop();
   initReadingTime();
   initConsole();

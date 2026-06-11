@@ -6,8 +6,8 @@
 <section class="page-hero section--dark" aria-labelledby="blog-title">
   <div class="container">
     <span class="section-label">Writing</span>
-    <h1 class="page-hero__title reveal" id="blog-title">Blog <em>Posts</em></h1>
-    <p class="page-hero__sub reveal">Thoughts on Data Analytics, Data Science & AI, and Career.</p>
+    <h1 class="page-hero__title" id="blog-title">Blog <em>Posts</em></h1>
+    <p class="page-hero__sub">Thoughts on Data Analytics, Data Science & AI, and Career.</p>
   </div>
 </section>
 
@@ -44,7 +44,7 @@
 
           <div class="blog-card__img-container">
             {% if post.images %}
-              <div class="image-stack" onclick="openGallery('{{ post.id }}')">
+              <div class="image-stack" data-post-id="{{ post.id }}">
                 {% for img in post.images[:3] %}
                   <div class="image-stack__item stack-{{ loop.index }}">
                     <img src="{{ url_for('static', filename='uploads/blog_images/' + img.image_path) }}"
@@ -105,15 +105,15 @@
         {% endfor %}
       </div>
 
-      {# ── Fullscreen Gallery Modal (unchanged) ─────────────────────────── #}
+      {# ── Fullscreen Gallery Modal ─────────────────────────────────────── #}
       <div id="fullscreenGallery" class="gallery-modal">
-        <span class="gallery-close" onclick="closeGallery()">&times;</span>
-        <button class="gallery-nav prev" onclick="changeImage(-1)">&#10094;</button>
+        <span class="gallery-close" id="galleryClose">&times;</span>
+        <button class="gallery-nav prev" id="galleryPrev">&#10094;</button>
         <div class="gallery-content">
           <img id="galleryImg" src="" alt="Full view">
           <div class="gallery-counter mono"></div>
         </div>
-        <button class="gallery-nav next" onclick="changeImage(1)">&#10095;</button>
+        <button class="gallery-nav next" id="galleryNext">&#10095;</button>
       </div>
 
       {# ── Pagination — preserves ?category= param ──────────────────────── #}
@@ -147,42 +147,48 @@
 </section>
 
 <script>
-let currentGalleryImages = [];
-let currentIdx = 0;
+(function () {
+  const modal   = document.getElementById('fullscreenGallery');
+  const imgEl   = document.getElementById('galleryImg');
+  const counter = modal.querySelector('.gallery-counter');
+  let images = [];
+  let idx = 0;
 
-function openGallery(postId) {
-  const data = document.getElementById(`gallery-data-${postId}`);
-  const urls = data.getElementsByClassName('gallery-item-url');
-  currentGalleryImages = Array.from(urls).map(span => span.innerText);
-  currentIdx = 0;
-  if (currentGalleryImages.length > 0) {
-    updateGallery();
-    document.getElementById('fullscreenGallery').classList.add('active');
+  function show() {
+    imgEl.src = images[idx];
+    counter.innerText = `${idx + 1} / ${images.length}`;
+  }
+
+  function open(postId) {
+    const data = document.getElementById(`gallery-data-${postId}`);
+    images = Array.from(data.getElementsByClassName('gallery-item-url'))
+      .map(s => s.innerText.trim());
+    if (!images.length) return;
+    idx = 0;
+    show();
+    modal.classList.add('active');
     document.body.style.overflow = 'hidden';
   }
-}
 
-function closeGallery() {
-  document.getElementById('fullscreenGallery').classList.remove('active');
-  document.body.style.overflow = 'auto';
-}
+  function close() {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
 
-function changeImage(dir) {
-  currentIdx += dir;
-  if (currentIdx >= currentGalleryImages.length) currentIdx = 0;
-  if (currentIdx < 0) currentIdx = currentGalleryImages.length - 1;
-  updateGallery();
-}
+  function step(dir) {
+    idx = (idx + dir + images.length) % images.length;
+    show();
+  }
 
-function updateGallery() {
-  document.getElementById('galleryImg').src = currentGalleryImages[currentIdx];
-  document.querySelector('.gallery-counter').innerText =
-    `${currentIdx + 1} / ${currentGalleryImages.length}`;
-}
+  document.querySelectorAll('.image-stack[data-post-id]').forEach(el => {
+    el.addEventListener('click', () => open(el.dataset.postId));
+  });
 
-document.getElementById('fullscreenGallery').addEventListener('click', function(e) {
-  if (e.target === this) closeGallery();
-});
+  document.getElementById('galleryClose').addEventListener('click', close);
+  document.getElementById('galleryPrev').addEventListener('click', () => step(-1));
+  document.getElementById('galleryNext').addEventListener('click', () => step(1));
+  modal.addEventListener('click', e => { if (e.target === modal) close(); });
+})();
 </script>
 
 {% endblock %}
