@@ -1059,38 +1059,6 @@ ul { list-style: none; }
   margin-top: var(--sp-4);
 }
 
-/* Mini Cards */
-.mini-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  padding: var(--sp-5);
-  transition: all 0.35s var(--ease-out);
-  cursor: default;
-}
-.mini-card:hover {
-  border-color: rgba(0,212,170,0.25);
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-teal);
-}
-.mini-card__icon {
-  width: 40px; height: 40px;
-  background: var(--teal-lo);
-  border-radius: var(--r-md);
-  display: flex; align-items: center; justify-content: center;
-  margin-bottom: var(--sp-3);
-  color: var(--teal);
-}
-.mini-card__icon svg { width: 20px; height: 20px; }
-.mini-card h4 {
-  font-family: var(--font-display);
-  font-size: 0.875rem;
-  font-weight: 700;
-  color: var(--white);
-  margin-bottom: var(--sp-1);
-}
-.mini-card p { font-size: 0.78rem; color: var(--text-3); line-height: 1.5; }
-
 /* ─── Projects Grid ──────────────────────────────────────────── */
 .projects__grid {
   display: grid;
@@ -1200,44 +1168,6 @@ ul { list-style: none; }
   grid-template-columns: repeat(3, 1fr);
   gap: var(--sp-5);
 }
-.tool-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  padding: var(--sp-6);
-  text-align: center;
-  transition: all 0.35s var(--ease-out);
-  cursor: default;
-  position: relative;
-  overflow: hidden;
-}
-.tool-card::after {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--teal), transparent);
-  transform: scaleX(0);
-  transition: transform 0.4s var(--ease-out);
-}
-.tool-card:hover { transform: translateY(-6px); border-color: rgba(0,212,170,0.2); box-shadow: var(--shadow-teal); }
-.tool-card:hover::after { transform: scaleX(1); }
-.tool-card__abbr {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--teal);
-  letter-spacing: 0.05em;
-  margin-bottom: var(--sp-3);
-}
-.tool-card h4 {
-  font-family: var(--font-display);
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--white);
-  margin-bottom: var(--sp-2);
-}
-.tool-card p { font-size: 0.72rem; color: var(--text-3); }
-
 /* ─── Cert Cards ─────────────────────────────────────────────── */
 .certs__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-6); }
 .certs__grid--home { grid-template-columns: repeat(3, 1fr); }
@@ -2333,14 +2263,6 @@ select.form-control option { background: var(--ink-2); color: var(--white); }
   font-family: var(--font-mono);
 }
 
-/* ─── Confetti Canvas ────────────────────────────────────────── */
-#confettiCanvas {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 9997;
-}
-
 /* ─── Animations ─────────────────────────────────────────────── */
 @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -2991,9 +2913,6 @@ select.form-control option { background: var(--ink-2); color: var(--white); }
   .about-img__overlay span:first-child { font-size: 1.2rem; }
 
   .about-teaser__cards { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
-  .mini-card { padding: 1rem; }
-  .mini-card h4 { font-size: 0.9rem; }
-  .mini-card p { font-size: 0.8rem; }
 }
 
 @media (max-width: 480px) {

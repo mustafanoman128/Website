@@ -383,8 +383,7 @@
   const initTilt = () => {
     if (window.matchMedia('(pointer: coarse)').matches) return;
     const cards = document.querySelectorAll(
-      '.project-card, .cert-card, .tool-card, .mini-card, ' +
-      '.cert-detail-card, .timeline__card, .edu-card, .skill-group'
+      '.project-card, .cert-card, .cert-detail-card, .timeline__card, .edu-card, .skill-group'
     );
 
     cards.forEach(card => {
@@ -438,67 +437,6 @@
       if (btn) {
         btn.addEventListener('click', () => dismissFlash(flash));
       }
-    });
-  };
-
-  /* ── Confetti Effect ─────────────────────────────────────── */
-  const confetti = (originX, originY) => {
-    if (document.getElementById('confettiCanvas')) return;
-    const canvas = document.createElement('canvas');
-    canvas.id = 'confettiCanvas';
-    canvas.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:9997;';
-    canvas.width  = window.innerWidth;
-    canvas.height = window.innerHeight;
-    document.body.appendChild(canvas);
-    const ctx = canvas.getContext('2d');
-
-    const colors = ['#00d4aa','#00ffcc','#f59e0b','#8b5cf6','#ffffff','#f4f6fb'];
-    const particles = Array.from({ length: 80 }, () => ({
-      x: originX, y: originY,
-      vx: (Math.random() - 0.5) * 14,
-      vy: Math.random() * -12 - 4,
-      r: Math.random() * 5 + 3,
-      color: colors[Math.floor(Math.random() * colors.length)],
-      rot: Math.random() * 360,
-      spin: (Math.random() - 0.5) * 12,
-      gravity: 0.4,
-      life: 1,
-      decay: Math.random() * 0.012 + 0.01
-    }));
-
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      let alive = false;
-      particles.forEach(p => {
-        if (p.life <= 0) return;
-        alive = true;
-        p.vy += p.gravity;
-        p.x  += p.vx;
-        p.y  += p.vy;
-        p.rot += p.spin;
-        p.life -= p.decay;
-
-        ctx.save();
-        ctx.globalAlpha = p.life;
-        ctx.translate(p.x, p.y);
-        ctx.rotate(p.rot * Math.PI / 180);
-        ctx.fillStyle = p.color;
-        ctx.fillRect(-p.r/2, -p.r/2, p.r, p.r * 2);
-        ctx.restore();
-      });
-      if (alive) requestAnimationFrame(draw);
-      else canvas.remove();
-    };
-    requestAnimationFrame(draw);
-  };
-
-  /* ── Resume Button ───────────────────────────────────────── */
-  const initResume = () => {
-    document.querySelectorAll('.btn-resume, [data-resume]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const rect = btn.getBoundingClientRect();
-        confetti(rect.left + rect.width/2, rect.top + rect.height/2);
-      });
     });
   };
 
@@ -647,7 +585,6 @@
   initTilt();
   initSkillsStrip();
   initFlash();
-  initResume();
   initForms();
   initCopy();
   initSmoothScroll();

@@ -226,6 +226,14 @@ def csrf_handler():
             abort(403)
 
 
+@app.after_request
+def set_security_headers(response):
+    response.headers["X-Frame-Options"] = "SAMEORIGIN"
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    return response
+
+
 @app.context_processor
 def inject_globals():
     """Inject csrf_token (plain string, not callable) and CATEGORIES list into every template context."""
@@ -282,6 +290,8 @@ def blog_post(post_id):
         content = sanitize_html(request.form.get("content", "").strip())
         if not content:
             flash("Comment cannot be empty.", "danger")
+        elif len(content) > 2000:
+            flash("Comment must be under 2000 characters.", "danger")
         else:
             comment = Comment(content=content, user_id=current_user.id, post_id=post.id)
             db.session.add(comment)
@@ -319,7 +329,7 @@ def contact():
                 )
                 notification = Message(
                     subject=f"Portfolio Contact: {name}",
-                    recipients=["mustafanoman128@gmail.com"],
+                    recipients=[os.getenv("NOTIFICATION_EMAIL", "mustafanoman128@gmail.com")],
                     body=email_body,
                     reply_to=email,
                 )

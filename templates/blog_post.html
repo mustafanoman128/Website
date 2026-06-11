@@ -29,7 +29,7 @@
       <div class="image-stack image-stack--large" id="galleryTrigger">
         {% for img in post.images[:3] %}
           <div class="image-stack__item stack-{{ loop.index }}">
-            <img src="{{ url_for('static', filename='uploads/blog_images/' + img.image_path) }}" alt="Analysis Visual" />
+            <img src="{{ url_for('static', filename='uploads/blog_images/' + img.image_path) }}" alt="Analysis Visual" loading="lazy" />
           </div>
         {% endfor %}
         
