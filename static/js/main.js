@@ -287,7 +287,7 @@
     init();
     tick();
 
-    window.addEventListener('resize', debounce(() => { init(); }, 200));
+    window.addEventListener('resize', debounce(init, 200));
 
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) cancelAnimationFrame(animId);
@@ -316,13 +316,11 @@
       }, 35);
     };
 
-    scramble(words[0], () => {
-      const cycle = () => {
-        idx = (idx + 1) % words.length;
-        scramble(words[idx], () => setTimeout(cycle, 2800));
-      };
-      setTimeout(cycle, 3000);
-    });
+    const cycle = () => {
+      idx = (idx + 1) % words.length;
+      scramble(words[idx], () => setTimeout(cycle, 2800));
+    };
+    setTimeout(cycle, 3000);
   };
 
   /* ── Number Counters ─────────────────────────────────────── */
@@ -385,21 +383,15 @@
   /* ── Parallax / Mouse Movement ───────────────────────────── */
   const initParallax = () => {
     if (window.matchMedia('(pointer: coarse)').matches) return;
-    const glows = document.querySelectorAll('.hero__glow');
     const frame = document.querySelector('.hero__frame');
-    if (!glows.length) return;
+    if (!frame) return;
 
     const move = throttle((e) => {
       const cx = window.innerWidth  / 2;
       const cy = window.innerHeight / 2;
       const rx = (e.clientX - cx) / cx;
       const ry = (e.clientY - cy) / cy;
-      glows.forEach((g, i) => {
-        g.style.transform = `translate(${rx * (i + 1) * 12}px, ${ry * (i + 1) * 12}px)`;
-      });
-      if (frame) {
-        frame.style.transform = `translate(${rx * -6}px, ${ry * -6}px)`;
-      }
+      frame.style.transform = `translate(${rx * -6}px, ${ry * -6}px)`;
     }, 16);
 
     document.addEventListener('mousemove', move);
@@ -469,6 +461,7 @@
 
   /* ── Confetti Effect ─────────────────────────────────────── */
   const confetti = (originX, originY) => {
+    if (document.getElementById('confettiCanvas')) return;
     const canvas = document.createElement('canvas');
     canvas.id = 'confettiCanvas';
     canvas.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:9997;';
@@ -520,7 +513,7 @@
   /* ── Resume Button ───────────────────────────────────────── */
   const initResume = () => {
     document.querySelectorAll('.btn-resume, [data-resume]').forEach(btn => {
-      btn.addEventListener('click', (e) => {
+      btn.addEventListener('click', () => {
         const rect = btn.getBoundingClientRect();
         confetti(rect.left + rect.width/2, rect.top + rect.height/2);
       });
@@ -563,27 +556,6 @@
     });
   };
 
-  /* ── Lazy Image Fade ─────────────────────────────────────── */
-  const initLazy = () => {
-    const imgs = document.querySelectorAll('img[loading="lazy"]');
-    if (!imgs.length) return;
-
-    const obs = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (!e.isIntersecting) return;
-        const img = e.target;
-        img.style.opacity = '0';
-        img.style.transition = 'opacity 0.5s ease';
-        const show = () => { img.style.opacity = '1'; };
-        if (img.complete) show();
-        else img.addEventListener('load', show, { once: true });
-        obs.unobserve(img);
-      });
-    }, { threshold: 0.05 });
-
-    imgs.forEach(i => obs.observe(i));
-  };
-
   /* ── Smooth Scroll ───────────────────────────────────────── */
   const initSmoothScroll = () => {
     const nav = document.getElementById('nav');
@@ -598,17 +570,6 @@
         const top = target.getBoundingClientRect().top + window.scrollY - offset;
         window.scrollTo({ top, behavior: 'smooth' });
       });
-    });
-  };
-
-  /* ── Timeline Line Animation ─────────────────────────────── */
-  const initTimeline = () => {
-    const track = document.querySelector('.timeline__track');
-    if (!track) return;
-    const before = track.querySelector('::before');
-    // Animate items staggered
-    track.querySelectorAll('.timeline__item').forEach((item, i) => {
-      item.style.transitionDelay = `${i * 80}ms`;
     });
   };
 
@@ -645,29 +606,16 @@
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
     gsap.registerPlugin(ScrollTrigger);
 
-    const glow1 = document.querySelector('.hero__glow--1');
-    const glow2 = document.querySelector('.hero__glow--2');
-    const glow3 = document.querySelector('.hero__glow--3');
-    const heroCanvas = document.querySelector('.hero__canvas');
+    [
+      ['.hero__glow--1', { y: -120 },       1.5],
+      ['.hero__glow--2', { y: -80, x: 40 }, 2  ],
+      ['.hero__glow--3', { y: -60 },        1  ],
+    ].forEach(([sel, props, scrub]) => {
+      const el = document.querySelector(sel);
+      if (el) gsap.to(el, { ...props, scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub } });
+    });
 
-    if (glow1) {
-      gsap.to(glow1, {
-        y: -120,
-        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1.5 }
-      });
-    }
-    if (glow2) {
-      gsap.to(glow2, {
-        y: -80, x: 40,
-        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 2 }
-      });
-    }
-    if (glow3) {
-      gsap.to(glow3, {
-        y: -60,
-        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1 }
-      });
-    }
+    const heroCanvas = document.querySelector('.hero__canvas');
     if (heroCanvas) {
       gsap.to(heroCanvas, {
         opacity: 0,
@@ -675,18 +623,6 @@
       });
     }
 
-    document.querySelectorAll('.section--dark').forEach(section => {
-      gsap.to(section, {
-        backgroundPositionY: '30px',
-        ease: 'none',
-        scrollTrigger: {
-          trigger: section,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: true,
-        }
-      });
-    });
   };
 
   /* ── Scroll-to-Top Button ───────────────────────────────────── */
@@ -742,10 +678,8 @@
   initResume();
   initForms();
   initCopy();
-  initLazy();
   initSmoothScroll();
   initScrollParallax();
-  initTimeline();
   initMagnetic();
   respectReducedMotion();
   initScrollTop();

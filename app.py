@@ -4,6 +4,7 @@ import secrets
 import uuid
 from datetime import datetime, timedelta, timezone
 from functools import wraps
+from urllib.parse import urlparse, urljoin
 from markupsafe import Markup, escape
 
 from dotenv import load_dotenv
@@ -85,6 +86,12 @@ INQUIRY_LABELS = {
     "collab": "Collaboration",
     "general": "General",
 }
+
+
+def is_safe_url(target):
+    ref = urlparse(request.host_url)
+    test = urlparse(urljoin(request.host_url, target))
+    return test.scheme in ("http", "https") and ref.netloc == test.netloc
 
 
 def allowed_file(filename):
@@ -368,6 +375,8 @@ def login():
         if user and user.check_password(password):
             login_user(user)
             next_page = request.args.get("next")
+            if next_page and not is_safe_url(next_page):
+                next_page = None
             return redirect(next_page or url_for("home"))
         flash("Invalid email or password.", "danger")
     return render_template("login.html")
@@ -487,8 +496,13 @@ def admin_new_blog():
 def admin_edit_blog(post_id):
     post = db.get_or_404(BlogPost, post_id)
     if request.method == "POST":
-        post.title = sanitize_html(request.form.get("title", "").strip())
-        post.content = request.form.get("content", "").strip()
+        title = sanitize_html(request.form.get("title", "").strip())
+        content = request.form.get("content", "").strip()
+        if not title or not content:
+            flash("Title and content required.", "danger")
+            return render_template("admin/edit_blog.html", post=post)
+        post.title = title
+        post.content = content
         category = request.form.get("category", "").strip()
         post.category = category if category in CATEGORIES else None
         for img in save_uploaded_images(request.files.getlist("images"), post.id):
