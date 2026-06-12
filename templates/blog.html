@@ -136,7 +136,7 @@
         <div class="empty-state__icon">✦</div>
         {% if active_category %}
           <h3>No posts in <em>{{ active_category }}</em> yet.</h3>
-          <p>Check back soon, or <a href="{{ url_for('blog') }}" class="link-arrow" style="display:inline-flex;gap:4px;">browse all posts</a>.</p>
+          <p>Check back soon, or <a href="{{ url_for('blog') }}" class="link-arrow">browse all posts</a>.</p>
         {% else %}
           <h3>No posts yet.</h3>
         {% endif %}
