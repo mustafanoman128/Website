@@ -159,7 +159,7 @@ ul { list-style: none; }
 .container { max-width: 1220px; margin: 0 auto; padding: 0 var(--sp-6); }
 .container--narrow { max-width: 820px; margin: 0 auto; padding: 0 var(--sp-6); }
 .mono { font-family: var(--font-mono) !important; }
-.section { padding: var(--sp-24) 0; }
+.section { padding: 7rem 0; }
 .section--dark { background: var(--surface); position: relative; }
 .section--dark::before {
   content: '';
@@ -602,7 +602,7 @@ ul { list-style: none; }
 }
 .hero__left { padding-right: var(--sp-8); }
 .hero__title {
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--font-display);
   font-size: clamp(3rem, 7vw, 6.5rem);
   font-weight: 900;
   line-height: 1.05;
@@ -1864,6 +1864,7 @@ select.form-control option { background: var(--ink-2); color: var(--white); }
   margin-bottom: var(--sp-8);
 }
 .footer__brand .nav__logo-bracket { color: var(--teal); font-family: var(--font-display); font-size: 1.1rem; font-weight: 800; }
+.footer__brand-name { font-family: var(--font-display); font-size: 1.1rem; font-weight: 800; color: var(--white); }
 .footer__brand p { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-4); margin-top: var(--sp-2); letter-spacing: 0.08em; }
 .footer__nav { display: flex; gap: var(--sp-4); }
 .footer__nav a {
@@ -2096,11 +2097,6 @@ select.form-control option { background: var(--ink-2); color: var(--white); }
   outline-offset: 3px;
   border-radius: var(--r-sm);
 }
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-}
-
-
 /* ═══════════════════════════════════════════════════════════════
    BLOG CATEGORY FEATURE
    Append this entire block to the bottom of style.css
@@ -2232,21 +2228,14 @@ select.form-control option { background: var(--ink-2); color: var(--white); }
 /* ─── Responsive: stack tabs on small screens ────────────────── */
 @media (max-width: 600px) {
   .cat-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: var(--sp-2);
   }
 
   .cat-tab {
     font-size: 0.72rem;
     padding: var(--sp-2) var(--sp-4);
-  }
-
-  /* On very small screens wrap tabs into a 2-column grid */
-  .cat-tabs {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .cat-tab {
     text-align: center;
     justify-content: center;
   }
@@ -2794,9 +2783,6 @@ select.form-control option { background: var(--ink-2); color: var(--white); }
 }
 
 /* ─── UX Improvements ──────────────────────────────────────── */
-
-/* 1. More breathing room between sections */
-.section { padding: 7rem 0; }
 
 /* 2. Stronger heading weight contrast */
 .section-title { font-weight: 800; }
