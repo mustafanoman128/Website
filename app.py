@@ -70,7 +70,7 @@ login_manager.login_message_category = "info"
 ALLOWED_EXT = {"png", "jpg", "jpeg", "gif", "webp"}
 
 # ── Blog Categories ───────────────────────────────────────────────────────────
-CATEGORIES = ["Data Analytics", "Data Science & AI", "Career"]
+CATEGORIES = ["Data Analytics", "Data Science & AI", "Freelance & Consulting"]
 
 
 @app.template_filter("nl2br")
@@ -254,6 +254,11 @@ def home():
 @app.route("/about")
 def about():
     return render_template("about.html")
+
+
+@app.route("/services")
+def services():
+    return render_template("services.html")
 
 
 @app.route("/projects")

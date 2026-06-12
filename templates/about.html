@@ -6,17 +6,18 @@
 <!-- Page Hero -->
 <section class="page-hero section--dark" aria-labelledby="about-title">
   <div class="container">
-    <h1 class="page-hero__title" id="about-title">About <em>me</em></h1>
+    <span class="section-label mono">Freelance Data &amp; AI Engineer</span>
+    <h1 class="page-hero__title" id="about-title">Three years in enterprise. <em>Now</em> I build for you.</h1>
   </div>
 </section>
 
 <!-- Bio Section -->
-<section class="bio section" aria-labelledby="bio-heading">
+<section class="bio section" aria-label="Biography">
   <div class="container">
     <div class="bio__grid">
 
-      <!-- Portrait & Contact -->
-      <div class="bio__portrait reveal">
+      <!-- Portrait + Contact (left column) -->
+      <div class="bio__sidebar reveal">
         <div class="bio__portrait-frame">
           <div class="bio__portrait-inner">
             <img src="{{ url_for('static', filename='img/mustafa-portrait.jpeg') }}" alt="Mustafa Noman"
@@ -31,73 +32,73 @@
             Available for Projects
           </div>
         </div>
-        
+
+        <div class="bio__contact-list">
+          <a href="mailto:mustafanoman128@gmail.com" class="bio__contact-item">
+            <span class="mono">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+              </svg>
+            </span>
+            mustafanoman128@gmail.com
+          </a>
+
+          <a href="https://linkedin.com/in/mustafanoman128" target="_blank" rel="noopener noreferrer"
+            class="bio__contact-item">
+            <span class="mono">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+              </svg>
+            </span>
+            linkedin.com/in/mustafanoman128
+          </a>
+
+          <a href="https://github.com/mustafanoman128" target="_blank" rel="noopener noreferrer"
+            class="bio__contact-item">
+            <span class="mono">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+              </svg>
+            </span>
+            github.com/mustafanoman128
+          </a>
+
+          <a href="https://public.tableau.com/app/profile/mustafanoman128" target="_blank" rel="noopener noreferrer"
+            class="bio__contact-item">
+            <span class="mono">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M22 11h-7V4h-2v7H2v2h11v7h2v-7h7z" />
+              </svg>
+            </span>
+            Tableau Public
+          </a>
+        </div>
       </div>
 
-      <div class="bio__contact-list">
-        <a href="mailto:mustafanoman128@gmail.com" class="bio__contact-item">
-          <span class="mono">
-            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-              <path
-                d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
-            </svg>
-          </span>
-          mustafanoman128@gmail.com
-        </a>
-       
-        <a href="https://linkedin.com/in/mustafanoman128" target="_blank" rel="noopener noreferrer"
-          class="bio__contact-item">
-          <span class="mono">
-            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-              <path
-                d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-            </svg>
-          </span>
-          linkedin.com/in/mustafanoman128
-        </a>
-
-        <a href="https://github.com/mustafanoman128" target="_blank" rel="noopener noreferrer"
-          class="bio__contact-item">
-          <span class="mono">
-            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-            </svg>
-          </span>
-          github.com/mustafanoman128
-        </a>
-
-        <a href="https://public.tableau.com/app/profile/mustafanoman128" target="_blank" rel="noopener noreferrer"
-          class="bio__contact-item">
-          <span class="mono">
-            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M22 11h-7V4h-2v7H2v2h11v7h2v-7h7z"/>
-            </svg>
-          </span>
-          Tableau Public
-        </a>
+      <!-- Bio Text (right column) -->
+      <div class="bio__text reveal">
+        <p>I help businesses turn operational data into the dashboards, pipelines, and models their teams actually use. My clients come in with data that exists but isn't working. Reports that take too long to build. Pipelines that need constant manual fixes. Decisions still made on gut feel.</p>
+        <p>My training started in economics — understanding how information, incentives, and decisions shape outcomes. A Master's in Business Analytics at UIC introduced me to machine learning, and that was the pull. Feed data into a model well enough, and it tells you something the data alone couldn't. I've been building on that idea ever since.</p>
+        <p>One early project was a house price predictor for Bangalore. It worked — so I asked the obvious next question: why hasn't anyone done this for Pakistan? No platform gave buyers a data-backed estimate. The market runs on gut feel and informal networks. So I trained models on 120,000 listings and shipped it. That gap-filling instinct is how I approach client work too.</p>
+        <p>I work independently because accountability gets lost in layers. When you hire me, I'm the analyst, the engineer, and the person answering your messages. No project managers relaying requirements. No handoffs. You get the person doing the work, and when it ships, you own everything.</p>
+        <p>Three years inside US enterprise data teams — real budgets, production systems, C-suite reporting — means I know what's at stake when the numbers are wrong. When you bring me into your data environment, I treat it accordingly: fixed scope before work starts, full ownership on delivery, and results that hold up when someone important is watching.</p>
       </div>
-    </div>
 
-    <!-- Bio Text -->
-    <div class="bio__text reveal">
-      <p class="bio__lead">About me</p>
-      <p>I am a data analyst and AI engineer who turns complex, messy datasets into decisions that actually move the needle. My work sits at the intersection of business intelligence, machine learning, and applied AI, and I am genuinely obsessed with what becomes possible when you point the right tools at the right problem.</p>
-      <p>My career has taken me through serious data environments across the US. At <strong>Pregis</strong>, I built executive Tableau dashboards tracking <strong>75+ KPIs</strong> and drove a <strong>17% lift in reporting engagement</strong>. At <strong>Stericycle</strong>, I engineered outbound campaign workflows that contributed <strong>$2.3M in revenue</strong>. At <strong>The Henry Ford</strong>, I designed a fuzzy matching algorithm that improved data accuracy by <strong>40%</strong> across 500,000 records and saved roughly <strong>$10,000 per month</strong> in geocoding costs. The stakes were real, and the data was never clean.</p>
-      <p>Today I work independently, building end-to-end AI and data products. That includes an AI-powered property valuation system for Pakistan's residential market using LightGBM quantile regression trained on 120,000+ listings, a full-stack personal finance app with 11 production-ready features, and AI-assisted workflows that compress weeks of analysis into hours. Large language models in particular fascinate me, and I spend a significant amount of my own time exploring what they can do when applied to real business problems.</p>
-      <p>My academic foundation comes from <strong>LUMS</strong>, where I studied Economics and learned to care about why numbers move, not just what they say. A Master's in Business Analytics from the <strong>University of Illinois at Chicago</strong> built out the technical side. The combination puts me in a useful place: comfortable with the math, fluent in the business context, and always pushing toward what AI makes possible next.</p>
     </div>
 
   </div>
 </section>
 
-<!-- Career Timeline -->
+<!-- Career Timeline — Proof Points -->
 <section class="timeline section section--dark" id="experience" aria-labelledby="experience-heading">
   <div class="container">
 
     <div class="section-header reveal">
-      <span class="section-label mono">Experience</span>
-      <h2 class="section-title" id="experience-heading">Career Journey</h2>
-      <p class="section-sub">Where I've shipped real work.</p>
+      <span class="section-label mono">Proof Points</span>
+      <h2 class="section-title" id="experience-heading">The Track Record</h2>
+      <p class="section-sub">Three years inside US enterprise data teams. Real budgets, real stakes, measurable outcomes.</p>
     </div>
 
     <div class="timeline__track">
@@ -133,7 +134,7 @@
           </div>
           <ul class="timeline__list">
             <li>Architected executive Tableau dashboard using LODs and blended sources — boosted reporting engagement by <strong>17%</strong> through custom KPIs, 11-month benchmarks, and weekly trends.</li>
-            <li>Delivered a Lead Funnel Analysis dashboard with <strong>75+ KPIs</strong>, enabling sales to track conversions and revenue trends — drove <strong>7.1% QoQ lead growth</strong>.</li>
+            <li>Delivered a Lead Funnel Analysis dashboard with <strong>75+ KPIs</strong>, enabling sales to track conversions and revenue trends, driving <strong>7.1% QoQ lead growth</strong>.</li>
             <li>Used Tableau Prep to automate data cleanup and enrichment, accelerating reporting cycles by <strong>40%</strong>.</li>
           </ul>
         </div>
@@ -170,15 +171,92 @@
             <span class="timeline__company">The Henry Ford — Dearborn, MI</span>
           </div>
           <ul class="timeline__list">
-            <li>Streamlined data cleaning using Azure Synapse — enhanced data quality by removing junk, duplicates, and anomalies. Reduced data cleaning time by <strong>12 hours</strong>, saving ~$10K/month in geocoding costs.</li>
-            <li>Designed and implemented a fuzzy matching algorithm improving data accuracy by <strong>40%</strong> across 500K+ records, preventing $20K in potential compliance penalties.</li>
-            <li>Integrated and transformed data into Power BI leveraging Power Query and DAX — produced <strong>10+ real-time KPI reports</strong>, decreasing operational costs by 20%.</li>
-            <li>Delivered actionable data insights to C-suite executives, driving a <strong>15% increase</strong> in adoption of strategic recommendations, optimizing processes and targeted marketing campaigns.</li>
+            <li>Streamlined data cleaning using Azure Synapse — reduced cleaning time by <strong>12 hours</strong> per cycle and saved ~$10K/month in geocoding costs.</li>
+            <li>Designed a fuzzy matching algorithm improving data accuracy by <strong>40%</strong> across 500K+ records, preventing $20K in compliance penalties.</li>
+            <li>Integrated data into Power BI using Power Query and DAX — produced <strong>10+ real-time KPI reports</strong>, decreasing operational costs by 20%.</li>
+            <li>Delivered insights to C-suite executives, driving a <strong>15% increase</strong> in adoption of strategic recommendations.</li>
           </ul>
         </div>
       </div>
 
     </div>
+  </div>
+</section>
+
+<!-- How I Work / Process -->
+<section class="process-section section section--dark" id="process" aria-labelledby="process-heading">
+  <div class="container">
+
+    <div class="section-header reveal">
+      <span class="section-label mono">Process</span>
+      <h2 class="section-title" id="process-heading">How I <em>Work</em></h2>
+      <p class="section-sub">Three steps. No surprises.</p>
+    </div>
+
+    <div class="process__steps">
+      <div class="process__step reveal">
+        <div class="process__step-num mono">01</div>
+        <h3>Diagnose</h3>
+        <p>I look at what you have — your data sources, tools, and existing reports — and figure out where the actual gap is. Most clients come in thinking they need a dashboard. Sometimes they need a clean pipeline first.</p>
+      </div>
+      <div class="process__step reveal">
+        <div class="process__step-num mono">02</div>
+        <h3>Agree Upfront</h3>
+        <p>I write a scope document: what gets built, what you'll receive, the timeline, and a fixed price. Nothing starts until you approve it. No surprises mid-project, no hourly billing creep.</p>
+      </div>
+      <div class="process__step reveal">
+        <div class="process__step-num mono">03</div>
+        <h3>Build &amp; Hand Off</h3>
+        <p>I build, test, and document everything. When I hand it over, I walk you through it — and your team can run it without me. That's the whole point.</p>
+      </div>
+    </div>
+
+    <div class="commitment-strip reveal">
+      <span class="section-label mono">My Commitments</span>
+      <div class="commitment-grid">
+
+        <div class="commitment-item">
+          <svg class="commitment-item__icon" width="32" height="32" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 4v6h6" /><path d="M23 20v-6h-6" />
+            <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15" />
+          </svg>
+          <h4>2 Rounds of Revisions</h4>
+          <p>Every deliverable includes two revision rounds at no extra cost. We get it right.</p>
+        </div>
+
+        <div class="commitment-item">
+          <svg class="commitment-item__icon" width="32" height="32" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+            <path d="M7 11V7a5 5 0 0 1 9.9-1" />
+          </svg>
+          <h4>You Own Everything</h4>
+          <p>All models, dashboards, and code transfer to you on completion. No lock-in, ever.</p>
+        </div>
+
+        <div class="commitment-item">
+          <svg class="commitment-item__icon" width="32" height="32" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg>
+          <h4>NDA on Request</h4>
+          <p>Happy to sign a non-disclosure before you share any sensitive business data.</p>
+        </div>
+
+        <div class="commitment-item">
+          <svg class="commitment-item__icon" width="32" height="32" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12 6 12 12 16 14" />
+          </svg>
+          <h4>8-Hour Response</h4>
+          <p>All project inquiries answered within 8 hours. You won't be left waiting.</p>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -194,37 +272,34 @@
     <div class="skills-grid">
 
       <div class="skill-group reveal">
-        <h4 class="skill-group__title mono">Programming</h4>
-        <div class="skill-tags">
-          <span>Python</span><span>SQL</span><span>JavaScript</span><span>R</span>
-          <span>Pandas</span><span>NumPy</span><span>Scikit-learn</span>
-          <span>Matplotlib</span><span>Seaborn</span>
-        </div>
-      </div>
-
-      <div class="skill-group reveal">
-        <h4 class="skill-group__title mono">BI &amp; ETL Tools</h4>
+        <h4 class="skill-group__title mono">Analytics &amp; Dashboards</h4>
         <div class="skill-tags">
           <span>Tableau</span><span>Tableau Prep</span><span>Power BI</span>
-          <span>Alteryx</span><span>Azure Synapse</span><span>Salesforce</span>
-          <span>Google Analytics</span><span>SSRS</span>
+          <span>DAX</span><span>Plotly</span><span>Google Analytics</span><span>SSRS</span>
         </div>
       </div>
 
       <div class="skill-group reveal">
-        <h4 class="skill-group__title mono">Databases &amp; Cloud</h4>
+        <h4 class="skill-group__title mono">Data Engineering</h4>
         <div class="skill-tags">
-          <span>PostgreSQL</span><span>MySQL</span><span>SQL Server</span>
-          <span>Google BigQuery</span><span>AWS Athena</span><span>AWS Redshift</span>
-          <span>AWS QuickSight</span>
+          <span>Python</span><span>SQL</span><span>Pandas</span><span>Alteryx</span>
+          <span>Azure Synapse</span><span>AWS S3</span><span>AWS Glue</span><span>AWS Athena</span><span>AWS Redshift</span>
         </div>
       </div>
 
       <div class="skill-group reveal">
-        <h4 class="skill-group__title mono">AI &amp; Automation</h4>
+        <h4 class="skill-group__title mono">AI &amp; Predictive</h4>
         <div class="skill-tags">
-          <span>Generative AI</span><span>LLMs</span><span>AI-Assisted Development</span>
-          <span>Zapier</span><span>Flask</span><span>Node.js</span><span>A/B Testing</span>
+          <span>scikit-learn</span><span>LightGBM</span><span>TensorFlow</span>
+          <span>OpenAI API</span><span>Generative AI</span><span>LLMs</span><span>A/B Testing</span>
+        </div>
+      </div>
+
+      <div class="skill-group reveal">
+        <h4 class="skill-group__title mono">Web &amp; Software</h4>
+        <div class="skill-tags">
+          <span>Flask</span><span>Node.js</span><span>JavaScript</span><span>HTML/CSS</span>
+          <span>PostgreSQL</span><span>MySQL</span><span>SQL Server</span><span>Google BigQuery</span>
         </div>
       </div>
 
@@ -238,7 +313,7 @@
 
     <div class="section-header reveal">
       <span class="section-label mono">Education</span>
-      <h2 class="section-title" id="education-heading">Academic Background</h2>
+      <h2 class="section-title" id="education-heading">Education</h2>
     </div>
 
     <div class="edu-grid">
@@ -268,11 +343,11 @@
   <div class="container">
     <div class="cta-box reveal">
       <div class="cta-box__glow"></div>
-      <span class="section-label mono">Let's Connect</span>
-      <h2 id="cta-heading">Interested in Working Together?</h2>
-      <p>I'm always open to collaborative projects that combine data analysis with real business impact.</p>
+      <span class="section-label mono">Work With Me</span>
+      <h2 id="cta-heading">Ready to Bring In a <em>Data Expert?</em></h2>
+      <p>I take on select projects where I can deliver measurable outcomes. Tell me what you're working with.</p>
       <a href="{{ url_for('contact') }}" class="btn btn--primary btn--lg">
-        Reach Out
+        Start a Project
         <svg class="btn__icon btn__icon--arrow" width="16" height="16" fill="none" stroke="currentColor"
           stroke-width="2" viewBox="0 0 24 24">
           <path d="M5 12h14M12 5l7 7-7 7" />

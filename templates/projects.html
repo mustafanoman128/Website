@@ -6,25 +6,76 @@
 <!-- Page Hero -->
 <section class="page-hero section--dark" aria-labelledby="projects-title">
   <div class="container">
-    <h1 class="page-hero__title" id="projects-title">My <em>Projects</em></h1>
+    <span class="section-label mono">Real data. Real outcomes.</span>
+    <h1 class="page-hero__title" id="projects-title">Selected <em>Work</em></h1>
   </div>
 </section>
 
 <!-- Projects Grid -->
 <section class="section" aria-labelledby="all-projects-heading">
   <div class="container">
-    
+
     <div class="section-header reveal">
       <span class="section-label mono">All Projects</span>
-      <h2 class="section-title" id="all-projects-heading">Selected Work</h2>
+      <h2 class="section-title" id="all-projects-heading">Data Systems That Delivered</h2>
     </div>
 
-    <!-- Project 01 -->
+    <!-- Project 01 — Cancer Center -->
     <div class="proj-detail reveal">
       <div class="proj-detail__media">
         <div class="proj-detail__img-wrap">
-          <img src="{{ url_for('static', filename='img/project-bhp.png') }}" alt="Pakistan Property Price Estimator" loading="lazy" />
+          <img src="{{ url_for('static', filename='img/project-cancer-center.png') }}" alt="Chicago Cancer Center Performance Dashboard" loading="lazy" />
           <div class="proj-detail__num mono">01</div>
+        </div>
+        <div class="proj-detail__links">
+          <a href="https://github.com/mustafanoman128/ChicagoCancerCenter-CCC-" target="_blank" rel="noopener noreferrer" class="proj-link proj-link--github">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+            </svg>
+            View on GitHub
+          </a>
+        </div>
+      </div>
+      <div class="proj-detail__info">
+        <h2 class="proj-detail__title">Chicago Cancer Center<br>Performance Dashboard</h2>
+        <p class="proj-detail__desc">A healthcare organization with $14.5M in revenue and 8,000+ patients needed to answer hard questions: which clinics to consolidate, which providers were underperforming, and how to optimize their payer mix. I built the dashboards that answered them. Power BI with DAX-powered KPIs covering provider benchmarks, staffing efficiency, Commercial vs. Medicare breakdown, referral source patterns, and patient retention. Leadership got the data they needed to act.</p>
+        <div class="proj-detail__outcomes">
+          <div class="proj-outcome">
+            <span class="proj-outcome__val mono">$14.5M</span>
+            <span class="proj-outcome__label">Revenue Analyzed</span>
+          </div>
+          <div class="proj-outcome">
+            <span class="proj-outcome__val mono">8K+</span>
+            <span class="proj-outcome__label">Patients</span>
+          </div>
+          <div class="proj-outcome">
+            <span class="proj-outcome__val mono">48K+</span>
+            <span class="proj-outcome__label">Visits</span>
+          </div>
+        </div>
+        <div class="proj-detail__section-title mono">What It Enabled</div>
+        <ul class="proj-detail__list">
+          <li>Clinic consolidation decisions backed by provider performance benchmarking</li>
+          <li>Payer mix strategy: Commercial vs. Medicare breakdown drove reimbursement planning</li>
+          <li>Patient retention modeling surfaced at-risk segments for targeted outreach</li>
+          <li>Referral source mapping (Hospital, PCP, self-referral) informed marketing allocation</li>
+          <li>DAX-powered KPI dashboards in Power BI delivered to C-suite for operational decisions</li>
+        </ul>
+        <div class="proj-detail__tags">
+          <span>Power BI</span><span>SQL</span><span>DAX</span>
+          <span>Healthcare Analytics</span><span>Resource Planning</span><span>Power Query</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-divider"></div>
+
+    <!-- Project 02 — Pakistan Property Price Estimator -->
+    <div class="proj-detail proj-detail--reverse reveal">
+      <div class="proj-detail__media">
+        <div class="proj-detail__img-wrap">
+          <img src="{{ url_for('static', filename='img/project-bhp.png') }}" alt="Pakistan Property Price Estimator" loading="lazy" />
+          <div class="proj-detail__num mono">02</div>
         </div>
         <div class="proj-detail__links">
           <a href="https://github.com/mustafanoman128/pakistan-property-price" target="_blank" rel="noopener noreferrer" class="proj-link proj-link--github">
@@ -43,7 +94,7 @@
       </div>
       <div class="proj-detail__info">
         <h2 class="proj-detail__title">Pakistan Property<br>Price Estimator</h2>
-        <p class="proj-detail__desc">AI-powered property valuation for Pakistan's residential market. Three LightGBM quantile regression models trained on 120,000+ Zameen.com listings deliver P10/P50/P90 confidence intervals — so you see a price range, not a false point estimate. Features 10,000+ neighborhood autocomplete with fuzzy matching, inflation adjustment (2019 → 2026 CPI), an EMI calculator, rental yield analysis, and multi-property comparison across Karachi, Lahore, Islamabad, Rawalpindi, and Faisalabad.</p>
+        <p class="proj-detail__desc">An AI system that tells you what a property is worth. Not a single number, but a calibrated range: a low estimate, a likely price, and a ceiling. Built for developers, agents, and investors across five Pakistani cities who need to stop pricing on instinct. Trained on 120,000+ Zameen.com listings, it returns a valuation in seconds — with inflation adjustment, rental yield analysis, EMI calculations, and multi-property comparison built in.</p>
         <div class="proj-detail__outcomes">
           <div class="proj-outcome">
             <span class="proj-outcome__val mono">120K+</span>
@@ -58,14 +109,13 @@
             <span class="proj-outcome__label">Confidence Range</span>
           </div>
         </div>
-        <div class="proj-detail__section-title mono">Key Techniques</div>
+        <div class="proj-detail__section-title mono">How It Works</div>
         <ul class="proj-detail__list">
-          <li>LightGBM quantile regression (3 models: P10, P50, P90) for calibrated price ranges</li>
-          <li>Neighbourhood-level target encoding across 10,000+ Pakistani locations</li>
-          <li>KMeans geo-clustering + distance-to-city-center as spatial features</li>
-          <li>Fuzzy location matching via rapidfuzz for typo-tolerant autocomplete</li>
-          <li>Time-based train/test split to prevent data leakage</li>
-          <li>FastAPI backend with inflation-adjusted 2026 pricing output</li>
+          <li>Three LightGBM models (P10, P50, P90) deliver a price range, not a false point estimate</li>
+          <li>Neighbourhood-level encoding across 10,000+ Pakistani locations with fuzzy autocomplete</li>
+          <li>KMeans geo-clustering and distance-to-city-center as spatial pricing features</li>
+          <li>Time-based train/test split to prevent data leakage across listing dates</li>
+          <li>FastAPI backend with CPI-adjusted 2026 pricing and live rental yield output</li>
         </ul>
         <div class="proj-detail__tags">
           <span>Python</span><span>LightGBM</span><span>FastAPI</span>
@@ -76,12 +126,12 @@
 
     <div class="proj-divider"></div>
 
-    <!-- Project 02 -->
-    <div class="proj-detail proj-detail--reverse reveal">
+    <!-- Project 03 — Finance App -->
+    <div class="proj-detail reveal">
       <div class="proj-detail__media">
         <div class="proj-detail__img-wrap">
           <img src="{{ url_for('static', filename='img/project-finance.png') }}" alt="Personal Finance App" loading="lazy" />
-          <div class="proj-detail__num mono">02</div>
+          <div class="proj-detail__num mono">03</div>
         </div>
         <div class="proj-detail__links">
           <a href="https://github.com/mustafanoman128/personal-finance" target="_blank" rel="noopener noreferrer" class="proj-link proj-link--github">
@@ -100,27 +150,27 @@
       </div>
       <div class="proj-detail__info">
         <h2 class="proj-detail__title">Personal<br>Finance App</h2>
-        <p class="proj-detail__desc">A full-stack personal finance tracker built with Node.js and Express, featuring 11 production-ready features including income/expense tracking, category breakdowns, budget goals, and a mobile-responsive dashboard. The backend exposes a REST API over SQLite with full CRUD operations, while the frontend is built in vanilla JavaScript with no framework dependencies.</p>
+        <p class="proj-detail__desc">A production-ready, full-stack web application. Built from scratch, deployed, and running live. This is what custom software delivery looks like: a complete Node.js/Express REST API over a SQLite database, paired with a mobile-responsive vanilla JavaScript frontend. Tracks income and expenses, sets budget goals with real-time progress, breaks spending down by category — and runs without a single framework dependency. The same architecture I use when building operational tools and internal applications for clients.</p>
         <div class="proj-detail__outcomes">
           <div class="proj-outcome">
-            <span class="proj-outcome__val mono">11</span>
-            <span class="proj-outcome__label">Features</span>
+            <span class="proj-outcome__val mono">Live</span>
+            <span class="proj-outcome__label">Deployed &amp; Running</span>
           </div>
           <div class="proj-outcome">
             <span class="proj-outcome__val mono">REST</span>
             <span class="proj-outcome__label">API Architecture</span>
           </div>
           <div class="proj-outcome">
-            <span class="proj-outcome__val mono">100%</span>
-            <span class="proj-outcome__label">Mobile Responsive</span>
+            <span class="proj-outcome__val mono">0</span>
+            <span class="proj-outcome__label">Framework Dependencies</span>
           </div>
         </div>
-        <div class="proj-detail__section-title mono">Key Features</div>
+        <div class="proj-detail__section-title mono">What It Includes</div>
         <ul class="proj-detail__list">
           <li>Income &amp; expense tracking with category tagging and date filtering</li>
           <li>Budget goal setting with real-time progress indicators</li>
-          <li>Node.js/Express REST API with full CRUD on SQLite database</li>
-          <li>Mobile-responsive vanilla JS frontend — no framework dependencies</li>
+          <li>Node.js/Express REST API with full CRUD operations on SQLite</li>
+          <li>Mobile-responsive vanilla JS frontend — no React, no Vue, no dependencies</li>
           <li>Deployed live with persistent storage</li>
         </ul>
         <div class="proj-detail__tags">
@@ -130,112 +180,13 @@
       </div>
     </div>
 
-    <div class="proj-divider"></div>
-
-    <!-- Project 03 -->
-    <div class="proj-detail reveal">
-      <div class="proj-detail__media">
-        <div class="proj-detail__img-wrap">
-          <img src="{{ url_for('static', filename='img/project-cancer-center.png') }}" alt="Chicago Cancer Center Performance Dashboard" loading="lazy" />
-          <div class="proj-detail__num mono">03</div>
-        </div>
-        <div class="proj-detail__links">
-          <a href="https://github.com/mustafanoman128/ChicagoCancerCenter-CCC-" target="_blank" rel="noopener noreferrer" class="proj-link proj-link--github">
-            <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
-              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
-            </svg>
-            View on GitHub
-          </a>
-        </div>
-      </div>
-      <div class="proj-detail__info">
-        <h2 class="proj-detail__title">Chicago Cancer Center<br>Performance Dashboard</h2>
-        <p class="proj-detail__desc">Led a cross-functional analysis of 8,000+ patients, 48,000+ visits, and $14.5M in revenue for a Chicago-area oncology center. Built dashboards assessing provider performance, staffing changes, payer mix (Commercial vs. Medicare), referral source patterns, and patient retention — enabling data-informed decisions on clinic consolidation and operational efficiency.</p>
-        <div class="proj-detail__outcomes">
-          <div class="proj-outcome">
-            <span class="proj-outcome__val mono">$14.5M</span>
-            <span class="proj-outcome__label">Revenue Analyzed</span>
-          </div>
-          <div class="proj-outcome">
-            <span class="proj-outcome__val mono">8K+</span>
-            <span class="proj-outcome__label">Patients</span>
-          </div>
-          <div class="proj-outcome">
-            <span class="proj-outcome__val mono">48K+</span>
-            <span class="proj-outcome__label">Visits</span>
-          </div>
-        </div>
-        <div class="proj-detail__section-title mono">Key Insights</div>
-        <ul class="proj-detail__list">
-          <li>Provider performance benchmarking identified staffing consolidation opportunities</li>
-          <li>Payer mix analysis: Commercial vs. Medicare breakdown drove reimbursement strategy</li>
-          <li>Patient retention modeling surfaced at-risk segments for targeted outreach</li>
-          <li>Referral source mapping (Hospital, PCP, self-referral) informed marketing allocation</li>
-          <li>Operational efficiency recommendations driven by DAX-powered KPI dashboards in Power BI</li>
-        </ul>
-        <div class="proj-detail__tags">
-          <span>Power BI</span><span>SQL</span><span>DAX</span>
-          <span>Healthcare Analytics</span><span>Resource Planning</span><span>Power Query</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="proj-divider"></div>
-
-    <!-- Project 04 -->
-    <div class="proj-detail proj-detail--reverse reveal">
-      <div class="proj-detail__media">
-        <div class="proj-detail__img-wrap">
-          <img src="{{ url_for('static', filename='img/project-airline.png') }}" alt="Airline Passenger Satisfaction Analytics" loading="lazy" />
-          <div class="proj-detail__num mono">04</div>
-        </div>
-        <div class="proj-detail__links">
-          <a href="https://public.tableau.com/app/profile/mustafanoman128/viz/AirlineDashboard_17519136087230/Dashboard1" target="_blank" rel="noopener noreferrer" class="proj-link proj-link--tableau">
-            <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
-              <path d="M8 2a6 6 0 1 0 0 12A6 6 0 0 0 8 2zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
-              <path d="M7 4h2v5H7zm0 6h2v2H7z"/>
-            </svg>
-            View on Tableau Public
-          </a>
-        </div>
-      </div>
-      <div class="proj-detail__info">
-        <h2 class="proj-detail__title">Airline Passenger<br>Satisfaction Analysis</h2>
-        <p class="proj-detail__desc">This Tableau workbook analyzes factors like seat comfort, cabin service, food quality, and value for money using verified airline review data. Visuals include histograms for rating distributions, scatter plots for correlations, and satisfaction trend lines broken out by route type, cabin class, and aircraft model.</p>
-        <div class="proj-detail__outcomes">
-          <div class="proj-outcome">
-            <span class="proj-outcome__val mono">45%</span>
-            <span class="proj-outcome__label">Complaints from Delays</span>
-          </div>
-          <div class="proj-outcome">
-            <span class="proj-outcome__val mono">IFE</span>
-            <span class="proj-outcome__label">Top Complaint Driver</span>
-          </div>
-          <div class="proj-outcome">
-            <span class="proj-outcome__val mono">Economy</span>
-            <span class="proj-outcome__label">Lowest Satisfaction</span>
-          </div>
-        </div>
-        <div class="proj-detail__section-title mono">Key Insights</div>
-        <ul class="proj-detail__list">
-          <li>45% of all complaints attributable to delays and poor in-flight entertainment</li>
-          <li>Economy cabin on A380 aircraft had the lowest comfort scores</li>
-          <li>Business class passengers showed 3x higher retention intent</li>
-          <li>Seat comfort correlation with NPS score: r = 0.72</li>
-        </ul>
-        <div class="proj-detail__tags">
-          <span>Tableau</span><span>Python</span><span>EDA</span>
-          <span>NPS Analysis</span><span>Correlation</span><span>Customer Analytics</span>
-        </div>
-      </div>
-    </div>
 
   </div>
 </section>
 
 <section class="section section--dark" aria-labelledby="certs-heading">
   <div class="container">
-    
+
     <div class="section-header reveal">
       <span class="section-label mono">Certifications</span>
       <h2 class="section-title" id="certs-heading">Verified Credentials</h2>
@@ -280,7 +231,6 @@
             <span>ETL Workflows</span><span>Data Blending</span>
             <span>Predictive Tools</span><span>Spatial Analytics</span>
           </div>
-          
           <div class="cert-actions">
             <a href="{{ url_for('static', filename='pdfs/alteryx-core.pdf') }}" target="_blank" class="btn btn--outline-teal cert-btn">
               <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
@@ -289,7 +239,6 @@
               View Certificate PDF
             </a>
           </div>
-
         </div>
       </div>
 
@@ -329,7 +278,6 @@
             <span>Model Building</span><span>Evaluation Metrics</span>
             <span>Classification</span><span>Clustering</span><span>Forecasting</span>
           </div>
-
           <div class="cert-actions">
             <a href="{{ url_for('static', filename='pdfs/alteryx-ml.pdf') }}" target="_blank" class="btn btn--outline-teal cert-btn">
               <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
@@ -338,7 +286,6 @@
               View Certificate PDF
             </a>
           </div>
-
         </div>
       </div>
 
@@ -378,7 +325,6 @@
             <span>Data Visualization</span><span>LOD Expressions</span>
             <span>Dashboard Design</span><span>Data Storytelling</span>
           </div>
-
           <div class="cert-actions">
             <a href="{{ url_for('static', filename='pdfs/tableau-foundations.pdf') }}" target="_blank" class="btn btn--outline-teal cert-btn">
               <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
@@ -387,23 +333,23 @@
               View Certificate PDF
             </a>
           </div>
-
         </div>
       </div>
 
     </div>
   </div>
 </section>
+
 <!-- CTA Section -->
 <section class="cta-section section" aria-labelledby="cta-heading">
   <div class="container">
     <div class="cta-box reveal">
       <div class="cta-box__glow"></div>
-      <span class="section-label mono">Let's Collaborate</span>
-      <h2 id="cta-heading">Have a Data Challenge<br><em>Worth Solving?</em></h2>
-      <p>From predictive models to executive dashboards — let's figure out the right solution together.</p>
+      <span class="section-label mono">Let's Work Together</span>
+      <h2 id="cta-heading">Have a Data Problem<br><em>Worth Solving?</em></h2>
+      <p>I take on select projects where I can deliver measurable outcomes. Tell me what you're working with.</p>
       <a href="{{ url_for('contact') }}" class="btn btn--primary btn--lg">
-        Get In Touch
+        Start a Project
         <svg class="btn__icon btn__icon--arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path d="M5 12h14M12 5l7 7-7 7"/>
         </svg>
