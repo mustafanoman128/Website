@@ -46,11 +46,11 @@
         <span></span><span></span><span></span>
       </button>
       <ul class="nav__links" id="navLinks">
-        <li><a href="{{ url_for('home') }}" {% if request.endpoint=='home' %}class="active" {% endif %}>Home</a></li>
-        <li><a href="{{ url_for('services') }}" {% if request.endpoint=='services' %}class="active" {% endif %}>Services</a></li>
-        <li><a href="{{ url_for('projects') }}" {% if request.endpoint=='projects' %}class="active" {% endif %}>Projects</a></li>
+        <li><a href="{{ url_for('home') }}" {% if request.endpoint=='home' %}class="active" aria-current="page"{% endif %}>Home</a></li>
+        <li><a href="{{ url_for('services') }}" {% if request.endpoint=='services' %}class="active" aria-current="page"{% endif %}>Services</a></li>
+        <li><a href="{{ url_for('projects') }}" {% if request.endpoint=='projects' %}class="active" aria-current="page"{% endif %}>Projects</a></li>
         <li class="nav__dropdown">
-          <a href="{{ url_for('about') }}" {% if request.endpoint=='about' %}class="active" {% endif %}>About
+          <a href="{{ url_for('about') }}" {% if request.endpoint=='about' %}class="active" aria-current="page"{% endif %}>About
             <svg class="nav__dropdown-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
               <path d="M6 9l6 6 6-6"/>
             </svg>
@@ -62,7 +62,7 @@
             <li><a href="{{ url_for('about') }}#skills">Skills &amp; Tools</a></li>
           </ul>
         </li>
-        <li><a href="{{ url_for('blog') }}" {% if request.endpoint in ['blog','blog_post'] %}class="active" {% endif %}>Blog</a></li>
+        <li><a href="{{ url_for('blog') }}" {% if request.endpoint in ['blog','blog_post'] %}class="active" aria-current="page"{% endif %}>Blog</a></li>
         {% if current_user.is_authenticated %}
           {% if current_user.is_admin %}
           <li><a href="{{ url_for('admin_dashboard') }}" class="nav__cta nav__resume">Admin</a></li>

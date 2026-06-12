@@ -610,6 +610,7 @@ ul { list-style: none; }
   margin-bottom: var(--sp-8);
 }
 .hero__title-normal { display: block; color: var(--white); }
+.hero__title-line { white-space: nowrap; }
 .hero__title-outline {
   display: block;
   background: var(--grad-primary);
@@ -738,6 +739,7 @@ ul { list-style: none; }
   color: var(--text-3);
   margin-top: 2px;
 }
+.hero__float-dot { color: var(--teal); }
 .hero__float-trend {
   display: flex;
   align-items: center;
@@ -2587,6 +2589,29 @@ select.form-control option { background: var(--ink-2); color: var(--white); }
 
 /* B. Nav — mobile overlay layout + Resume pill */
 @media (max-width: 768px) {
+  .nav__dropdown-menu {
+    display: flex !important;
+    flex-direction: column;
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    background: transparent;
+    box-shadow: none;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    min-width: unset;
+    gap: 0;
+  }
+  .nav__dropdown-menu li a {
+    font-size: 0.8rem !important;
+    padding: 0.1rem var(--sp-8) !important;
+    color: var(--text-3) !important;
+    opacity: 0.75;
+    background: none !important;
+  }
+  .nav__dropdown-menu li a:active { color: var(--teal) !important; opacity: 1; }
   .nav__links {
     justify-content: space-evenly;
     padding-top: max(3.5rem, calc(env(safe-area-inset-top, 0px) + 3rem));
@@ -3135,7 +3160,7 @@ html {
 }
 
 /* ─── Testimonials ────────────────────────────────────────────── */
-.testimonials-grid {
+.testimonials-list {
   max-width: 700px;
   margin: 0 auto;
 }
