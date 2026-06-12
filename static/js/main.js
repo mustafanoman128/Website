@@ -1,7 +1,4 @@
-/* ============================================================
-   MUSTAFA NOMAN — TERMINAL NOIR × DATA LUXURY
-   main.js v3.0 — Premium Interactions
-   ============================================================ */
+/* main.js — Mustafa Noman Portfolio */
 
 (function () {
   'use strict';
@@ -13,11 +10,6 @@
       const now = Date.now();
       if (now - last >= ms) { last = now; fn(...args); }
     };
-  };
-
-  const debounce = (fn, ms) => {
-    let t;
-    return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
   };
 
   /* ── Page Loader ─────────────────────────────────────────── */
@@ -56,40 +48,6 @@
       .to('.hero__avail',        { y: 0, opacity: 1, duration: 0.6, ease: 'back.out(2)' }, '-=0.5')
       .to('.hero__float--left',  { x: 0, y: 0, opacity: 1, duration: 0.65, ease: 'back.out(1.8)' }, '-=0.45')
       .to('.hero__float--right', { x: 0, y: 0, opacity: 1, duration: 0.65, ease: 'back.out(1.8)' }, '-=0.55');
-  };
-
-  /* ── Custom Cursor ───────────────────────────────────────── */
-  const initCursor = () => {
-    if (window.matchMedia('(pointer: coarse)').matches) return;
-
-    const cursor = document.createElement('div');
-    cursor.className = 'cursor';
-    const follower = document.createElement('div');
-    follower.className = 'cursor-follower';
-    document.body.append(cursor, follower);
-
-    let mx = -100, my = -100, fx = -100, fy = -100;
-
-    document.addEventListener('mousemove', (e) => {
-      mx = e.clientX; my = e.clientY;
-      cursor.style.left = mx + 'px';
-      cursor.style.top  = my + 'px';
-    });
-
-    const followCursor = () => {
-      fx += (mx - fx) * 0.12;
-      fy += (my - fy) * 0.12;
-      follower.style.left = fx + 'px';
-      follower.style.top  = fy + 'px';
-      requestAnimationFrame(followCursor);
-    };
-    followCursor();
-
-    const hoverEls = 'a, button, .project-card, .cert-card, .stack-icon, .skill-tags span';
-    document.querySelectorAll(hoverEls).forEach(el => {
-      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
-    });
   };
 
   /* ── Scroll Progress ─────────────────────────────────────── */
@@ -164,7 +122,7 @@
 
   /* ── Scroll Reveal ───────────────────────────────────────── */
   const initReveal = () => {
-    const els = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+    const els = document.querySelectorAll('.reveal');
     if (!els.length) return;
 
     const parents = new Map();
@@ -186,141 +144,6 @@
     }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
 
     els.forEach(el => obs.observe(el));
-  };
-
-  /* ── Hero Canvas Particles ───────────────────────────────── */
-  const initHeroCanvas = () => {
-    const hero = document.getElementById('hero');
-    if (!hero) return;
-
-    const canvas = document.createElement('canvas');
-    canvas.className = 'hero__canvas';
-    hero.prepend(canvas);
-    const ctx = canvas.getContext('2d');
-
-    const teal = '0, 229, 184';
-    const violet = '168, 85, 247';
-    const amber = '245, 158, 11';
-    let W, H, nodes, animId;
-    let _mx = null, _my = null;
-
-    hero.addEventListener('mousemove', e => { _mx = e.clientX; _my = e.clientY; });
-    hero.addEventListener('mouseleave', () => { _mx = null; _my = null; });
-
-    const resize = () => {
-      W = canvas.width  = hero.offsetWidth;
-      H = canvas.height = hero.offsetHeight;
-    };
-
-    class Node {
-      constructor() { this.reset(); }
-      reset() {
-        this.x = Math.random() * W;
-        this.y = Math.random() * H;
-        this.vx = (Math.random() - 0.5) * 0.5;
-        this.vy = (Math.random() - 0.5) * 0.5;
-        this.r  = Math.random() * 2 + 1;
-        const rand = Math.random();
-        this.color = rand > 0.91 ? amber : rand > 0.82 ? violet : teal;
-        this.life = Math.random();
-      }
-      update() {
-        if (_mx !== null) {
-          const rect = canvas.getBoundingClientRect();
-          const mx = _mx - rect.left;
-          const my = _my - rect.top;
-          const dx = this.x - mx, dy = this.y - my;
-          const d = Math.sqrt(dx * dx + dy * dy);
-          if (d < 90) { const f = (90 - d) / 90 * 0.28; this.vx += (dx / d) * f; this.vy += (dy / d) * f; }
-        }
-        this.vx *= 0.98; this.vy *= 0.98;
-        this.x += this.vx;
-        this.y += this.vy;
-        this.life += 0.003;
-        if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
-      }
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${this.color}, ${0.55 + Math.sin(this.life) * 0.25})`;
-        ctx.fill();
-      }
-    }
-
-    const isMobile = window.matchMedia('(pointer: coarse)').matches;
-
-    const init = () => {
-      resize();
-      const count = isMobile
-        ? Math.min(35, Math.floor(W * H / 20000))
-        : Math.min(140, Math.floor(W * H / 8000));
-      nodes = Array.from({ length: count }, () => new Node());
-    };
-
-    const connect = () => {
-      const maxDist = isMobile ? 110 : 180;
-      for (let i = 0; i < nodes.length; i++) {
-        for (let j = i + 1; j < nodes.length; j++) {
-          const dx = nodes[i].x - nodes[j].x;
-          const dy = nodes[i].y - nodes[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < maxDist) {
-            const alpha = (1 - dist / maxDist) * 0.28;
-            ctx.beginPath();
-            ctx.moveTo(nodes[i].x, nodes[i].y);
-            ctx.lineTo(nodes[j].x, nodes[j].y);
-            ctx.strokeStyle = `rgba(${teal}, ${alpha})`;
-            ctx.lineWidth = 0.8;
-            ctx.stroke();
-          }
-        }
-      }
-    };
-
-    const tick = () => {
-      ctx.clearRect(0, 0, W, H);
-      nodes.forEach(n => { n.update(); n.draw(); });
-      connect();
-      animId = requestAnimationFrame(tick);
-    };
-
-    init();
-    tick();
-
-    window.addEventListener('resize', debounce(init, 200));
-
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) cancelAnimationFrame(animId);
-      else tick();
-    });
-  };
-
-  /* ── Hero Word Cycler ────────────────────────────────────── */
-  const initHeroWord = () => {
-    const outline = document.querySelector('.hero__title-outline');
-    if (!outline) return;
-    const words = ['Data', 'Numbers', 'Insights', 'Stories', 'Patterns'];
-    const chars = '!<>-_\\/[]{}—=+*^?#@$%';
-    let idx = 0;
-
-    const scramble = (target, cb) => {
-      let iter = 0;
-      const total = target.length * 3;
-      const iv = setInterval(() => {
-        outline.textContent = Array.from(target).map((ch, i) =>
-          i < Math.floor(iter / 3)
-            ? ch
-            : chars[Math.floor(Math.random() * chars.length)]
-        ).join('');
-        if (++iter >= total) { clearInterval(iv); outline.textContent = target; cb && cb(); }
-      }, 35);
-    };
-
-    const cycle = () => {
-      idx = (idx + 1) % words.length;
-      scramble(words[idx], () => setTimeout(cycle, 2800));
-    };
-    setTimeout(cycle, 3000);
   };
 
   /* ── Number Counters ─────────────────────────────────────── */
@@ -377,32 +200,6 @@
     }, 16);
 
     document.addEventListener('mousemove', move);
-  };
-
-  /* ── 3D Tilt ─────────────────────────────────────────────── */
-  const initTilt = () => {
-    if (window.matchMedia('(pointer: coarse)').matches) return;
-    const cards = document.querySelectorAll(
-      '.project-card, .cert-card, .cert-detail-card, .timeline__card, .edu-card, .skill-group'
-    );
-
-    cards.forEach(card => {
-      card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const cx = rect.width  / 2;
-        const cy = rect.height / 2;
-        const rx = (y - cy) / 50;
-        const ry = (cx - x) / 50;
-        card.style.transform = `perspective(1200px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-8px)`;
-      });
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = 'perspective(1200px) rotateX(0) rotateY(0) translateY(0)';
-        card.style.transition = 'transform 0.5s cubic-bezier(0.34,1.56,0.64,1)';
-        setTimeout(() => { card.style.transition = ''; }, 500);
-      });
-    });
   };
 
   /* ── Skills Strip Pause ──────────────────────────────────── */
@@ -493,24 +290,6 @@
     });
   };
 
-  /* ── Magnetic Buttons ────────────────────────────────────── */
-  const initMagnetic = () => {
-    if (window.matchMedia('(pointer: coarse)').matches) return;
-    document.querySelectorAll('.btn--primary, .btn--hero').forEach(btn => {
-      btn.addEventListener('mousemove', (e) => {
-        const rect = btn.getBoundingClientRect();
-        const dx = e.clientX - (rect.left + rect.width/2);
-        const dy = e.clientY - (rect.top + rect.height/2);
-        btn.style.transform = `translate(${dx * 0.2}px, ${dy * 0.2}px) scale(1.03)`;
-      });
-      btn.addEventListener('mouseleave', () => {
-        btn.style.transform = '';
-        btn.style.transition = 'transform 0.4s cubic-bezier(0.34,1.56,0.64,1)';
-        setTimeout(() => btn.style.transition = '', 400);
-      });
-    });
-  };
-
   /* ── ScrollTrigger Parallax ──────────────────────────────── */
   const initScrollParallax = () => {
     if (window.matchMedia('(pointer: coarse)').matches) return;
@@ -525,14 +304,6 @@
       const el = document.querySelector(sel);
       if (el) gsap.to(el, { ...props, scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub } });
     });
-
-    const heroCanvas = document.querySelector('.hero__canvas');
-    if (heroCanvas) {
-      gsap.to(heroCanvas, {
-        opacity: 0,
-        scrollTrigger: { trigger: '.hero', start: '60% top', end: 'bottom top', scrub: true }
-      });
-    }
 
   };
 
@@ -559,39 +330,21 @@
     badge.textContent = `${mins} min read`;
   };
 
-  /* ── Console Signature ───────────────────────────────────── */
-  const initConsole = () => {
-    const styles = [
-      'background:linear-gradient(90deg,#0a0c10,#11141a);color:#00d4aa;font-size:14px;font-weight:bold;padding:12px 20px;border-radius:6px;border-left:4px solid #00d4aa;',
-      'color:#00d4aa;font-size:11px;',
-      'color:#5a6680;font-size:10px;'
-    ];
-    console.log('%c ❯ Mustafa Noman — Data Analyst ', styles[0]);
-    console.log('%c Revenue Ops · BI · ML · Chicago ', styles[1]);
-    console.log('%c mustafanoman128@gmail.com ', styles[2]);
-  };
-
   /* ── Init All ────────────────────────────────────────────── */
   initLoader();
-  initCursor();
   initScrollProgress();
   initNav();
   initBurger();
   initReveal();
-  initHeroCanvas();
-  initHeroWord();
   initCounters();
   initParallax();
-  initTilt();
   initSkillsStrip();
   initFlash();
   initForms();
   initCopy();
   initSmoothScroll();
   initScrollParallax();
-  initMagnetic();
   initScrollTop();
   initReadingTime();
-  initConsole();
 
 })();

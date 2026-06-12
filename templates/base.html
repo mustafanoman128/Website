@@ -4,20 +4,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>{% block title %}Mustafa Noman — Data Analyst & AI Engineer{% endblock %}</title>
+  <title>{% block title %}Mustafa Noman — Freelance Data & AI Engineer{% endblock %}</title>
   <meta name="description"
-    content="Mustafa Noman — Data Analyst & AI Engineer specializing in Revenue Operations, Business Intelligence, Machine Learning, and AI-powered applications." />
+    content="Mustafa Noman — Freelance Data & AI Engineer. I build analytics dashboards, ETL pipelines, machine learning systems, and data-powered web applications for businesses." />
   <meta name="keywords"
-    content="Data Analyst, Business Intelligence, Machine Learning, Tableau, SQL, Python, Revenue Operations" />
+    content="Freelance Data Engineer, Data Analyst, Business Intelligence, Machine Learning, Tableau, SQL, Python, ETL Pipeline, AI Engineer" />
   <meta name="author" content="Mustafa Noman" />
   <meta name="theme-color" content="#07080d" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Mustafa Noman" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Mustafa Noman — Data Analyst Portfolio" />
+  <meta property="og:title" content="Mustafa Noman — Freelance Data & AI Engineer" />
   <meta property="og:description"
-    content="Transforming complex datasets into actionable insights that drive measurable revenue growth." />
+    content="Freelance data engineer building analytics dashboards, ETL pipelines, and ML systems for businesses. Enterprise experience, freelance accountability." />
   <meta property="og:url" content="https://mustafanoman.com" />
   <meta property="og:image" content="https://mustafanoman.com/static/img/hero.jpeg" />
   <link rel="icon" type="image/svg+xml"
@@ -47,23 +47,29 @@
       </button>
       <ul class="nav__links" id="navLinks">
         <li><a href="{{ url_for('home') }}" {% if request.endpoint=='home' %}class="active" {% endif %}>Home</a></li>
-        <li><a href="{{ url_for('about') }}" {% if request.endpoint=='about' %}class="active" {% endif %}>About</a></li>
-        <li><a href="{{ url_for('projects') }}" {% if request.endpoint=='projects' %}class="active" {% endif
-            %}>Projects</a></li>
-        <li><a href="{{ url_for('blog') }}" {% if request.endpoint in ['blog','blog_post'] %}class="active" {% endif
-            %}>Blog</a></li>
-        <li><a href="{{ url_for('contact') }}" {% if request.endpoint=='contact' %}class="active" {% endif
-            %}>Contact</a></li>
+        <li><a href="{{ url_for('services') }}" {% if request.endpoint=='services' %}class="active" {% endif %}>Services</a></li>
+        <li><a href="{{ url_for('projects') }}" {% if request.endpoint=='projects' %}class="active" {% endif %}>Projects</a></li>
+        <li class="nav__dropdown">
+          <a href="{{ url_for('about') }}" {% if request.endpoint=='about' %}class="active" {% endif %}>About
+            <svg class="nav__dropdown-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </a>
+          <ul class="nav__dropdown-menu">
+            <li><a href="{{ url_for('about') }}">About Me</a></li>
+            <li><a href="{{ url_for('about') }}#process">How I Work</a></li>
+            <li><a href="{{ url_for('about') }}#experience">Track Record</a></li>
+            <li><a href="{{ url_for('about') }}#skills">Skills &amp; Tools</a></li>
+          </ul>
+        </li>
+        <li><a href="{{ url_for('blog') }}" {% if request.endpoint in ['blog','blog_post'] %}class="active" {% endif %}>Blog</a></li>
         {% if current_user.is_authenticated %}
           {% if current_user.is_admin %}
-          <li><a href="{{ url_for('admin_dashboard') }}" class="nav__cta">Admin</a></li>
+          <li><a href="{{ url_for('admin_dashboard') }}" class="nav__cta nav__resume">Admin</a></li>
           {% endif %}
           <li><a href="{{ url_for('logout') }}">Logout</a></li>
-        {% else %}
-          <li><a href="{{ url_for('login') }}" {% if request.endpoint=='login' %}class="active"{% endif %}>Login</a></li>
-          <li><a href="{{ url_for('signup') }}" class="nav__cta">Sign Up</a></li>
         {% endif %}
-        <li><a href="{{ url_for('static', filename='pdfs/Mustafa_Resume.pdf') }}" target="_blank" rel="noopener noreferrer" class="nav__cta nav__resume">↓ Resume</a></li>
+        <li><a href="{{ url_for('contact') }}" class="nav__hire">Hire Me</a></li>
       </ul>
     </div>
   </nav>
@@ -90,7 +96,7 @@
           style="font-family:var(--font-display);font-size:1.1rem;font-weight:800;color:var(--white)">Mustafa
           Noman</span><span
           style="font-family:var(--font-display);font-size:1.1rem;font-weight:800;color:var(--teal)">]</span>
-        <p>Data Analyst &middot; Karachi, PK</p>
+        <p>Freelance Data &amp; AI Engineer &middot; Karachi, PK</p>
       </div>
       <nav class="footer__nav" aria-label="Footer navigation">
         <a href="{{ url_for('home') }}">Home</a>

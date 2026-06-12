@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+{% block title %}Services — Mustafa Noman{% endblock %}
+
+{% block content %}
+
+<!-- Page Hero -->
+<section class="page-hero section--dark" aria-labelledby="services-title">
+  <div class="container">
+    <span class="section-label mono">What I Build</span>
+    <h1 class="page-hero__title" id="services-title">Your data should answer questions, not raise them.</h1>
+  </div>
+</section>
+
+<!-- Services Grid -->
+<section class="section" aria-label="Services offered">
+  <div class="container">
+    <div class="services-grid">
+
+      <!-- 01 Analytics & Dashboards -->
+      <article class="service-card reveal" aria-labelledby="svc-analytics">
+        <div class="service-card__header">
+          <span class="service-card__num mono">01</span>
+          <div class="service-card__icon" aria-hidden="true">
+            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+              <path d="M3 3v18h18"/>
+              <path d="M7 16l4-8 4 4 4-7"/>
+            </svg>
+          </div>
+        </div>
+        <h2 class="service-card__title" id="svc-analytics">Analytics &amp; Dashboards</h2>
+        <p class="service-card__desc">Turn raw operational data into dashboards leadership actually uses. I design and build reporting systems in Tableau and Python that surface the right numbers to the right people — in real time or on a schedule.</p>
+        <ul class="service-card__deliverables">
+          <li>Executive dashboards &amp; KPI scorecards</li>
+          <li>Automated weekly and monthly reports</li>
+          <li>Sales pipeline and funnel views</li>
+          <li>Multi-source data consolidation</li>
+        </ul>
+        <div class="service-card__tools">
+          <span>Tableau</span><span>Power BI</span><span>Python</span><span>SQL</span><span>Plotly</span>
+        </div>
+        <a href="{{ url_for('contact') }}" class="btn btn--outline-teal service-card__cta">
+          Start a Project
+          <svg class="btn__icon btn__icon--arrow" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </article>
+
+      <!-- 02 Data & ETL Engineering -->
+      <article class="service-card reveal" aria-labelledby="svc-etl">
+        <div class="service-card__header">
+          <span class="service-card__num mono">02</span>
+          <div class="service-card__icon" aria-hidden="true">
+            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+              <ellipse cx="12" cy="5" rx="9" ry="3"/>
+              <path d="M21 12c0 1.66-4.03 3-9 3S3 13.66 3 12"/>
+              <path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/>
+            </svg>
+          </div>
+        </div>
+        <h2 class="service-card__title" id="svc-etl">Data &amp; ETL Engineering</h2>
+        <p class="service-card__desc">Build the data infrastructure your analytics team is missing. From extracting data out of messy APIs to loading clean, structured tables into your warehouse — designed to run reliably with AWS cloud where it makes sense.</p>
+        <ul class="service-card__deliverables">
+          <li>Automated ETL pipelines &amp; scheduling</li>
+          <li>API data ingestion &amp; transformation</li>
+          <li>AWS infrastructure (S3, Glue, Lambda, RDS)</li>
+          <li>Data warehouse schema design</li>
+        </ul>
+        <div class="service-card__tools">
+          <span>Python</span><span>SQL</span><span>AWS</span><span>Pandas</span><span>dbt</span>
+        </div>
+        <a href="{{ url_for('contact') }}" class="btn btn--outline-teal service-card__cta">
+          Start a Project
+          <svg class="btn__icon btn__icon--arrow" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </article>
+
+      <!-- 03 AI & Predictive Systems -->
+      <article class="service-card reveal" aria-labelledby="svc-ai">
+        <div class="service-card__header">
+          <span class="service-card__num mono">03</span>
+          <div class="service-card__icon" aria-hidden="true">
+            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+              <path d="M2 17l10 5 10-5"/>
+              <path d="M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+        </div>
+        <h2 class="service-card__title" id="svc-ai">AI &amp; Predictive Systems</h2>
+        <p class="service-card__desc">Replace gut feel with models that generalize. I build machine learning systems — from demand forecasting to LLM-powered internal tools — trained on your actual business data and built to be maintained long-term.</p>
+        <ul class="service-card__deliverables">
+          <li>Demand &amp; revenue forecasting models</li>
+          <li>Churn prediction &amp; customer scoring</li>
+          <li>LLM-powered internal tools &amp; chatbots</li>
+          <li>Anomaly detection &amp; alerting systems</li>
+        </ul>
+        <div class="service-card__tools">
+          <span>Python</span><span>scikit-learn</span><span>LightGBM</span><span>OpenAI API</span><span>TensorFlow</span>
+        </div>
+        <a href="{{ url_for('contact') }}" class="btn btn--outline-teal service-card__cta">
+          Start a Project
+          <svg class="btn__icon btn__icon--arrow" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </article>
+
+      <!-- 04 Web & Software Development -->
+      <article class="service-card reveal" aria-labelledby="svc-web">
+        <div class="service-card__header">
+          <span class="service-card__num mono">04</span>
+          <div class="service-card__icon" aria-hidden="true">
+            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+              <polyline points="16 18 22 12 16 6"/>
+              <polyline points="8 6 2 12 8 18"/>
+            </svg>
+          </div>
+        </div>
+        <h2 class="service-card__title" id="svc-web">Web &amp; Software Development</h2>
+        <p class="service-card__desc">Sometimes the data problem is really a software problem. I build web applications, internal tools, and operational systems — clean, functional, and designed to solve the actual workflow rather than a generic template.</p>
+        <ul class="service-card__deliverables">
+          <li>Internal admin &amp; management tools</li>
+          <li>Ledger &amp; finance applications</li>
+          <li>Data-entry &amp; operations portals</li>
+          <li>Flask-based full-stack web apps</li>
+        </ul>
+        <div class="service-card__tools">
+          <span>Flask</span><span>Python</span><span>PostgreSQL</span><span>JavaScript</span><span>HTML/CSS</span>
+        </div>
+        <a href="{{ url_for('contact') }}" class="btn btn--outline-teal service-card__cta">
+          Start a Project
+          <svg class="btn__icon btn__icon--arrow" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- Pricing Signal -->
+<section class="section section--dark" aria-label="Project pricing">
+  <div class="container">
+    <div class="pricing-note reveal">
+      <div class="pricing-note__left">
+        <span class="section-label mono">Pricing</span>
+        <p>Most projects <strong>start from $100</strong> and scale with scope, complexity, and timeline. A one-off dashboard cleanup is a very different engagement from a multi-month ML pipeline — I'll scope your project and give you a fixed price upfront before any work begins.</p>
+      </div>
+      <a href="{{ url_for('contact') }}" class="btn btn--outline-teal">
+        Get a Quote
+        <svg class="btn__icon btn__icon--arrow" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Bottom CTA -->
+<section class="section section--dark" aria-label="Start a project">
+  <div class="container">
+    <div class="cta-box reveal">
+      <span class="section-label mono">Ready to Start?</span>
+      <h2>Not Sure Which Service Fits?</h2>
+      <p>Describe your data problem and I'll tell you exactly what's needed — no sales call, no commitment required.</p>
+      <div class="cta-box__actions">
+        <a href="{{ url_for('contact') }}" class="btn btn--primary">
+          Tell Me About Your Project
+          <svg class="btn__icon btn__icon--arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+        <a href="{{ url_for('about') }}#process" class="btn btn--ghost">
+          How I Work
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
