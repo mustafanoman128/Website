@@ -256,23 +256,6 @@
     });
   };
 
-  /* ── Copy Contact Details ────────────────────────────────── */
-  const initCopy = () => {
-    document.querySelectorAll('.contact-detail__val').forEach(el => {
-      el.style.cursor = 'pointer';
-      el.title = 'Click to copy';
-      el.addEventListener('click', async () => {
-        try {
-          await navigator.clipboard.writeText(el.textContent);
-          const orig = el.textContent;
-          el.textContent = '✓ Copied!';
-          el.style.color = 'var(--teal)';
-          setTimeout(() => { el.textContent = orig; el.style.color = ''; }, 1600);
-        } catch (_) {}
-      });
-    });
-  };
-
   /* ── Smooth Scroll ───────────────────────────────────────── */
   const initSmoothScroll = () => {
     const nav = document.getElementById('nav');
@@ -341,7 +324,6 @@
   initSkillsStrip();
   initFlash();
   initForms();
-  initCopy();
   initSmoothScroll();
   initScrollParallax();
   initScrollTop();

@@ -81,7 +81,6 @@ def nl2br_filter(value):
 
 # Maps contact-form inquiry_type field values to human-readable labels used in the notification email.
 INQUIRY_LABELS = {
-    "job": "Job Opportunity",
     "freelance": "Freelance / Consulting",
     "collab": "Collaboration",
     "general": "General",

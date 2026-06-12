@@ -171,9 +171,6 @@ ul { list-style: none; }
   pointer-events: none;
 }
 .mt-4 { margin-top: var(--sp-4); }
-.mt-6 { margin-top: var(--sp-6); }
-.mt-8 { margin-top: var(--sp-8); }
-.mt-12 { margin-top: var(--sp-12); }
 .mt-16 { margin-top: var(--sp-16); }
 .text-center { text-align: center; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
@@ -1218,6 +1215,9 @@ ul { list-style: none; }
 }
 .image-stack__item img { width: 100%; height: 100%; object-fit: cover; }
 .image-stack--large { height: 320px; }
+.stack-1 { z-index: 3; }
+.stack-2 { z-index: 2; transform: translate(6px,6px) scale(0.96); opacity: 0.7; }
+.stack-3 { z-index: 1; transform: translate(12px,12px) scale(0.92); opacity: 0.5; }
 .gallery-trigger {
   position: absolute;
   bottom: var(--sp-4); left: 50%; transform: translateX(-50%);
