@@ -10,7 +10,7 @@
   <meta name="keywords"
     content="Freelance Data Engineer, Data Analyst, Business Intelligence, Machine Learning, Tableau, SQL, Python, ETL Pipeline, AI Engineer" />
   <meta name="author" content="Mustafa Noman" />
-  <meta name="theme-color" content="#07080d" />
+  <meta name="theme-color" content="#f3f7f4" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Mustafa Noman" />
@@ -21,11 +21,11 @@
   <meta property="og:url" content="https://mustafanoman.com" />
   <meta property="og:image" content="https://mustafanoman.com/static/img/hero.jpeg" />
   <link rel="icon" type="image/svg+xml"
-    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230a0c10'/><text y='72' x='8' font-size='60' fill='%2300d4aa' font-family='monospace' font-weight='bold'>MN</text></svg>" />
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23f3f7f4'/><text y='72' x='8' font-size='60' fill='%230c8f5d' font-family='monospace' font-weight='bold'>MN</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,900&family=Roboto+Slab:wght@300;400;500;600&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=DM+Mono:wght@400;500&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
   {% block extra_css %}{% endblock %}
@@ -48,7 +48,7 @@
       <ul class="nav__links" id="navLinks">
         <li><a href="{{ url_for('home') }}" {% if request.endpoint=='home' %}class="active" aria-current="page"{% endif %}>Home</a></li>
         <li><a href="{{ url_for('services') }}" {% if request.endpoint=='services' %}class="active" aria-current="page"{% endif %}>Services</a></li>
-        <li><a href="{{ url_for('projects') }}" {% if request.endpoint=='projects' %}class="active" aria-current="page"{% endif %}>Projects</a></li>
+        <li><a href="{{ url_for('projects') }}" {% if request.endpoint=='projects' %}class="active" aria-current="page"{% endif %}>Work</a></li>
         <li class="nav__dropdown">
           <a href="{{ url_for('about') }}" {% if request.endpoint=='about' %}class="active" aria-current="page"{% endif %}>About
             <svg class="nav__dropdown-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
@@ -69,7 +69,7 @@
           {% endif %}
           <li><a href="{{ url_for('logout') }}">Logout</a></li>
         {% endif %}
-        <li><a href="{{ url_for('contact') }}" class="nav__hire">Hire Me</a></li>
+        <li><a href="{{ url_for('contact') }}" class="nav__hire">Let's Talk</a></li>
       </ul>
     </div>
   </nav>
@@ -92,14 +92,14 @@
   <footer class="footer" role="contentinfo">
     <div class="footer__inner">
       <div class="footer__brand">
-        <span class="nav__logo-bracket">[</span><span class="footer__brand-name">Mustafa Noman</span><span class="nav__logo-bracket">]</span>
-        <p>Freelance Data &amp; AI Engineer &middot; Karachi, PK</p>
+        <span class="footer__brand-name">Mustafa Noman</span>
+        <p>Data &amp; AI Engineer &middot; Karachi, PK</p>
       </div>
       <nav class="footer__nav" aria-label="Footer navigation">
         <a href="{{ url_for('home') }}">Home</a>
         <a href="{{ url_for('services') }}">Services</a>
         <a href="{{ url_for('about') }}">About</a>
-        <a href="{{ url_for('projects') }}">Projects</a>
+        <a href="{{ url_for('projects') }}">Work</a>
         <a href="{{ url_for('blog') }}">Blog</a>
         <a href="{{ url_for('contact') }}">Contact</a>
       </nav>
