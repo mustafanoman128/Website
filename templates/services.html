@@ -6,8 +6,9 @@
 <!-- Page Hero -->
 <section class="page-hero section--dark" aria-labelledby="services-title">
   <div class="container">
-    <span class="section-label mono">What I Build</span>
+    <span class="section-label mono">Ways we can work together</span>
     <h1 class="page-hero__title" id="services-title">Your data should answer questions, not raise them.</h1>
+    <p class="page-hero__sub">Pick the outcome you need. Every engagement starts with a free 30-minute call to scope the work &mdash; no obligation.</p>
   </div>
 </section>
 
@@ -142,40 +143,135 @@
   </div>
 </section>
 
-<!-- Pricing Signal -->
-<section class="section section--dark" aria-label="Project pricing">
+<!-- Pricing -->
+<section class="section section--dark" aria-label="Engagement models">
   <div class="container">
-    <div class="pricing-note reveal">
-      <div class="pricing-note__left">
-        <span class="section-label mono">Pricing</span>
-        <p>Most projects <strong>start from $100</strong> and scale with scope, complexity, and timeline. A one-off dashboard cleanup is a very different engagement from a multi-month ML pipeline — I'll scope your project and give you a fixed price upfront before any work begins.</p>
+    <div class="section-header reveal">
+      <span class="section-label mono">Pricing</span>
+      <h2 class="section-title">Simple ways to engage</h2>
+      <p class="section-sub">Transparent scoping. No surprise invoices.</p>
+    </div>
+    <div class="pricing-grid">
+
+      <div class="pricing-card reveal">
+        <h3 class="pricing-card__title">Power Hour</h3>
+        <p class="pricing-card__desc">A focused working session to unblock a specific data problem.</p>
+        <div class="pricing-card__price">From $120</div>
+        <div class="pricing-card__price-sub">per session</div>
       </div>
-      <a href="{{ url_for('contact') }}" class="btn btn--outline-teal">
-        Get a Quote
-        <svg class="btn__icon btn__icon--arrow" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path d="M5 12h14M12 5l7 7-7 7"/>
-        </svg>
-      </a>
+
+      <div class="pricing-card pricing-card--featured reveal">
+        <span class="pricing-card__badge">Most popular</span>
+        <h3 class="pricing-card__title">Project</h3>
+        <p class="pricing-card__desc">A scoped deliverable &mdash; a dashboard, model, or pipeline, start to finish.</p>
+        <div class="pricing-card__price">Fixed quote</div>
+        <div class="pricing-card__price-sub">scoped on our first call</div>
+      </div>
+
+      <div class="pricing-card reveal">
+        <h3 class="pricing-card__title">Retainer</h3>
+        <p class="pricing-card__desc">Ongoing analytics support, a few days a month, for growing teams.</p>
+        <div class="pricing-card__price">Monthly</div>
+        <div class="pricing-card__price-sub">flexible commitment</div>
+      </div>
+
     </div>
   </div>
 </section>
 
+<!-- How I Work / Process -->
+<section class="process-section section section--dark" id="process" aria-labelledby="process-heading">
+  <div class="container">
+
+    <div class="section-header reveal">
+      <span class="section-label mono">How I work</span>
+      <h2 class="section-title" id="process-heading">A clear path from data to decision</h2>
+    </div>
+
+    <div class="process__steps">
+      <div class="process__step reveal">
+        <div class="process__step-num mono">01</div>
+        <h3>Discover</h3>
+        <p>A free call to understand the decision you're trying to make.</p>
+      </div>
+      <div class="process__step reveal">
+        <div class="process__step-num mono">02</div>
+        <h3>Scope</h3>
+        <p>A fixed quote and timeline, so you know exactly what you'll get.</p>
+      </div>
+      <div class="process__step reveal">
+        <div class="process__step-num mono">03</div>
+        <h3>Build</h3>
+        <p>Regular check-ins and demos &mdash; never a black box.</p>
+      </div>
+      <div class="process__step reveal">
+        <div class="process__step-num mono">04</div>
+        <h3>Hand off</h3>
+        <p>Documented, owned by you, with support if you need it.</p>
+      </div>
+    </div>
+
+    <div class="commitment-strip reveal">
+      <span class="section-label mono">My Commitments</span>
+      <div class="commitment-grid">
+
+        <div class="commitment-item">
+          <svg class="commitment-item__icon" width="32" height="32" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 4v6h6" /><path d="M23 20v-6h-6" />
+            <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15" />
+          </svg>
+          <h4>2 Rounds of Revisions</h4>
+          <p>Every deliverable includes two revision rounds at no extra cost. We get it right.</p>
+        </div>
+
+        <div class="commitment-item">
+          <svg class="commitment-item__icon" width="32" height="32" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+            <path d="M7 11V7a5 5 0 0 1 9.9-1" />
+          </svg>
+          <h4>You Own Everything</h4>
+          <p>All models, dashboards, and code transfer to you on completion. No lock-in, ever.</p>
+        </div>
+
+        <div class="commitment-item">
+          <svg class="commitment-item__icon" width="32" height="32" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg>
+          <h4>NDA on Request</h4>
+          <p>Happy to sign a non-disclosure before you share any sensitive business data.</p>
+        </div>
+
+        <div class="commitment-item">
+          <svg class="commitment-item__icon" width="32" height="32" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12 6 12 12 16 14" />
+          </svg>
+          <h4>8-Hour Response</h4>
+          <p>All project inquiries answered within 8 hours. You won't be left waiting.</p>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
 <!-- Bottom CTA -->
-<section class="section section--dark" aria-label="Start a project">
+<section class="cta-section section" aria-label="Book a call">
   <div class="container">
     <div class="cta-box reveal">
-      <span class="section-label mono">Ready to Start?</span>
-      <h2>Not Sure Which Service Fits?</h2>
-      <p>Describe your data problem and I'll tell you exactly what's needed — no sales call, no commitment required.</p>
+      <h2>Not sure which fits? Let's figure it out together.</h2>
+      <p>Book a free 30-minute call and I'll point you in the right direction &mdash; even if it's not me.</p>
       <div class="cta-box__actions">
         <a href="{{ url_for('contact') }}" class="btn btn--primary">
-          Tell Me About Your Project
+          Book a free call
           <svg class="btn__icon btn__icon--arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path d="M5 12h14M12 5l7 7-7 7"/>
           </svg>
-        </a>
-        <a href="{{ url_for('about') }}#process" class="btn btn--ghost">
-          How I Work
         </a>
       </div>
     </div>

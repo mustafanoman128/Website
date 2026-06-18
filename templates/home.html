@@ -8,7 +8,6 @@
   
   <!-- Background Effects -->
   <div class="hero__bg">
-    <div class="hero__grid"></div>
     <div class="hero__glow hero__glow--1"></div>
     <div class="hero__glow hero__glow--2"></div>
     <div class="hero__glow hero__glow--3"></div>
@@ -24,18 +23,16 @@
 
       <!-- Main Title -->
       <h1 class="hero__title">
-        <span class="hero__title-normal">Turning</span>
+        <span class="hero__title-normal">Hi, I'm Mustafa. I help</span>
         <span class="hero__title-line">
-          <span class="hero__title-outline">Data</span>
-          <span class="hero__title-normal">into Decisions.</span>
+          businesses <span class="hero__title-outline">stop guessing.</span>
         </span>
       </h1>
 
       <!-- Subtitle -->
       <p class="hero__sub">
-        I help businesses stop guessing. I build the dashboards, models,
-        and data systems that turn messy operational data into decisions
-        leadership can act on — fast.
+        I build the dashboards, models, and data systems that turn messy
+        operational data into decisions you can actually act on.
       </p>
 
       <!-- CTA Buttons -->
@@ -112,9 +109,9 @@
 </section>
 
 <!-- Logos Strip -->
-<section class="logos-strip" aria-label="Trusted by">
+<section class="logos-strip" aria-label="Trusted by teams at">
   <div class="container">
-    <p class="logos-strip__label mono">Trusted by</p>
+    <p class="logos-strip__label mono">Trusted by teams at</p>
     <div class="logos-strip__row">
       <img src="{{ url_for('static', filename='img/logos/Pregis.png') }}" alt="Pregis" class="logo-img">
       <img src="{{ url_for('static', filename='img/logos/Stericycle.png') }}" alt="Stericycle" class="logo-img">
@@ -124,13 +121,46 @@
   </div>
 </section>
 
+<!-- Services Teaser -->
+<section class="services-teaser section" aria-label="Services overview">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-label mono">How I Can Help</span>
+      <h2 class="section-title">From messy data to <em>clear decisions</em></h2>
+    </div>
+    <div class="svc-teaser__grid reveal">
+      <div class="svc-teaser__card">
+        <div class="svc-teaser__icon">📊</div>
+        <h3>Dashboards &amp; BI</h3>
+        <p>Tableau &amp; Power BI dashboards that give leadership a single, trusted source of truth.</p>
+      </div>
+      <div class="svc-teaser__card">
+        <div class="svc-teaser__icon">🤖</div>
+        <h3>Models &amp; ML</h3>
+        <p>Predictive models that forecast demand, price, and risk — with confidence intervals you can trust.</p>
+      </div>
+      <div class="svc-teaser__card">
+        <div class="svc-teaser__icon">🔗</div>
+        <h3>ETL &amp; data apps</h3>
+        <p>Pipelines and data-powered web apps that move and surface your data automatically.</p>
+      </div>
+    </div>
+    <div class="text-center mt-8 reveal">
+      <a href="{{ url_for('services') }}" class="link-arrow">
+        Explore services &amp; pricing
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
 <!-- Projects Section -->
 <section class="projects section section--dark" id="projects" aria-labelledby="projects-heading">
   <div class="container">
-    
+
     <div class="section-header reveal">
       <span class="section-label mono">Selected Work</span>
-      <h2 class="section-title" id="projects-heading">My <em>Projects</em></h2>
+      <h2 class="section-title" id="projects-heading">Things I've <em>Built</em></h2>
       <p class="section-sub">Real problems. Measurable outcomes.</p>
     </div>
     
@@ -229,52 +259,34 @@
 
 
 <!-- Testimonials Section -->
-<section class="testimonials-section section section--dark" aria-labelledby="testimonials-heading">
+<section class="testimonials-section section" aria-label="Recommendation">
   <div class="container">
-
-    <div class="section-header reveal">
-      <span class="section-label mono">Recommendations</span>
-      <h2 class="section-title" id="testimonials-heading">What Colleagues <em>Say</em></h2>
-      <p class="section-sub">Verified recommendations from former employers.</p>
-    </div>
-
     <div class="testimonials-list">
-
       <blockquote class="testimonial-card reveal">
         <div class="testimonial-card__quote" aria-hidden="true">&ldquo;</div>
-        <p>I had the pleasure of working closely with Mustafa, and his attention to detail and ability to solve complex data challenges were key to the success of our sales programs. His analytical skills and commitment to delivering actionable insights consistently stood out. Mustafa is not only technically skilled but also a great collaborator who inspires confidence and keeps teams aligned. It was a privilege to work with him, and any organization would benefit greatly from his expertise.</p>
+        <p>A great collaborator who inspires confidence and keeps teams aligned. Any organization would benefit greatly from his expertise.</p>
         <footer class="testimonial-card__footer">
           <div class="testimonial-card__avatar mono">NS</div>
           <div class="testimonial-card__meta">
             <div class="testimonial-card__name">Nishal Sukdhoe</div>
-            <div class="testimonial-card__role mono">Global Marketing &amp; Growth Leader · Stericycle</div>
+            <div class="testimonial-card__role mono">Global Marketing &amp; Growth Leader &middot; Stericycle</div>
           </div>
         </footer>
         <a href="https://www.linkedin.com/in/mustafanoman128/details/recommendations/" target="_blank" rel="noopener noreferrer" class="testimonial-card__verify mono">Verified on LinkedIn &rarr;</a>
       </blockquote>
-
-
     </div>
   </div>
 </section>
 
 <!-- CTA Section -->
-<section class="cta-section section section--dark" aria-labelledby="cta-heading">
+<section class="cta-section section" aria-labelledby="cta-heading">
   <div class="container">
     <div class="cta-box reveal">
-      <div class="cta-box__glow"></div>
-      <span class="section-label mono">Let's Work Together</span>
-      <h2 id="cta-heading">Ready to Turn Your Data<br><em>Into a Competitive Advantage?</em></h2>
-      <p>Whether you need a dashboard, a predictive model, or end-to-end analytics infrastructure — let's talk.</p>
+      <h2 id="cta-heading">Let's turn your data into your advantage.</h2>
+      <p>Dashboard, predictive model, or full analytics setup — I'd love to hear what you're working on.</p>
       <div class="cta-box__actions">
-        <a href="{{ url_for('contact') }}" class="btn btn--primary btn--lg">
-          Start a Conversation
-          <svg class="btn__icon btn__icon--arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
-          </svg>
-        </a>
-        <a href="{{ url_for('projects') }}" class="btn btn--ghost btn--lg">
-          Browse Projects
+        <a href="{{ url_for('contact') }}" class="btn btn--primary">
+          Start a conversation
           <svg class="btn__icon btn__icon--arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path d="M5 12h14M12 5l7 7-7 7"/>
           </svg>
