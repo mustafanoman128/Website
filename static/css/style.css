@@ -3176,7 +3176,6 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.4rem;
   margin-bottom: var(--sp-5);
 }
 .svc-teaser__card h3 {
