@@ -38,58 +38,6 @@
       {{ post.content | nl2br | safe }}
     </div>
 
-    <div class="comments reveal" aria-labelledby="comments-heading">
-      <header class="comments__header">
-        <h3 class="comments__title" id="comments-heading">
-          Discussion <span class="comments__count">[{{ comments|length }}]</span>
-        </h3>
-      </header>
-
-      {% if comments %}
-      <div class="comments__list">
-        {% for c in comments %}
-        <div class="comment-card">
-          <div class="comment-card__aside">
-            <div class="comment-avatar mono">{{ c.author.name[0] | upper }}</div>
-          </div>
-          <div class="comment-card__main">
-            <div class="comment-card__meta">
-              <span class="comment-author">{{ c.author.name }}</span>
-              <span class="comment-date mono">{{ c.created_at.strftime('%b %d, %Y') }}</span>
-            </div>
-            <div class="comment-text">
-              <p>{{ c.content }}</p>
-            </div>
-          </div>
-        </div>
-        {% endfor %}
-      </div>
-      {% else %}
-      <div class="comments__empty-state">
-        <p class="mono opacity-50">// No comments yet. Start the conversation.</p>
-      </div>
-      {% endif %}
-
-      <div class="comment-form-wrapper">
-        {% if current_user.is_authenticated %}
-        <form class="comment-form" method="POST">
-          <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
-          <div class="form-group">
-            <label for="comment-content" class="form-label mono">Write a response</label>
-            <textarea id="comment-content" name="content" class="form-control" rows="4" placeholder="Share your perspective..." required></textarea>
-          </div>
-          <div class="form-actions">
-            <button type="submit" class="btn btn--primary btn--glow">
-              Post Comment
-              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </button>
-          </div>
-        </form>
-        {% endif %}
-      </div>
-    </div>
 
   </div>
 </section>
