@@ -2209,7 +2209,6 @@ select.form-control option { background: var(--surface); color: var(--ink); }
 
 /* ─── MOBILE HORIZONTAL SCROLL FIX ───────────────────────────── */
 @media (max-width: 768px) {
-  html,
   body,
   .hero,
   .section {
