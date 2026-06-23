@@ -99,7 +99,7 @@ def allowed_file(filename):
 
 def save_uploaded_images(files, post_id):
     """Save each valid uploaded file to UPLOAD_FOLDER and return a list of unsaved BlogImage instances."""
-    upload_dir = app.config["UPLOAD_FOLDER"]
+    upload_dir = os.path.join(app.root_path, app.config["UPLOAD_FOLDER"])
     os.makedirs(upload_dir, exist_ok=True)
     images = []
     for f in files:
