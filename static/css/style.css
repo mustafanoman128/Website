@@ -908,6 +908,7 @@ ul { list-style: none; }
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: var(--sp-4);
   opacity: 0;
   transition: opacity 0.3s;
 }
