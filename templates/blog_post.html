@@ -26,28 +26,11 @@
 
     {% if post.images %}
     <div class="post-image-bundle reveal">
-      <div class="image-stack image-stack--large" id="galleryTrigger">
-        {% for img in post.images[:3] %}
-          <div class="image-stack__item stack-{{ loop.index }}">
-            <img src="{{ url_for('static', filename='uploads/blog_images/' + img.image_path) }}" alt="Analysis Visual" loading="lazy" />
-          </div>
-        {% endfor %}
-        
-        <button class="gallery-trigger btn btn--teal-blur">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-            <line x1="3" y1="9" x2="21" y2="9"></line>
-            <line x1="9" y1="21" x2="9" y2="9"></line>
-          </svg>
-          <span>Explore {{ post.images|length }} Full-Res Visuals</span>
-        </button>
+      <div class="image-stack image-stack--large">
+        <div class="image-stack__item stack-1">
+          <img src="{{ url_for('static', filename='uploads/blog_images/' + post.images[0].image_path) }}" alt="{{ post.title }}" loading="lazy" />
+        </div>
       </div>
-    </div>
-
-    <div id="gallery-data" style="display:none;" aria-hidden="true">
-      {% for img in post.images %}
-        <span class="gallery-item-url">{{ url_for('static', filename='uploads/blog_images/' + img.image_path) }}</span>
-      {% endfor %}
     </div>
     {% endif %}
 
@@ -111,62 +94,5 @@
   </div>
 </section>
 
-<div id="fullscreenGallery" class="gallery-modal" role="dialog" aria-label="Image Gallery">
-  <span class="gallery-close" id="galleryClose">&times;</span>
-  <button class="gallery-nav prev" id="galleryPrev" aria-label="Previous Image">&#10094;</button>
-  <div class="gallery-content">
-    <img id="galleryImg" src="" alt="Full Resolution Visual">
-    <div class="gallery-counter mono"></div>
-  </div>
-  <button class="gallery-nav next" id="galleryNext" aria-label="Next Image">&#10095;</button>
-</div>
-
-<script>
-(function () {
-  const modal   = document.getElementById('fullscreenGallery');
-  const imgEl   = document.getElementById('galleryImg');
-  const counter = modal.querySelector('.gallery-counter');
-  let images = [];
-  let idx = 0;
-
-  function show() {
-    imgEl.src = images[idx];
-    counter.innerText = `${idx + 1} / ${images.length}`;
-  }
-
-  function open() {
-    images = Array.from(document.getElementsByClassName('gallery-item-url'))
-      .map(s => s.innerText.trim());
-    if (!images.length) return;
-    idx = 0;
-    show();
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function close() {
-    modal.classList.remove('active');
-    document.body.style.overflow = '';
-  }
-
-  function step(dir) {
-    idx = (idx + dir + images.length) % images.length;
-    show();
-  }
-
-  const trigger = document.getElementById('galleryTrigger');
-  if (trigger) trigger.addEventListener('click', open);
-  document.getElementById('galleryClose').addEventListener('click', close);
-  document.getElementById('galleryPrev').addEventListener('click', () => step(-1));
-  document.getElementById('galleryNext').addEventListener('click', () => step(1));
-  modal.addEventListener('click', e => { if (e.target === modal) close(); });
-  document.addEventListener('keydown', e => {
-    if (!modal.classList.contains('active')) return;
-    if (e.key === 'ArrowLeft')  step(-1);
-    if (e.key === 'ArrowRight') step(1);
-    if (e.key === 'Escape')     close();
-  });
-})();
-</script>
 
 {% endblock %}
