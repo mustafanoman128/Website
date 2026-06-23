@@ -104,14 +104,6 @@
             </button>
           </div>
         </form>
-        {% else %}
-        <div class="comment-auth-prompt">
-          <p class="mono">Join the discussion</p>
-          <div class="auth-buttons">
-            <a href="{{ url_for('login', next=request.url) }}" class="btn btn--ghost btn--sm">Log In</a>
-            <a href="{{ url_for('signup') }}" class="btn btn--primary btn--sm">Sign Up</a>
-          </div>
-        </div>
         {% endif %}
       </div>
     </div>
