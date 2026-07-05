@@ -2956,10 +2956,11 @@ html {
   right: 2rem;
   width: 44px;
   height: 44px;
-  background: rgba(11, 16, 32, 0.88);
-  border: 1px solid rgba(0, 229, 184, 0.25);
+  background: var(--surface);
+  border: 1px solid var(--hairline);
   border-radius: 50%;
   color: var(--teal);
+  box-shadow: var(--sh-card);
   display: flex;
   align-items: center;
   justify-content: center;
