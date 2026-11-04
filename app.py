@@ -302,10 +302,7 @@ def blog_post(post_id):
             db.session.commit()
             flash("Comment added!", "success")
         return redirect(url_for("blog_post", post_id=post_id))
-    comments = (
-        Comment.query.filter_by(post_id=post_id).order_by(Comment.created_at).all()
-    )
-    return render_template("blog_post.html", post=post, comments=comments)
+    return render_template("blog_post.html", post=post)
 
 
 @app.route("/contact", methods=["GET", "POST"])

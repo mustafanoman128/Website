@@ -1,152 +1,115 @@
 # Mustafa Noman — Portfolio Website
 
-> A full-stack personal portfolio built with Flask — dimensional dark aesthetic with electric teal-to-violet gradients, cinematic GSAP entrance animations, and everything a serious data analyst needs to make an impression.
+Personal portfolio and freelance site for a data & AI engineer, built with Flask. Light "Soft & Friendly" design, GSAP entrance animations, a small blog CMS and a contact form that emails inquiries.
 
 Live at **[mustafanoman128.pythonanywhere.com](https://mustafanoman128.pythonanywhere.com)**
 
 ---
 
-## What's Inside
+## Features
 
-### Pages
-- **Home** — Hero with particle canvas, GSAP entrance sequence, word-scramble cycling headline, animated stat cards, scrolling tech stack strip, featured projects, certifications, blog teaser, and CTA
-- **About** — Full biography, career timeline, skills & tools grid, education, contact links
-- **Projects** — Detailed project breakdowns with outcome metrics, tech tags, GitHub and live demo links
-- **Blog** — Full CMS: create, edit, delete posts with image uploads, categories, and pagination
-- **Contact** — Inquiry form with email delivery via Gmail SMTP (Flask-Mail)
-
-### System
-- **User Auth** — Public signup, login, remember-me, secure password hashing (pbkdf2:sha256)
-- **Comments** — Authenticated users comment on blog posts; admin moderates
-- **Admin Dashboard** — Separate login at `/admin/login`, stats overview, full control over users, posts, comments, and messages
-- **Email Notifications** — Contact form submissions delivered to inbox with inquiry type and message body
-
----
+- **Pages** — Home, Services (offerings + pricing), Work (projects & certifications), About (bio, process, track record, skills), Blog, Contact
+- **Blog CMS** — admin creates/edits/deletes posts with image uploads, categories and pagination
+- **Contact form** — saved to the database and emailed via Gmail SMTP (Flask-Mail)
+- **Admin panel** — separate login at `/admin/login`; manage posts, users, comments and messages
 
 ## Tech Stack
 
-| Layer      | Technology                                          |
-|------------|-----------------------------------------------------|
-| Backend    | Python · Flask · SQLite                             |
-| ORM        | Flask-SQLAlchemy · Flask-Migrate                    |
-| Auth       | Flask-Login · Werkzeug                              |
-| Email      | Flask-Mail · Gmail SMTP                             |
-| Frontend   | HTML · Vanilla CSS (~3200 lines) · Vanilla JS       |
-| Animation  | GSAP 3.12 · ScrollTrigger · Canvas 2D               |
-| Typography | Montserrat · Roboto Slab · IBM Plex Mono            |
-| Deployment | PythonAnywhere                                      |
+| Layer      | Technology                                        |
+|------------|---------------------------------------------------|
+| Backend    | Python · Flask · Flask-Login · Flask-Mail         |
+| Database   | SQLite (local) / PostgreSQL via `DATABASE_URL` · Flask-SQLAlchemy · Flask-Migrate |
+| Frontend   | Jinja templates · vanilla CSS · vanilla JS         |
+| Animation  | GSAP 3.12 + ScrollTrigger (CDN)                    |
+| Fonts      | Bricolage Grotesque · DM Sans · DM Mono           |
+| Hosting    | PythonAnywhere                                    |
 
----
+## Prerequisites
 
-## Local Setup
+- Python 3.11+
+- A Gmail account with an App Password (only needed for contact-form email)
+
+## Setup
 
 ```bash
-# 1. Clone
 git clone https://github.com/mustafanoman128/Website.git
 cd Website
-
-# 2. Virtual environment
 python -m venv venv
-venv\Scripts\activate        # Windows
-# source venv/bin/activate   # Mac/Linux
-
-# 3. Dependencies
+venv\Scripts\activate          # Windows
+# source venv/bin/activate     # macOS/Linux
 pip install -r requirements.txt
-
-# 4. Environment variables — create a .env file
-SECRET_KEY=your-strong-secret-key
-ADMIN_EMAIL=you@example.com
-ADMIN_PASSWORD=yourpassword
-ADMIN_NAME=Mustafa Noman
-DATABASE_URL=sqlite:///portfolio.db
-MAIL_USERNAME=you@gmail.com
-MAIL_PASSWORD=your-gmail-app-password
-
-# 5. Database
-flask db upgrade
-
-# 6. Create admin account
-flask seed-admin
-
-# 7. Run
-flask run
 ```
 
-Visit `http://127.0.0.1:5000` — admin panel at `http://127.0.0.1:5000/admin/login`.
+Create a `.env` file in the project root:
 
----
+| Variable             | Required | Description                                          |
+|----------------------|----------|------------------------------------------------------|
+| `SECRET_KEY`         | yes      | Flask session key — the app refuses to start without it |
+| `DATABASE_URL`       | no       | SQLAlchemy URI; defaults to `sqlite:///portfolio.db` (stored in `instance/`) |
+| `ADMIN_EMAIL`        | for seeding | Admin login email                                 |
+| `ADMIN_PASSWORD`     | for seeding | Admin login password                              |
+| `ADMIN_NAME`         | no       | Admin display name                                   |
+| `MAIL_USERNAME`      | for email | Gmail address used to send                          |
+| `MAIL_PASSWORD`      | for email | Gmail App Password                                  |
+| `NOTIFICATION_EMAIL` | no       | Where contact-form notifications go                  |
 
-## Environment Variables
+Then initialise the database and admin account:
 
-| Variable          | Description                                  |
-|-------------------|----------------------------------------------|
-| `SECRET_KEY`      | Flask session encryption key                 |
-| `ADMIN_EMAIL`     | Admin login email                            |
-| `ADMIN_PASSWORD`  | Admin login password                         |
-| `ADMIN_NAME`      | Admin display name                           |
-| `DATABASE_URL`    | SQLAlchemy DB URI (SQLite or PostgreSQL)      |
-| `MAIL_USERNAME`   | Gmail address for outbound email             |
-| `MAIL_PASSWORD`   | Gmail App Password (not your account password) |
+```bash
+flask db upgrade
+flask seed-admin
+```
 
----
+## Run
 
-## Security
+```bash
+flask run          # http://127.0.0.1:5000 — admin at /admin/login
+```
 
-- Passwords hashed with `pbkdf2:sha256` — plaintext never stored
-- CSRF tokens on all POST routes
-- Admin routes protected by `@admin_required` decorator — separate from public login
-- User input (comments, contact forms) stripped of HTML via `sanitize_html()` before saving
-- File uploads validated by extension + sanitized filenames, max 10 MB
-- `.env` gitignored — secrets never committed
+Set `FLASK_DEBUG=1` for auto-reload during development.
 
----
+## Tests & Build
+
+There is no automated test suite, linter config or build step — CSS and JS are served as-is from `static/`. Verify changes by running the app locally and checking the affected pages.
+
+## Deployment (PythonAnywhere)
+
+```bash
+cd ~/Website && git pull origin main
+# then Reload in the PythonAnywhere Web tab
+```
+
+Template, CSS and JS changes need only a pull + reload. Run `pip install -r requirements.txt` when dependencies change and `flask db upgrade` when models change. Environment variables are set in the PythonAnywhere WSGI config.
 
 ## Project Structure
 
 ```
 Website/
-├── app.py                  # Entire backend — models, routes, config (~550 lines)
+├── app.py              # Entire backend: config, models, routes, CLI (no blueprints)
 ├── requirements.txt
-├── .env                    # Not committed
-├── migrations/
+├── migrations/         # Alembic migrations (Flask-Migrate)
 ├── templates/
-│   ├── base.html
-│   ├── home.html
-│   ├── about.html
-│   ├── projects.html
-│   ├── blog.html
-│   ├── blog_post.html
-│   ├── contact.html
-│   ├── login.html
-│   ├── signup.html
-│   ├── admin_login.html
-│   └── admin/
-│       ├── dashboard.html
-│       ├── users.html
-│       ├── blogs.html
-│       ├── edit_blog.html
-│       ├── comments.html
-│       └── messages.html
+│   ├── base.html       # Public layout: nav, flash messages, footer
+│   ├── home.html  services.html  projects.html  about.html
+│   ├── blog.html  blog_post.html  contact.html
+│   ├── login.html  signup.html  admin_login.html
+│   ├── components/navbar.html
+│   └── admin/          # Admin panel — extends admin/_base.html
 └── static/
-    ├── css/style.css       # Full design system — no frameworks
+    ├── css/style.css   # Full design system, no framework
     ├── js/main.js
     ├── img/
-    └── pdfs/
+    └── pdfs/           # Certification PDFs
 ```
 
----
+## Security Notes
 
-## Deployment (PythonAnywhere)
-
-```bash
-cd ~/Website
-git pull origin main
-# Reload via Web tab
-```
-
-For frontend-only changes (CSS, JS, templates), `git pull` + reload is all that's needed — no pip install or migrations. Run those only when `requirements.txt` or database models change.
-
-Set all environment variables in your PythonAnywhere WSGI config before the first deploy.
+- Passwords hashed with Werkzeug; plaintext never stored
+- CSRF token required on every POST (single `before_request` hook)
+- Admin routes guarded by `@admin_required`, separate from public login
+- User text input stripped of HTML; contact-form headers sanitised against SMTP injection
+- Uploads restricted by extension, renamed with a UUID prefix, max 10 MB
+- `X-Frame-Options`, `X-Content-Type-Options` and `Referrer-Policy` headers on every response
 
 ---
 

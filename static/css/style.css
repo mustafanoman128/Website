@@ -1,7 +1,6 @@
 /* ============================================================
-   MUSTAFA NOMAN — TERMINAL NOIR × DATA LUXURY
-   Redesign v3.0 — Pure CSS, Zero Frameworks
-   Aesthetic: Bloomberg Terminal meets High-Fashion Editorial
+   MUSTAFA NOMAN — PORTFOLIO
+   "Soft & Friendly" light theme — Pure CSS, Zero Frameworks
    ============================================================ */
 
 /* ─── Reset ──────────────────────────────────────────────────── */
@@ -25,9 +24,6 @@
 
   --field-bg:      #fbfdfc;
   --field-border:  #e3e9e6;
-
-  --ph-a: #e6ece9;
-  --ph-b: #d8e2dd;
 
   /* ── Radius ──────────────────────────────────────────────── */
   --r-card:   22px;  --r-card-lg: 28px;
@@ -58,7 +54,6 @@
   --ink-1:        var(--bg);
   --ink-2:        var(--surface);
   --ink-3:        var(--accent-tint);
-  --surface-2:    var(--bg);
   --border:       var(--hairline);
   --border-2:     var(--hairline);
   --border-3:     rgba(12,143,93,0.15);
@@ -74,20 +69,13 @@
   --teal-pulse:   rgba(12,143,93,0.30);
   --amber:        var(--accent);
   --amber-lo:     var(--accent-tint);
-  --violet:       var(--accent-deep);
   --violet-hi:    var(--accent-bright);
-  --violet-lo:    var(--accent-tint);
-  --violet-glow:  rgba(12,143,93,0.10);
   --red:          #ef4444;
   --green:        var(--accent);
   --grad-primary: linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%);
-  --grad-hero:    linear-gradient(135deg, var(--accent) 0%, var(--accent-bright) 100%);
-  --shadow-sm:    0 1px 3px rgba(15,33,56,.08);
-  --shadow-md:    var(--sh-card);
   --shadow-lg:    var(--sh-raise);
   --shadow-xl:    0 16px 48px rgba(15,33,56,.12);
   --shadow-teal:  var(--sh-raise);
-  --shadow-violet: var(--sh-card);
   --r-sm: 4px; --r-md: 8px; --r-lg: var(--r-field); --r-xl: var(--r-card); --r-full: var(--r-pill);
 }
 
@@ -548,9 +536,6 @@ ul { list-style: none; }
   inset: 0;
   z-index: 0;
   overflow: hidden;
-}
-.hero__grid {
-  display: none;
 }
 .hero__glow {
   position: absolute;
@@ -1256,30 +1241,7 @@ ul { list-style: none; }
 }
 .post-content p { margin-bottom: var(--sp-5); }
 
-/* Comments */
-.comments { margin-top: var(--sp-16); border-top: 1px solid var(--border); padding-top: var(--sp-10); }
-.comments__header { margin-bottom: var(--sp-8); }
-.comments__title {
-  font-family: var(--font-display);
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: var(--white);
-  display: flex;
-  align-items: center;
-  gap: var(--sp-3);
-}
-.comments__count { color: var(--teal); }
-.comments__list { display: flex; flex-direction: column; gap: var(--sp-4); margin-bottom: var(--sp-8); }
-.comment-card {
-  display: flex;
-  gap: var(--sp-4);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  padding: var(--sp-5);
-  transition: border-color 0.25s;
-}
-.comment-card:hover { border-color: var(--border-2); }
+/* Initials avatar (admin users table) */
 .comment-avatar {
   width: 40px; height: 40px;
   background: var(--teal-lo);
@@ -1291,22 +1253,6 @@ ul { list-style: none; }
   color: var(--teal);
   flex-shrink: 0;
 }
-.comment-card__main { flex: 1; }
-.comment-card__meta { display: flex; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-2); }
-.comment-author { font-family: var(--font-display); font-size: 0.875rem; font-weight: 700; color: var(--white); }
-.comment-date { font-size: 0.68rem; color: var(--text-4); }
-.comment-text p { font-size: 0.875rem; color: var(--text-2); }
-.comments__empty-state { padding: var(--sp-8) 0; }
-.comment-form-wrapper { margin-top: var(--sp-8); }
-.comment-auth-prompt {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  padding: var(--sp-8);
-  text-align: center;
-}
-.comment-auth-prompt .mono { font-size: 0.875rem; color: var(--text-3); margin-bottom: var(--sp-4); }
-.auth-buttons { display: flex; gap: var(--sp-3); justify-content: center; }
 
 /* ─── Forms ──────────────────────────────────────────────────── */
 .form-group { margin-bottom: var(--sp-5); position: relative; }
@@ -2934,7 +2880,6 @@ html {
   /* Restore intentional transitions that improve usability */
   .nav { transition: background 0.3s !important; }
   .flash { animation: none !important; }
-  .btn--primary::after, .btn--hero::after { display: none; }
   .skills-strip__track { animation: none !important; }
   /* Reveal elements are already visible via the .hero / .page-hero overrides;
      make sure any remaining reveal elements are instantly visible */
@@ -3276,23 +3221,6 @@ html {
 }
 .testimonial-card__verify:hover { opacity: 1; }
 
-/* ─── Services Page ──────────────────────────────────────────── */
-.pricing-note {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--sp-8);
-  background: var(--accent-tint);
-  border: 1px solid rgba(12,143,93,0.15);
-  border-left: 3px solid var(--accent);
-  border-radius: var(--r-card);
-  padding: var(--sp-8);
-}
-.pricing-note__left { flex: 1; }
-.pricing-note__left .section-label { margin-bottom: var(--sp-3); }
-.pricing-note__left p { margin: 0; font-size: 0.95rem; color: var(--body); }
-.pricing-note__left strong { color: var(--ink); }
-
 /* ─── Pricing Cards ──────────────────────────────────────────── */
 .pricing-grid {
   display: grid;
@@ -3480,7 +3408,6 @@ html {
 
 /* U. Services page — mobile */
 @media (max-width: 768px) {
-  .pricing-note { flex-direction: column; align-items: flex-start; gap: var(--sp-5); }
   .pricing-grid { grid-template-columns: 1fr; gap: var(--sp-4); }
   .pricing-card__price { font-size: 1.6rem; }
   .services-grid { grid-template-columns: 1fr; gap: var(--sp-6); }

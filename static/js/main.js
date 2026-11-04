@@ -148,7 +148,7 @@
 
   /* ── Number Counters ─────────────────────────────────────── */
   const initCounters = () => {
-    const els = document.querySelectorAll('.stat__num, .hero__float-val, .stat-card__num');
+    const els = document.querySelectorAll('.hero__float-val');
     if (!els.length) return;
 
     const ease = t => 1 - Math.pow(1 - t, 3);

@@ -80,23 +80,6 @@
 </div>
 
 <script>
-document.querySelectorAll('.btn-danger[data-url]').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const modal = document.getElementById('deleteModal');
-        document.getElementById('deleteConfirmForm').action = btn.dataset.url;
-        document.getElementById('modalTargetName').textContent = btn.dataset.name;
-        modal.classList.add('active');
-    });
-});
-
-function closeDeleteModal() {
-    document.getElementById('deleteModal').classList.remove('active');
-}
-
-document.getElementById('deleteModal').addEventListener('click', function(e) {
-    if (e.target === this) closeDeleteModal();
-});
-
 function toggleMsg(id) {
     const wrap = document.getElementById('msg-' + id);
     const short = wrap.querySelector('.msg-short');

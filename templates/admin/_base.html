@@ -15,11 +15,6 @@
     html { background: #0f2138; }
     body { background: var(--ink); margin: 0; }
     .adm { display: flex; min-height: 100vh; }
-    .navbar {
-  position: sticky;
-  top: 0;
-  z-index: 999;
-}
 
 .adm {
   margin-top: 70px;
@@ -164,5 +159,24 @@
     {% block content %}{% endblock %}
   </main>
 </div>
+<script>
+/* Shared delete-confirmation modal. A page opts in by rendering #deleteModal
+   (with #deleteConfirmForm and #modalTargetName) and .btn-danger[data-url][data-name] triggers. */
+function closeDeleteModal() {
+  document.getElementById('deleteModal').classList.remove('active');
+}
+(function () {
+  const modal = document.getElementById('deleteModal');
+  if (!modal) return;
+  document.querySelectorAll('.btn-danger[data-url]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.getElementById('deleteConfirmForm').action = btn.dataset.url;
+      document.getElementById('modalTargetName').textContent = btn.dataset.name;
+      modal.classList.add('active');
+    });
+  });
+  modal.addEventListener('click', e => { if (e.target === modal) closeDeleteModal(); });
+})();
+</script>
 </body>
 </html>

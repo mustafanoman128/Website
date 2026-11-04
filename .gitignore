@@ -9,3 +9,6 @@ static/uploads/
 venv/
 .venv/
 drafts/
+.playwright-mcp/
+DESIGN-SPEC.md
+writing.md
