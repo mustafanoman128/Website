@@ -11,14 +11,10 @@
     href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230a0c10'/><text y='72' x='8' font-size='60' fill='%234ade80' font-family='monospace' font-weight='bold'>MN</text></svg>" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
   <style>
-    /* Literal dark background so the first paint is correct before style.css loads (prevents white flash) */
-    html { background: #0f2138; }
-    body { background: var(--ink); margin: 0; }
+    /* Literal --bg so the first paint matches before style.css loads (prevents a flash) */
+    html { background: #f3f7f4; }
+    body { background: var(--bg); margin: 0; }
     .adm { display: flex; min-height: 100vh; }
-
-.adm {
-  margin-top: 70px;
-}
     .adm__sidebar {
       width: 250px; background: var(--ink-1); border-right: 1px solid var(--border);
       padding: 1.75rem 1.25rem; display: flex; flex-direction: column;
@@ -96,7 +92,18 @@
     .adm-form .form-control:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(0,212,170,0.1); }
     .adm-form textarea.form-control { min-height: 280px; resize: vertical; }
     .img-thumb { width: 52px; height: 52px; object-fit: cover; border-radius: 6px; }
-    @media (max-width: 768px) { .adm__sidebar { display: none; } .adm__main { margin-left: 0; padding: 1.25rem; } .stat-cards { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 768px) {
+      /* Sidebar becomes a horizontally scrollable top nav strip */
+      .adm { flex-direction: column; }
+      .adm__sidebar { position: static; width: auto; height: auto; padding: 0.6rem 1rem; border-right: none; border-bottom: 1px solid var(--border); }
+      .adm__logo, .adm__nav-label { display: none; }
+      .adm__nav { display: flex; gap: 0.25rem; overflow-x: auto; scrollbar-width: none; }
+      .adm__nav::-webkit-scrollbar { display: none; }
+      .adm__nav a { white-space: nowrap; margin-bottom: 0; }
+      .adm__main { margin-left: 0; padding: 1.25rem; }
+      .adm-section { overflow-x: auto; }
+      .stat-cards { grid-template-columns: repeat(2,1fr); }
+    }
   </style>
 </head>
 <body>

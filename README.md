@@ -93,7 +93,6 @@ Website/
 │   ├── home.html  services.html  projects.html  about.html
 │   ├── blog.html  blog_post.html  contact.html
 │   ├── admin_login.html
-│   ├── components/navbar.html
 │   └── admin/          # Admin panel — extends admin/_base.html
 └── static/
     ├── css/style.css   # Full design system, no framework

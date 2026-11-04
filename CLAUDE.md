@@ -72,8 +72,7 @@ No parentheses — it's a string, not a callable. Because the token is popped on
 - Public: `/`, `/about`, `/services`, `/projects`, `/blog`, `/blog/<post_id>`, `/contact`
 - Auth: `/admin/login`, `/logout`
 - Admin (all require `@admin_required`): `/admin`, `/admin/blogs`, `/admin/blogs/new`, `/admin/blogs/edit/<id>`, `/admin/blogs/delete/<id>`, `/admin/blogs/delete-image/<id>`, `/admin/messages`, `/admin/messages/delete/<id>`
-- Admin templates live in `templates/admin/` and extend `admin/_base.html`, which owns the shared delete-confirmation modal script. A page opts in by rendering `#deleteModal` (with `#deleteConfirmForm`, `#modalTargetName`) and `.btn-danger[data-url][data-name]` triggers.
-- Admin pages `{% include "components/navbar.html" %}` outside any block, so it renders *before* `<!DOCTYPE html>` (known issue — quirks mode).
+- Admin templates live in `templates/admin/` and extend `admin/_base.html`, which owns the admin styles (light `--bg` background, sidebar that becomes a scrollable top strip ≤768px) and the shared delete-confirmation modal script. A page opts in by rendering `#deleteModal` (with `#deleteConfirmForm`, `#modalTargetName`) and `.btn-danger[data-url][data-name]` triggers. Never put markup outside `{% block %}` tags in a child template — Jinja renders it before the parent's `<!DOCTYPE>` and the page drops into quirks mode.
 
 ## Frontend
 

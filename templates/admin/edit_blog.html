@@ -1,7 +1,6 @@
 {% extends 'admin/_base.html' %}
 {% block title %}{% if post %}Edit Post{% else %}New Post{% endif %}{% endblock %}
 {% block page_title %}{% if post %}Edit: {{ post.title[:40] }}{% else %}New Blog Post{% endif %}{% endblock %}
-{% include "components/navbar.html" %}
 {% block content %}
 
 <div class="adm-section">
