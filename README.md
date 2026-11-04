@@ -11,7 +11,7 @@ Live at **[mustafanoman128.pythonanywhere.com](https://mustafanoman128.pythonany
 - **Pages** — Home, Services (offerings + pricing), Work (projects & certifications), About (bio, process, track record, skills), Blog, Contact
 - **Blog CMS** — admin creates/edits/deletes posts with image uploads, categories and pagination
 - **Contact form** — saved to the database and emailed via Gmail SMTP (Flask-Mail)
-- **Admin panel** — separate login at `/admin/login`; manage posts, users, comments and messages
+- **Admin panel** — login at `/admin/login` (admin accounts only, created via `flask seed-admin`); manage posts and contact messages
 
 ## Tech Stack
 
@@ -92,7 +92,7 @@ Website/
 │   ├── base.html       # Public layout: nav, flash messages, footer
 │   ├── home.html  services.html  projects.html  about.html
 │   ├── blog.html  blog_post.html  contact.html
-│   ├── login.html  signup.html  admin_login.html
+│   ├── admin_login.html
 │   ├── components/navbar.html
 │   └── admin/          # Admin panel — extends admin/_base.html
 └── static/

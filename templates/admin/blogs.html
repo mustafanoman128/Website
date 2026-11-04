@@ -26,7 +26,6 @@
         <th>Article Title</th>
         <th>Category</th>
         <th>Assets</th>
-        <th>Engagement</th>
         <th>Published Date</th>
         <th>Actions</th>
       </tr>
@@ -59,14 +58,6 @@
           </div>
         </td>
         <td>
-          <div class="adm-asset-tag tag--teal">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-            </svg>
-            {{ post.comments|length }}
-          </div>
-        </td>
-        <td>
           <span class="mono" style="font-size:0.75rem">{{ post.created_at.strftime('%b %d, %Y') }}</span>
         </td>
         <td>
@@ -82,7 +73,7 @@
       </tr>
       {% else %}
       <tr>
-        <td colspan="7" style="text-align:center;color:var(--text-muted);padding:4rem">
+        <td colspan="6" style="text-align:center;color:var(--text-muted);padding:4rem">
           <p class="mono opacity-50">No posts found in the archive.</p>
         </td>
       </tr>
@@ -102,7 +93,7 @@
     <p class="adm-modal__text">
       You are about to delete
       <span id="modalTargetName" style="color:var(--white); font-weight:600;"></span>.
-      This will permanently remove all associated images and comments.
+      This will permanently remove all associated images.
     </p>
     <div class="adm-modal__actions">
       <button type="button" class="btn-cancel" onclick="closeDeleteModal()">Cancel</button>

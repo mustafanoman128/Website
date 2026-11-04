@@ -4,7 +4,6 @@ import secrets
 import uuid
 from datetime import datetime, timedelta, timezone
 from functools import wraps
-from urllib.parse import urlparse, urljoin
 from markupsafe import Markup, escape
 
 from dotenv import load_dotenv
@@ -64,7 +63,7 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 mail = Mail(app)
 login_manager = LoginManager(app)
-login_manager.login_view = "login"
+login_manager.login_view = "admin_login"
 login_manager.login_message_category = "info"
 
 ALLOWED_EXT = {"png", "jpg", "jpeg", "gif", "webp"}
@@ -85,12 +84,6 @@ INQUIRY_LABELS = {
     "collab": "Collaboration",
     "general": "General",
 }
-
-
-def is_safe_url(target):
-    ref = urlparse(request.host_url)
-    test = urlparse(urljoin(request.host_url, target))
-    return test.scheme in ("http", "https") and ref.netloc == test.netloc
 
 
 def allowed_file(filename):
@@ -154,9 +147,6 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(256), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
-    comments = db.relationship(
-        "Comment", backref="author", lazy=True, cascade="all, delete-orphan"
-    )
 
     def set_password(self, p):
         self.password_hash = generate_password_hash(p)
@@ -178,9 +168,6 @@ class BlogPost(db.Model):
     images = db.relationship(
         "BlogImage", backref="post", lazy=True, cascade="all, delete-orphan"
     )
-    comments = db.relationship(
-        "Comment", backref="post", lazy=True, cascade="all, delete-orphan"
-    )
 
 
 class BlogImage(db.Model):
@@ -188,15 +175,6 @@ class BlogImage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     image_path = db.Column(db.String(512), nullable=False)
     post_id = db.Column(db.Integer, db.ForeignKey("blog_post.id"), nullable=False)
-
-
-class Comment(db.Model):
-    __tablename__ = "comment"
-    id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.Text, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
-    post_id = db.Column(db.Integer, db.ForeignKey("blog_post.id"), nullable=False)
-    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
 
 class ContactMessage(db.Model):
@@ -284,24 +262,9 @@ def blog():
     )
 
 
-@app.route("/blog/<int:post_id>", methods=["GET", "POST"])
+@app.route("/blog/<int:post_id>")
 def blog_post(post_id):
     post = db.get_or_404(BlogPost, post_id)
-    if request.method == "POST":
-        if not current_user.is_authenticated:
-            flash("Please log in to comment.", "warning")
-            return redirect(url_for("login", next=request.url))
-        content = sanitize_html(request.form.get("content", "").strip())
-        if not content:
-            flash("Comment cannot be empty.", "danger")
-        elif len(content) > 2000:
-            flash("Comment must be under 2000 characters.", "danger")
-        else:
-            comment = Comment(content=content, user_id=current_user.id, post_id=post.id)
-            db.session.add(comment)
-            db.session.commit()
-            flash("Comment added!", "success")
-        return redirect(url_for("blog_post", post_id=post_id))
     return render_template("blog_post.html", post=post)
 
 
@@ -345,54 +308,6 @@ def contact():
 # ── Auth Routes ──────────────────────────────────────────────────────────────
 
 
-@app.route("/signup", methods=["GET", "POST"])
-def signup():
-    if current_user.is_authenticated:
-        return redirect(url_for("home"))
-    if request.method == "POST":
-        name = sanitize_html(request.form.get("name", "").strip())
-        email = sanitize_html(request.form.get("email", "").strip().lower())
-        password = request.form.get("password", "")
-        confirm = request.form.get("confirm_password", "")
-        if not name or not email or not password:
-            flash("All fields are required.", "danger")
-        elif "@" not in email:
-            flash("Invalid email.", "danger")
-        elif len(password) < 8:
-            flash("Password must be at least 8 characters.", "danger")
-        elif password != confirm:
-            flash("Passwords do not match.", "danger")
-        elif User.query.filter_by(email=email).first():
-            flash("Email already registered.", "danger")
-        else:
-            user = User(name=name, email=email)
-            user.set_password(password)
-            db.session.add(user)
-            db.session.commit()
-            login_user(user)
-            flash("Account created!", "success")
-            return redirect(url_for("home"))
-    return render_template("signup.html")
-
-
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    if current_user.is_authenticated:
-        return redirect(url_for("home"))
-    if request.method == "POST":
-        email = sanitize_html(request.form.get("email", "").strip().lower())
-        password = request.form.get("password", "")
-        user = User.query.filter_by(email=email).first()
-        if user and user.check_password(password):
-            login_user(user)
-            next_page = request.args.get("next")
-            if next_page and not is_safe_url(next_page):
-                next_page = None
-            return redirect(next_page or url_for("home"))
-        flash("Invalid email or password.", "danger")
-    return render_template("login.html")
-
-
 @app.route("/logout")
 @login_required
 def logout():
@@ -429,9 +344,7 @@ def admin_login():
 @admin_required
 def admin_dashboard():
     stats = {
-        "users": User.query.filter_by(is_admin=False).count(),
         "posts": BlogPost.query.count(),
-        "comments": Comment.query.count(),
         "messages": ContactMessage.query.count(),
     }
     recent_messages = (
@@ -440,28 +353,6 @@ def admin_dashboard():
     return render_template(
         "admin/dashboard.html", stats=stats, recent_messages=recent_messages
     )
-
-
-@app.route("/admin/users")
-@login_required
-@admin_required
-def admin_users():
-    users = User.query.filter_by(is_admin=False).order_by(User.created_at.desc()).all()
-    return render_template("admin/users.html", users=users)
-
-
-@app.route("/admin/users/delete/<int:user_id>", methods=["POST"])
-@login_required
-@admin_required
-def admin_delete_user(user_id):
-    user = db.get_or_404(User, user_id)
-    if user.is_admin:
-        flash("Cannot delete admin accounts.", "danger")
-    else:
-        db.session.delete(user)
-        db.session.commit()
-        flash("User deleted.", "success")
-    return redirect(url_for("admin_users"))
 
 
 @app.route("/admin/blogs")
@@ -549,25 +440,6 @@ def admin_delete_image(image_id):
     db.session.commit()
     flash("Image deleted.", "success")
     return redirect(request.referrer or url_for("admin_blogs"))
-
-
-@app.route("/admin/comments")
-@login_required
-@admin_required
-def admin_comments():
-    comments = Comment.query.order_by(Comment.created_at.desc()).all()
-    return render_template("admin/comments.html", comments=comments)
-
-
-@app.route("/admin/comments/delete/<int:comment_id>", methods=["POST"])
-@login_required
-@admin_required
-def admin_delete_comment(comment_id):
-    comment = db.get_or_404(Comment, comment_id)
-    db.session.delete(comment)
-    db.session.commit()
-    flash("Comment deleted.", "success")
-    return redirect(url_for("admin_comments"))
 
 
 @app.route("/admin/messages")

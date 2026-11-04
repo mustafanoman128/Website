@@ -23,9 +23,6 @@
         <li><a href="{{ url_for('admin_dashboard') }}" class="nav__cta">Admin</a></li>
         {% endif %}
         <li><a href="{{ url_for('logout') }}">Logout</a></li>
-        {% else %}
-        <li><a href="{{ url_for('login') }}">Login</a></li>
-        <li><a href="{{ url_for('signup') }}" class="nav__cta">Sign Up</a></li>
         {% endif %}
       </ul>
     </div>

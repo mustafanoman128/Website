@@ -43,9 +43,9 @@ Start-Process -FilePath "venv\Scripts\python.exe" -ArgumentList "-m flask run" -
 
 Single-file Flask app (`app.py`) — all models, routes, and config in one file. No blueprints.
 
-**Database models:** `User`, `BlogPost`, `BlogImage`, `Comment`, `ContactMessage` — Flask-SQLAlchemy + Flask-Migrate. Cascading deletes: User→Comments, BlogPost→Comments/BlogImages. The public comment UI was removed from `blog_post.html` (commit cc0d259), but the `Comment` model, the `POST /blog/<id>` handler and the admin comments page still exist. All datetime columns use `datetime.now(timezone.utc)`; never use the deprecated `datetime.utcnow()`. Use `db.get_or_404(Model, id)` — not the deprecated `Model.query.get_or_404(id)`.
+**Database models:** `User`, `BlogPost`, `BlogImage`, `ContactMessage` — Flask-SQLAlchemy + Flask-Migrate. Cascading delete: BlogPost→BlogImages. The comment feature and public accounts were removed in Nov 2026 (migration `1da4b2464115` drops the `comment` table); `User` rows are now admins only, though old non-admin rows may remain in production — they cannot log in anywhere. All datetime columns use `datetime.now(timezone.utc)`; never use the deprecated `datetime.utcnow()`. Use `db.get_or_404(Model, id)` — not the deprecated `Model.query.get_or_404(id)`.
 
-**Auth:** Two separate login flows — public users via `/login`, admins via `/admin/login`. The public nav no longer links to `/login` or `/signup`; they are reachable by URL only. `@admin_required` decorator checks `current_user.is_admin`, not just auth state. Admin accounts are created only via `flask seed-admin`.
+**Auth:** Admin-only. The single login is `/admin/login` (`login_manager.login_view = "admin_login"`), which only accepts users with `is_admin=True`. `@admin_required` decorator checks `current_user.is_admin`, not just auth state. Admin accounts are created only via `flask seed-admin`.
 
 **CSRF:** Handled entirely by a single `csrf_handler()` `before_request` hook. It generates a token into the session if absent, then on every POST it pops and validates it — no exemptions. The current token is injected into every template as the plain string `csrf_token` (via `inject_globals()` context processor). New forms need:
 ```html
@@ -56,7 +56,7 @@ No parentheses — it's a string, not a callable. Because the token is popped on
 **Helpers in app.py:**
 - `save_uploaded_images(files, post_id)` — validates, renames with UUID prefix, saves to `UPLOAD_FOLDER`, returns unsaved `BlogImage` instances. Call once per route; add instances to `db.session` and commit.
 - `delete_image_file(image_path)` — removes file from disk; silently ignores `FileNotFoundError`; logs `OSError` with traceback.
-- `sanitize_html(text)` — strips HTML tags via regex. Applied to all user-facing text inputs (comments, contact form). Blog post content is **not** sanitized — admin-only.
+- `sanitize_html(text)` — strips HTML tags via regex. Applied to the contact form and admin post titles. Blog post content is **not** sanitized — admin-only.
 - `sanitize_header(value)` — strips `\r`, `\n`, `\0` to prevent SMTP header injection. Applied to `name` and `email` before building the contact notification email.
 - `allowed_file(filename)` — checks extension against `ALLOWED_EXT = {"png", "jpg", "jpeg", "gif", "webp"}`.
 
@@ -70,8 +70,8 @@ No parentheses — it's a string, not a callable. Because the token is popped on
 
 **Route map:**
 - Public: `/`, `/about`, `/services`, `/projects`, `/blog`, `/blog/<post_id>`, `/contact`
-- Auth: `/login`, `/logout`, `/signup`, `/admin/login`
-- Admin (all require `@admin_required`): `/admin`, `/admin/users`, `/admin/users/delete/<id>`, `/admin/blogs`, `/admin/blogs/new`, `/admin/blogs/edit/<id>`, `/admin/blogs/delete/<id>`, `/admin/blogs/delete-image/<id>`, `/admin/comments`, `/admin/comments/delete/<id>`, `/admin/messages`, `/admin/messages/delete/<id>`
+- Auth: `/admin/login`, `/logout`
+- Admin (all require `@admin_required`): `/admin`, `/admin/blogs`, `/admin/blogs/new`, `/admin/blogs/edit/<id>`, `/admin/blogs/delete/<id>`, `/admin/blogs/delete-image/<id>`, `/admin/messages`, `/admin/messages/delete/<id>`
 - Admin templates live in `templates/admin/` and extend `admin/_base.html`, which owns the shared delete-confirmation modal script. A page opts in by rendering `#deleteModal` (with `#deleteConfirmForm`, `#modalTargetName`) and `.btn-danger[data-url][data-name]` triggers.
 - Admin pages `{% include "components/navbar.html" %}` outside any block, so it renders *before* `<!DOCTYPE html>` (known issue — quirks mode).
 
