@@ -2386,8 +2386,9 @@ a, button, .project-card, .skill-group, .timeline__card, .cert-detail-card, .edu
   touch-action: manipulation;
 }
 
-/* Prevent iOS from auto-styling inputs and selects */
-input, textarea, select {
+/* Prevent iOS from auto-styling inputs and selects. Checkboxes and radios keep their
+   native look (styled via accent-color); :where() keeps this selector's specificity at 0,0,1. */
+input:where(:not([type="checkbox"], [type="radio"])), textarea, select {
   appearance: none;
   border-radius: var(--r-md);
 }
