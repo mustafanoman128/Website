@@ -11,7 +11,6 @@
     content="Freelance Data Engineer, Data Analyst, Business Intelligence, Machine Learning, Tableau, SQL, Python, ETL Pipeline, AI Engineer" />
   <meta name="author" content="Mustafa Noman" />
   <meta name="theme-color" content="#f3f7f4" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Mustafa Noman" />
   <meta property="og:type" content="website" />
@@ -21,7 +20,7 @@
   <meta property="og:url" content="https://mustafanoman.com" />
   <meta property="og:image" content="https://mustafanoman.com/static/img/hero.jpeg" />
   <link rel="icon" type="image/svg+xml"
-    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23f3f7f4'/><text y='72' x='8' font-size='60' fill='%230c8f5d' font-family='monospace' font-weight='bold'>MN</text></svg>" />
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23f3f7f4'/><text y='72' x='8' font-size='60' fill='%230a7a52' font-family='monospace' font-weight='bold'>MN</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -29,17 +28,23 @@
     rel="stylesheet" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
   {% block extra_css %}{% endblock %}
+  <script nonce="{{ csp_nonce }}">
+    /* .js gates the scroll-reveal hiding; .return-visit skips the page loader after the first page of a session */
+    document.documentElement.classList.add('js');
+    try { if (sessionStorage.getItem('mn-visited')) document.documentElement.classList.add('return-visit'); } catch (e) {}
+  </script>
 </head>
 
 <body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
   <div id="page-loader">
     <span class="loader__monogram">MN</span>
     <div class="loader__bar-wrap"><div class="loader__bar"></div></div>
   </div>
-  <nav class="nav" id="nav" role="navigation" aria-label="Main navigation">
+  <nav class="nav" id="nav" aria-label="Main navigation">
     <div class="nav__inner">
       <a href="{{ url_for('home') }}" class="nav__logo" aria-label="Mustafa Noman Home">
-        <span class="nav__logo-bracket"></span>MUSTAFA&nbsp;&nbsp;NOMAN<span class="nav__logo-bracket"></span>
+        MUSTAFA&nbsp;&nbsp;NOMAN
       </a>
       <button class="nav__burger" id="navBurger" aria-label="Toggle menu" aria-expanded="false"
         aria-controls="navLinks">
@@ -49,19 +54,7 @@
         <li><a href="{{ url_for('home') }}" {% if request.endpoint=='home' %}class="active" aria-current="page"{% endif %}>Home</a></li>
         <li><a href="{{ url_for('services') }}" {% if request.endpoint=='services' %}class="active" aria-current="page"{% endif %}>Services</a></li>
         <li><a href="{{ url_for('projects') }}" {% if request.endpoint=='projects' %}class="active" aria-current="page"{% endif %}>Work</a></li>
-        <li class="nav__dropdown">
-          <a href="{{ url_for('about') }}" {% if request.endpoint=='about' %}class="active" aria-current="page"{% endif %}>About
-            <svg class="nav__dropdown-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-              <path d="M6 9l6 6 6-6"/>
-            </svg>
-          </a>
-          <ul class="nav__dropdown-menu">
-            <li><a href="{{ url_for('about') }}">About Me</a></li>
-            <li><a href="{{ url_for('about') }}#process">How I Work</a></li>
-            <li><a href="{{ url_for('about') }}#experience">Track Record</a></li>
-            <li><a href="{{ url_for('about') }}#skills">Skills &amp; Tools</a></li>
-          </ul>
-        </li>
+        <li><a href="{{ url_for('about') }}" {% if request.endpoint=='about' %}class="active" aria-current="page"{% endif %}>About</a></li>
         <li><a href="{{ url_for('blog') }}" {% if request.endpoint in ['blog','blog_post'] %}class="active" aria-current="page"{% endif %}>Blog</a></li>
         {% if current_user.is_authenticated %}
           {% if current_user.is_admin %}
@@ -69,14 +62,14 @@
           {% endif %}
           <li><a href="{{ url_for('logout') }}">Logout</a></li>
         {% endif %}
-        <li><a href="{{ url_for('contact') }}" class="nav__hire">Let's Talk</a></li>
+        <li><a href="{{ url_for('contact') }}" class="nav__hire" {% if request.endpoint=='contact' %}aria-current="page"{% endif %}>Let's Talk</a></li>
       </ul>
     </div>
   </nav>
 
   {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
-  <div class="flash-container" role="alert" aria-live="polite">
+  <div class="flash-container" role="status">
     {% for cat, msg in messages %}
     <div class="flash flash--{{ cat }}">
       <span>{{ msg }}</span>
@@ -87,9 +80,9 @@
   {% endif %}
   {% endwith %}
 
-  <main id="main-content">{% block content %}{% endblock %}</main>
+  <main id="main-content" tabindex="-1">{% block content %}{% endblock %}</main>
 
-  <footer class="footer" role="contentinfo">
+  <footer class="footer">
     <div class="footer__inner">
       <div class="footer__brand">
         <span class="footer__brand-name">Mustafa Noman</span>
@@ -149,9 +142,6 @@
 
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
     integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
-    integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script defer src="{{ url_for('static', filename='js/main.js') }}"></script>
   {% block extra_js %}{% endblock %}

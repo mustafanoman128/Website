@@ -21,11 +21,10 @@
         <div class="bio__portrait-frame">
           <div class="bio__portrait-inner">
             <img src="{{ url_for('static', filename='img/mustafa-portrait.jpeg') }}" alt="Mustafa Noman"
-              class="bio__portrait-img" loading="eager">
+              class="bio__portrait-img" width="960" height="1003">
           </div>
           <div class="bio__portrait-badge">
-            <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"
-              style="vertical-align: middle; margin-right: 4px;">
+            <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path
                 d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
             </svg>
@@ -97,7 +96,7 @@
     <div class="section-header reveal">
       <span class="section-label mono">Proof Points</span>
       <h2 class="section-title" id="experience-heading">The Track Record</h2>
-      <p class="section-sub">Three years inside US enterprise data teams. Real budgets, real stakes, measurable outcomes.</p>
+      <p class="section-sub">Real budgets, real stakes, measurable outcomes.</p>
     </div>
 
     <div class="timeline__track">
@@ -182,31 +181,6 @@
   </div>
 </section>
 
-<!-- How I Work / Process -->
-<section class="process-section section section--dark" id="process" aria-labelledby="process-heading">
-  <div class="container">
-
-    <h2 class="principles-heading reveal" id="process-heading">How I Work</h2>
-
-    <div class="principles-grid">
-      <div class="principles-card reveal">
-        <h3>Diagnose</h3>
-        <p>I look at what you have: your data sources, tools, and existing reports, and figure out where the actual gap is. Most clients come in thinking they need a dashboard. Sometimes they need a clean pipeline first.</p>
-      </div>
-      <div class="principles-card reveal">
-        <h3>Agree Upfront</h3>
-        <p>I write a scope document: what gets built, what you'll receive, the timeline, and a fixed price. Nothing starts until you approve it. No surprises mid-project, no hourly billing creep.</p>
-      </div>
-      <div class="principles-card reveal">
-        <h3>Build &amp; Hand Off</h3>
-        <p>I build, test, and document everything. When I hand it over, I walk you through it. Your team can run it without me. That's the whole point.</p>
-      </div>
-    </div>
-
-
-  </div>
-</section>
-
 <!-- Skills Section -->
 <section class="skills-section section" id="skills" aria-labelledby="skills-heading">
   <div class="container">
@@ -219,7 +193,7 @@
     <div class="skills-grid">
 
       <div class="skill-group reveal">
-        <h4 class="skill-group__title mono">Analytics &amp; Dashboards</h4>
+        <h3 class="skill-group__title mono">Analytics &amp; Dashboards</h3>
         <div class="skill-tags">
           <span>Tableau</span><span>Tableau Prep</span><span>Power BI</span>
           <span>DAX</span><span>Plotly</span><span>Google Analytics</span><span>SSRS</span>
@@ -227,7 +201,7 @@
       </div>
 
       <div class="skill-group reveal">
-        <h4 class="skill-group__title mono">Data Engineering</h4>
+        <h3 class="skill-group__title mono">Data Engineering</h3>
         <div class="skill-tags">
           <span>Python</span><span>SQL</span><span>Pandas</span><span>Alteryx</span>
           <span>Azure Synapse</span><span>AWS S3</span><span>AWS Glue</span><span>AWS Athena</span><span>AWS Redshift</span>
@@ -235,7 +209,7 @@
       </div>
 
       <div class="skill-group reveal">
-        <h4 class="skill-group__title mono">AI &amp; Predictive</h4>
+        <h3 class="skill-group__title mono">AI &amp; Predictive</h3>
         <div class="skill-tags">
           <span>scikit-learn</span><span>LightGBM</span><span>TensorFlow</span>
           <span>OpenAI API</span><span>Generative AI</span><span>LLMs</span><span>A/B Testing</span>
@@ -243,7 +217,7 @@
       </div>
 
       <div class="skill-group reveal">
-        <h4 class="skill-group__title mono">Web &amp; Software</h4>
+        <h3 class="skill-group__title mono">Web &amp; Software</h3>
         <div class="skill-tags">
           <span>Flask</span><span>Node.js</span><span>JavaScript</span><span>HTML/CSS</span>
           <span>PostgreSQL</span><span>MySQL</span><span>SQL Server</span><span>Google BigQuery</span>

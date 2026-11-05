@@ -569,6 +569,25 @@ def admin_delete_message(message_id):
     return redirect(url_for("admin_messages"))
 
 
+# ── Error Pages ──────────────────────────────────────────────────────────────
+
+
+@app.errorhandler(404)
+def not_found(e):
+    return render_template(
+        "error.html", code=404, title="Page not found",
+        message="That page doesn't exist or has moved.",
+    ), 404
+
+
+@app.errorhandler(500)
+def server_error(e):
+    return render_template(
+        "error.html", code=500, title="Something went wrong",
+        message="An error on my side stopped this page from loading. Please try again in a moment.",
+    ), 500
+
+
 # ── CLI ──────────────────────────────────────────────────────────────────────
 
 

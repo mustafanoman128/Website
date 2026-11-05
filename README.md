@@ -20,7 +20,7 @@ Live at **[mustafanoman128.pythonanywhere.com](https://mustafanoman128.pythonany
 | Backend    | Python · Flask · Flask-Login · Flask-Mail         |
 | Database   | SQLite (local) / PostgreSQL via `DATABASE_URL` · Flask-SQLAlchemy · Flask-Migrate |
 | Frontend   | Jinja templates · vanilla CSS · vanilla JS         |
-| Animation  | GSAP 3.12 + ScrollTrigger (CDN)                    |
+| Animation  | GSAP 3.12 core (CDN), first-visit hero entrance    |
 | Fonts      | Bricolage Grotesque · DM Sans · DM Mono           |
 | Hosting    | PythonAnywhere                                    |
 

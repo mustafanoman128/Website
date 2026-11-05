@@ -6,13 +6,6 @@
 <!-- Hero Section -->
 <section class="hero" id="hero" aria-label="Introduction">
   
-  <!-- Background Effects -->
-  <div class="hero__bg">
-    <div class="hero__glow hero__glow--1"></div>
-    <div class="hero__glow hero__glow--2"></div>
-    <div class="hero__glow hero__glow--3"></div>
-  </div>
-
   <!-- Hero Content -->
   <div class="hero__inner">
     
@@ -22,12 +15,7 @@
       
 
       <!-- Main Title -->
-      <h1 class="hero__title">
-        <span class="hero__title-normal">Hi, I'm Mustafa. I help</span>
-        <span class="hero__title-line">
-          businesses <span class="hero__title-outline">stop guessing.</span>
-        </span>
-      </h1>
+      <h1 class="hero__title">Hi, I'm Mustafa. I help businesses <span class="hero__title-outline">stop guessing.</span></h1>
 
       <!-- Subtitle -->
       <p class="hero__sub">
@@ -43,7 +31,7 @@
             <path d="M5 12h14M12 5l7 7-7 7"/>
           </svg>
         </a>
-        <a href="{{ url_for('about') }}#process" class="btn btn--hero-ghost">
+        <a href="{{ url_for('services') }}#process" class="btn btn--hero-ghost">
           How I Work
           <svg class="btn__icon btn__icon--arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -58,7 +46,7 @@
     <div class="hero__right">
       
       <!-- Available Badge -->
-      <div class="hero__avail" aria-label="Available for work">
+      <div class="hero__avail">
         <span class="hero__avail-pulse"></span>
         <span class="hero__avail-text mono">Available for Projects</span>
       </div>
@@ -66,7 +54,7 @@
       <!-- Image Frame -->
       <div class="hero__frame">
         <div class="hero__frame-img">
-          <img src="{{ url_for('static', filename='img/hero.jpeg') }}" alt="Mustafa Noman — Data Analyst" loading="eager" />
+          <img src="{{ url_for('static', filename='img/hero.jpeg') }}" alt="Mustafa Noman — Data Analyst" width="915" height="1010" fetchpriority="high" />
           <div class="hero__frame-overlay"></div>
         </div>
       </div>
@@ -76,7 +64,7 @@
         <span class="hero__float-val mono">$2.3M+</span>
         <span class="hero__float-label">Revenue Generated</span>
         <span class="hero__float-trend">
-          <svg width="10" height="10" fill="currentColor" viewBox="0 0 24 24" style="vertical-align: middle; margin-right: 2px;">
+          <svg width="10" height="10" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M7 14l5-5 5 5H7z"/>
           </svg>
           via ETL &amp; Campaigns
@@ -86,9 +74,6 @@
       <div class="hero__float hero__float--right">
         <span class="hero__float-val mono">3+</span>
         <span class="hero__float-label">Years Experience</span>
-        <span class="hero__float-trend">
-          <span class="hero__float-dot">&#9679;</span> Active
-        </span>
       </div>
 
     </div><!-- /hero__right -->
@@ -98,25 +83,15 @@
 
 </section>
 
-<section class="skills-strip" aria-label="Technical skills">
-  <div class="skills-strip__inner">
-    <div class="skills-strip__track">
-      {% set tools = ['Python','SQL','Tableau','Power BI','Alteryx','Azure Synapse','Flask','Pandas','NumPy','Scikit-learn','Google BigQuery','AWS Redshift','Machine Learning','ETL Pipelines','Data Visualization','Revenue Operations','Generative AI','LLMs'] %}
-      {% for t in tools %}<span class="skills-strip__item mono">{{ t }}</span><span class="skills-strip__dot">&#9670;</span>{% endfor %}
-      {% for t in tools %}<span class="skills-strip__item mono">{{ t }}</span><span class="skills-strip__dot">&#9670;</span>{% endfor %}
-    </div>
-  </div>
-</section>
-
 <!-- Logos Strip -->
 <section class="logos-strip" aria-label="Trusted by teams at">
   <div class="container">
     <p class="logos-strip__label mono">Trusted by teams at</p>
     <div class="logos-strip__row">
-      <img src="{{ url_for('static', filename='img/logos/Pregis.png') }}" alt="Pregis" class="logo-img">
-      <img src="{{ url_for('static', filename='img/logos/Stericycle.png') }}" alt="Stericycle" class="logo-img">
-      <img src="{{ url_for('static', filename='img/logos/The Henry Ford.png') }}" alt="The Henry Ford" class="logo-img">
-      <img src="{{ url_for('static', filename='img/logos/Univ of Illinois.png') }}" alt="University of Illinois Chicago" class="logo-img">
+      <img src="{{ url_for('static', filename='img/logos/Pregis.png') }}" alt="Pregis" class="logo-img" width="1536" height="1024" loading="lazy">
+      <img src="{{ url_for('static', filename='img/logos/Stericycle.png') }}" alt="Stericycle" class="logo-img" width="1536" height="1024" loading="lazy">
+      <img src="{{ url_for('static', filename='img/logos/The Henry Ford.png') }}" alt="The Henry Ford" class="logo-img" width="1536" height="1024" loading="lazy">
+      <img src="{{ url_for('static', filename='img/logos/Univ of Illinois.png') }}" alt="University of Illinois Chicago" class="logo-img" width="1536" height="1024" loading="lazy">
     </div>
   </div>
 </section>
@@ -131,7 +106,7 @@
     <div class="svc-teaser__grid reveal">
       <div class="svc-teaser__card">
         <div class="svc-teaser__icon">
-          <svg width="22" height="22" fill="none" stroke="var(--teal)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
             <path d="M3 3v18h18"/><path d="M7 16l4-8 4 4 4-7"/>
           </svg>
         </div>
@@ -140,7 +115,7 @@
       </div>
       <div class="svc-teaser__card">
         <div class="svc-teaser__icon">
-          <svg width="22" height="22" fill="none" stroke="var(--teal)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
             <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
           </svg>
         </div>
@@ -149,7 +124,7 @@
       </div>
       <div class="svc-teaser__card">
         <div class="svc-teaser__icon">
-          <svg width="22" height="22" fill="none" stroke="var(--teal)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
             <ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4.03 3-9 3S3 13.66 3 12"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/>
           </svg>
         </div>
@@ -181,24 +156,9 @@
       <!-- Project 1 -->
       <article class="project-card reveal">
         <div class="project-card__img">
-          <img src="{{ url_for('static', filename='img/project-bhp.png') }}" alt="Pakistan Property Price Estimator" loading="lazy" />
-          <div class="project-card__img-overlay">
-            <a href="https://github.com/mustafanoman128/pakistan-property-price" target="_blank" rel="noopener noreferrer" class="project-card__github">
-              <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
-              </svg>
-              View on GitHub
-            </a>
-            <a href="https://pakistan-property-price.onrender.com/" target="_blank" rel="noopener noreferrer" class="project-card__github project-card__github--cta">
-              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-              Try Live
-            </a>
-          </div>
+          <img src="{{ url_for('static', filename='img/project-bhp.png') }}" alt="Pakistan Property Price Estimator" width="1536" height="1024" loading="lazy" />
         </div>
         <div class="project-card__body">
-          <div class="project-card__num mono">01</div>
           <h3>Pakistan Property Price Estimator</h3>
           <p>LightGBM quantile regression trained on 120K+ Zameen.com listings, with P10/P50/P90 confidence intervals, 10K+ neighborhood autocomplete, EMI calculator, and rental yield analysis across 5 major Pakistani cities.</p>
           <div class="project-card__tags">
@@ -207,36 +167,21 @@
         </div>
         <div class="project-card__foot">
           <span class="project-card__metric mono">120K+ Listings</span>
-          <a href="https://pakistan-property-price.onrender.com/" target="_blank" rel="noopener noreferrer" class="project-card__link mono">
-            Try Live
-            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="vertical-align: middle; margin-left: 2px;">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </a>
+          <div class="project-card__links">
+            <a href="https://github.com/mustafanoman128/pakistan-property-price" target="_blank" rel="noopener noreferrer" class="project-card__link mono"><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/></svg>GitHub</a>
+            <a href="https://pakistan-property-price.onrender.com/" target="_blank" rel="noopener noreferrer" class="project-card__link mono">Try Live
+              <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          </div>
         </div>
       </article>
 
       <!-- Project 2 -->
       <article class="project-card reveal">
         <div class="project-card__img">
-          <img src="{{ url_for('static', filename='img/project-finance.png') }}" alt="Personal Finance App" loading="lazy" />
-          <div class="project-card__img-overlay">
-            <a href="https://github.com/mustafanoman128/personal-finance" target="_blank" rel="noopener noreferrer" class="project-card__github">
-              <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
-              </svg>
-              View on GitHub
-            </a>
-            <a href="https://mustafanoman128.github.io/personal-finance/demo.html" target="_blank" rel="noopener noreferrer" class="project-card__github project-card__github--cta">
-              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-              Try Live
-            </a>
-          </div>
+          <img src="{{ url_for('static', filename='img/project-finance.png') }}" alt="Personal Finance App" width="1536" height="1024" loading="lazy" />
         </div>
         <div class="project-card__body">
-          <div class="project-card__num mono">02</div>
           <h3>Personal Finance App</h3>
           <p>Full-stack finance tracker with 11 production-ready features — Node.js/Express REST API, SQLite database, and mobile-responsive vanilla JS frontend.</p>
           <div class="project-card__tags">
@@ -245,12 +190,12 @@
         </div>
         <div class="project-card__foot">
           <span class="project-card__metric mono">11 Features</span>
-          <a href="https://mustafanoman128.github.io/personal-finance/demo.html" target="_blank" rel="noopener noreferrer" class="project-card__link mono">
-            Try Live
-            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="vertical-align: middle; margin-left: 2px;">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </a>
+          <div class="project-card__links">
+            <a href="https://github.com/mustafanoman128/personal-finance" target="_blank" rel="noopener noreferrer" class="project-card__link mono"><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/></svg>GitHub</a>
+            <a href="https://mustafanoman128.github.io/personal-finance/demo.html" target="_blank" rel="noopener noreferrer" class="project-card__link mono">Try Live
+              <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          </div>
         </div>
       </article>
 

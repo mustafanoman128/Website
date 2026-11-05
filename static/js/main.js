@@ -13,9 +13,13 @@
   };
 
   /* ── Page Loader ─────────────────────────────────────────── */
+  // Shown on the first page of a browser session only; base.html's head script sets
+  // .return-visit (CSS hides the loader) so later pages render instantly, without the entrance.
   const initLoader = () => {
     const loader = document.getElementById('page-loader');
     if (!loader) return;
+    if (document.documentElement.classList.contains('return-visit')) { loader.remove(); return; }
+    try { sessionStorage.setItem('mn-visited', '1'); } catch (e) { /* storage blocked: loader shows each time */ }
     const hide = () => {
       loader.classList.add('hidden');
       setTimeout(() => {
@@ -50,8 +54,9 @@
       .to('.hero__float--right', { x: 0, y: 0, opacity: 1, duration: 0.65, ease: 'back.out(1.8)' }, '-=0.55');
   };
 
-  /* ── Scroll Progress ─────────────────────────────────────── */
+  /* ── Scroll Progress (reading progress on blog posts) ───── */
   const initScrollProgress = () => {
+    if (!document.querySelector('.post-content')) return;
     const bar = document.createElement('div');
     bar.className = 'scroll-progress';
     document.body.prepend(bar);
@@ -75,11 +80,8 @@
     const onScroll = throttle(() => {
       const y = window.scrollY;
       nav.classList.toggle('scrolled', y > 40);
-      if (y > 300) {
-        nav.style.transform = y > lastY ? 'translateY(-100%)' : 'translateY(0)';
-      } else {
-        nav.style.transform = 'translateY(0)';
-      }
+      // '' rather than translateY(0): any transform would trap the fixed mobile menu inside the nav
+      nav.style.transform = y > 300 && y > lastY ? 'translateY(-100%)' : '';
       lastY = y;
     }, 80);
 
@@ -132,60 +134,6 @@
     els.forEach(el => obs.observe(el));
   };
 
-  /* ── Number Counters ─────────────────────────────────────── */
-  const initCounters = () => {
-    const els = document.querySelectorAll('.hero__float-val');
-    if (!els.length) return;
-
-    const ease = t => 1 - Math.pow(1 - t, 3);
-
-    const animate = (el) => {
-      const m = el.textContent.match(/(\$?)([\d,.]+)([KM%+]*)/);
-      if (!m) return;
-      const [, prefix, digits, suffix] = m;
-      const target = parseFloat(digits.replace(/,/g, ''));
-      const dur = 1600;
-      const start = performance.now();
-
-      const tick = (now) => {
-        const p = Math.min((now - start) / dur, 1);
-        const val = target * ease(p);
-        let disp;
-        if (target >= 1000) disp = Math.floor(val).toLocaleString('en-US');
-        else if (target % 1 !== 0) disp = val.toFixed(1);
-        else disp = Math.floor(val);
-        el.textContent = prefix + disp + suffix;
-        if (p < 1) requestAnimationFrame(tick);
-      };
-      requestAnimationFrame(tick);
-    };
-
-    const obs = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) { animate(e.target); obs.unobserve(e.target); }
-      });
-    }, { threshold: 0.5 });
-
-    els.forEach(el => obs.observe(el));
-  };
-
-  /* ── Parallax / Mouse Movement ───────────────────────────── */
-  const initParallax = () => {
-    if (window.matchMedia('(pointer: coarse)').matches) return;
-    const frame = document.querySelector('.hero__frame');
-    if (!frame) return;
-
-    const move = throttle((e) => {
-      const cx = window.innerWidth  / 2;
-      const cy = window.innerHeight / 2;
-      const rx = (e.clientX - cx) / cx;
-      const ry = (e.clientY - cy) / cy;
-      frame.style.transform = `translate(${rx * -6}px, ${ry * -6}px)`;
-    }, 16);
-
-    document.addEventListener('mousemove', move);
-  };
-
   /* ── Flash Messages ──────────────────────────────────────── */
   const dismissFlash = (flash) => {
     flash.style.opacity = '0';
@@ -227,12 +175,22 @@
       input.addEventListener('change', updateHasValue);
       updateHasValue();
     });
+
+    // Submit feedback: disable the button so a slow mail send can't be double-submitted
+    document.querySelectorAll('form').forEach(form => {
+      const btn = form.querySelector('[type="submit"]');
+      if (!btn) return;
+      const label = btn.firstChild.textContent;
+      form.addEventListener('submit', () => { btn.disabled = true; btn.firstChild.textContent = 'Sending… '; });
+      // a page restored from the back/forward cache keeps the disabled state otherwise
+      window.addEventListener('pageshow', () => { btn.disabled = false; btn.firstChild.textContent = label; });
+    });
   };
 
   /* ── Smooth Scroll ───────────────────────────────────────── */
   const initSmoothScroll = () => {
     const nav = document.getElementById('nav');
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
+    document.querySelectorAll('a[href^="#"]:not(.skip-link)').forEach(a => {
       a.addEventListener('click', function(e) {
         const id = this.getAttribute('href');
         if (id === '#') return;
@@ -243,22 +201,6 @@
         const top = target.getBoundingClientRect().top + window.scrollY - offset;
         window.scrollTo({ top, behavior: 'smooth' });
       });
-    });
-  };
-
-  /* ── ScrollTrigger Parallax ──────────────────────────────── */
-  const initScrollParallax = () => {
-    if (window.matchMedia('(pointer: coarse)').matches) return;
-    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
-    gsap.registerPlugin(ScrollTrigger);
-
-    [
-      ['.hero__glow--1', { y: -120 },       1.5],
-      ['.hero__glow--2', { y: -80, x: 40 }, 2  ],
-      ['.hero__glow--3', { y: -60 },        1  ],
-    ].forEach(([sel, props, scrub]) => {
-      const el = document.querySelector(sel);
-      if (el) gsap.to(el, { ...props, scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub } });
     });
   };
 
@@ -291,12 +233,9 @@
   initNav();
   initBurger();
   initReveal();
-  initCounters();
-  initParallax();
   initFlash();
   initForms();
   initSmoothScroll();
-  initScrollParallax();
   initScrollTop();
   initReadingTime();
 
