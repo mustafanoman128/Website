@@ -158,15 +158,16 @@
     {% block content %}{% endblock %}
   </main>
 </div>
-<script>
+<script nonce="{{ csp_nonce }}">
 /* Shared delete-confirmation modal. A page opts in by rendering #deleteModal
-   (with #deleteConfirmForm and #modalTargetName) and .btn-danger[data-url][data-name] triggers. */
+   (with #deleteConfirmForm, #modalTargetName and a .btn-cancel) and .btn-danger[data-url][data-name] triggers. */
 function closeDeleteModal() {
   document.getElementById('deleteModal').classList.remove('active');
 }
 (function () {
   const modal = document.getElementById('deleteModal');
   if (!modal) return;
+  modal.querySelector('.btn-cancel').addEventListener('click', closeDeleteModal);
   document.querySelectorAll('.btn-danger[data-url]').forEach(btn => {
     btn.addEventListener('click', () => {
       document.getElementById('deleteConfirmForm').action = btn.dataset.url;

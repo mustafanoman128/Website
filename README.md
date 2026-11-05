@@ -70,7 +70,13 @@ Set `FLASK_DEBUG=1` for auto-reload during development.
 
 ## Tests & Build
 
-There is no automated test suite, linter config or build step — CSS and JS are served as-is from `static/`. Verify changes by running the app locally and checking the affected pages.
+Security regression tests (stdlib `unittest`, in-memory DB, mail stubbed — safe to run anywhere):
+
+```bash
+python -m unittest discover tests
+```
+
+There is no linter config or build step — CSS and JS are served as-is from `static/`. Verify visual changes by running the app locally and checking the affected pages.
 
 ## Deployment (PythonAnywhere)
 
@@ -88,6 +94,7 @@ Website/
 ├── app.py              # Entire backend: config, models, routes, CLI (no blueprints)
 ├── requirements.txt
 ├── migrations/         # Alembic migrations (Flask-Migrate)
+├── tests/              # Security regression tests (unittest)
 ├── templates/
 │   ├── base.html       # Public layout: nav, flash messages, footer
 │   ├── home.html  services.html  projects.html  about.html
@@ -104,11 +111,13 @@ Website/
 ## Security Notes
 
 - Passwords hashed with Werkzeug; plaintext never stored
-- CSRF token required on every POST (single `before_request` hook)
-- Admin routes guarded by `@admin_required`, separate from public login
-- User text input stripped of HTML; contact-form headers sanitised against SMTP injection
-- Uploads restricted by extension, renamed with a UUID prefix, max 10 MB
-- `X-Frame-Options`, `X-Content-Type-Options` and `Referrer-Policy` headers on every response
+- One-time CSRF token required on every POST (single `before_request` hook)
+- Admin routes guarded by `@admin_required`; admin login rate-limited per IP, with constant-cost checks so timing does not reveal the admin address
+- Contact form: allow-listed inquiry types, single-address email check, length limits, honeypot field, per-IP rate limit; headers sanitised against SMTP injection
+- Uploads restricted by extension *and* file signature (PNG/JPEG/GIF/WebP), renamed with a UUID prefix, max 10 MB
+- Nonce-based Content-Security-Policy, HSTS, `Permissions-Policy`, COOP, `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`
+- Admin responses are `Cache-Control: no-store` + `noindex`; versioned static files are cached for a year
+- Third-party scripts pinned with Subresource Integrity hashes
 
 ---
 

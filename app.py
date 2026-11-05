@@ -1,6 +1,8 @@
+import ipaddress
 import os
 import re
 import secrets
+import time
 import uuid
 from datetime import datetime, timedelta, timezone
 from functools import wraps
@@ -16,6 +18,7 @@ from flask import (
     flash,
     abort,
     session,
+    g,
 )
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -51,6 +54,9 @@ app.config["SESSION_COOKIE_SECURE"] = True
 app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=30)
+app.config["REMEMBER_COOKIE_SECURE"] = True
+app.config["REMEMBER_COOKIE_SAMESITE"] = "Lax"
+app.config["REMEMBER_COOKIE_DURATION"] = timedelta(days=14)
 
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
 app.config["MAIL_PORT"] = 587
@@ -85,9 +91,78 @@ INQUIRY_LABELS = {
     "general": "General",
 }
 
+# One plain address: rejects "a@b", comma/semicolon lists, spaces and angle brackets.
+EMAIL_RE = re.compile(r"[^@\s,;<>\"']+@[^@\s,;<>\"']+\.[^@\s,;<>\"'.]{2,}")
+
+# Checked when the email matches no admin, so a wrong email costs as much time as a
+# wrong password and response timing cannot reveal which address is the admin's.
+DUMMY_PASSWORD_HASH = generate_password_hash(secrets.token_hex(16))
+
+# Inline <script> tags must carry nonce="{{ csp_nonce }}"; inline on*= handlers are blocked.
+CSP = (
+    "default-src 'self'; "
+    "script-src 'self' 'nonce-{nonce}' https://cdnjs.cloudflare.com; "
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
+    "font-src 'self' https://fonts.gstatic.com; "
+    "img-src 'self' data:; "
+    "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"
+)
+
+
+def csp_nonce():
+    """Per-request nonce shared by the CSP header and the inline scripts in templates."""
+    if "csp_nonce" not in g:
+        g.csp_nonce = secrets.token_urlsafe(16)
+    return g.csp_nonce
+
+
+# ── Rate limiting ─────────────────────────────────────────────────────────────
+# In-memory, per worker process, reset on reload. Enough to stop scripted password
+# guessing and contact-form floods on a one-admin site without a new dependency.
+# Each action has a per-IP key and a site-wide key, e.g. ("login", ip) and ("login-all",).
+# The site-wide caps hold even if the IP header can be spoofed, and because hits are only
+# recorded below those caps, the number of keys stays small whatever an attacker sends.
+_hits = {}
+
+
+def client_ip():
+    """Visitor address from PythonAnywhere's X-Real-IP header (remote_addr is the proxy).
+    Anything that is not an IP address is ignored, so the header cannot inject text into logs."""
+    try:
+        return str(ipaddress.ip_address(request.headers.get("X-Real-IP", "")))
+    except ValueError:
+        return request.remote_addr
+
+
+def too_many(key, limit, window):
+    """True if `key` already has `limit` hits within the last `window` seconds."""
+    now = time.monotonic()
+    if len(_hits) > 10_000:  # memory cap: forget keys idle longer than the longest window (1 h)
+        for k in [k for k, v in _hits.items() if now - v[-1] > 3600]:
+            del _hits[k]
+    recent = [t for t in _hits.get(key, []) if now - t < window]
+    if recent:
+        _hits[key] = recent
+    else:
+        _hits.pop(key, None)
+    return len(recent) >= limit
+
+
+def record_hit(key):
+    _hits.setdefault(key, []).append(time.monotonic())
+
 
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXT
+
+
+def is_image(file):
+    """True if the upload starts with a PNG, JPEG, GIF or WebP signature (the client's filename and type are not trusted)."""
+    head = file.stream.read(12)
+    file.stream.seek(0)
+    return head.startswith((b"\x89PNG\r\n\x1a\n", b"\xff\xd8\xff", b"GIF87a", b"GIF89a")) or (
+        head[:4] == b"RIFF" and head[8:12] == b"WEBP"
+    )
 
 
 def save_uploaded_images(files, post_id):
@@ -97,6 +172,10 @@ def save_uploaded_images(files, post_id):
     images = []
     for f in files:
         if f.filename and allowed_file(f.filename):
+            if not is_image(f):
+                app.logger.warning("Rejected upload %r: not a PNG/JPEG/GIF/WebP file", f.filename)
+                flash(f"Skipped {secure_filename(f.filename)}: not a valid image file.", "warning")
+                continue
             fname = f"{post_id}_{uuid.uuid4().hex}_{secure_filename(f.filename)}"
             f.save(os.path.join(upload_dir, fname))
             images.append(BlogImage(image_path=fname, post_id=post_id))
@@ -194,13 +273,26 @@ def load_user(user_id):
 
 @app.before_request
 def csrf_handler():
+    """One-time CSRF token: each POST consumes it, then a fresh one is issued before the view renders."""
+    if request.endpoint == "static":
+        return  # static files need no session, which keeps them cookie-free and cacheable
+    if request.method == "POST":
+        token = session.pop("_csrf_token", "")
+        form_token = request.form.get("_csrf_token", "")
+        if not token or not secrets.compare_digest(token.encode(), form_token.encode()):
+            abort(403)
     if "_csrf_token" not in session:
         session["_csrf_token"] = secrets.token_hex(32)
-    if request.method == "POST":
-        token = session.pop("_csrf_token", None)
-        form_token = request.form.get("_csrf_token")
-        if not token or token != form_token:
-            abort(403)
+
+
+@app.url_defaults
+def static_url_version(endpoint, values):
+    """Add ?v=<file mtime> to static URLs so browsers can cache them for a year yet refetch after a deploy."""
+    if endpoint == "static" and "filename" in values:
+        try:
+            values["v"] = int(os.stat(os.path.join(app.static_folder, values["filename"])).st_mtime)
+        except OSError:
+            pass
 
 
 @app.after_request
@@ -208,14 +300,31 @@ def set_security_headers(response):
     response.headers["X-Frame-Options"] = "SAMEORIGIN"
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["Strict-Transport-Security"] = "max-age=31536000"
+    response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=(), payment=()"
+    response.headers["Cross-Origin-Opener-Policy"] = "same-origin"
+    if response.mimetype == "text/html":
+        response.headers["Content-Security-Policy"] = CSP.format(nonce=csp_nonce())
+    endpoint = request.endpoint or ""
+    if endpoint.startswith("admin") or endpoint == "logout":
+        # Admin pages show contact-form PII: keep them out of every cache and search index.
+        response.headers["Cache-Control"] = "no-store"
+        response.headers["X-Robots-Tag"] = "noindex, nofollow"
+    elif endpoint == "static" and "v" in request.args and response.status_code == 200:
+        # Versioned URL (see static_url_version): its content never changes.
+        response.cache_control.no_cache = None
+        response.cache_control.public = True
+        response.cache_control.max_age = 31536000
+        response.cache_control.immutable = True
     return response
 
 
 @app.context_processor
 def inject_globals():
-    """Inject csrf_token (plain string, not callable) and CATEGORIES list into every template context."""
+    """Inject csrf_token (plain string, not callable), csp_nonce and the CATEGORIES list into every template context."""
     return dict(
         csrf_token=session.get("_csrf_token", ""),
+        csp_nonce=csp_nonce(),
         CATEGORIES=CATEGORIES,
     )
 
@@ -245,7 +354,7 @@ def projects():
 
 @app.route("/blog", methods=["GET"])
 def blog():
-    page = request.args.get("page", 1, type=int)
+    page = min(request.args.get("page", 1, type=int), 10_000)  # huge pages overflow SQLite's INTEGER offset
     active_category = request.args.get("category", "").strip()
     if active_category not in CATEGORIES:
         active_category = ""   # treat unknown / missing as "All"
@@ -271,18 +380,33 @@ def blog_post(post_id):
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
     if request.method == "POST":
+        if request.form.get("hp_field"):
+            # Honeypot: hidden from people, filled in by bots. Drop it but look successful.
+            flash("Message sent! I will get back to you soon.", "success")
+            return redirect(url_for("contact"))
+        ip_key = ("contact", client_ip())
+        # Site-wide cap also keeps Gmail notifications far below its ~500/day sending limit.
+        if too_many(ip_key, 5, 60 * 60) or too_many(("contact-all",), 10, 60 * 60):
+            flash("Too many messages have been sent recently. Please try again later.", "warning")
+            return render_template("contact.html"), 429
         name = sanitize_header(sanitize_html(request.form.get("name", "").strip()))
         email = sanitize_header(sanitize_html(request.form.get("email", "").strip()))
-        inquiry_type = sanitize_html(request.form.get("inquiry_type", "").strip())
+        inquiry_type = request.form.get("inquiry_type", "").strip()
+        if inquiry_type not in INQUIRY_LABELS:
+            inquiry_type = None
         message = sanitize_html(request.form.get("message", "").strip())
         if not name or not email or not message:
             flash("All fields are required.", "danger")
-        elif "@" not in email:
+        elif not EMAIL_RE.fullmatch(email):
             flash("Please enter a valid email address.", "danger")
+        elif len(name) > 120 or len(email) > 180 or len(message) > 5000:
+            flash("Your name, email or message is longer than the form allows.", "danger")
         else:
-            msg = ContactMessage(name=name, email=email, inquiry_type=inquiry_type or None, message=message)
+            msg = ContactMessage(name=name, email=email, inquiry_type=inquiry_type, message=message)
             db.session.add(msg)
             db.session.commit()
+            record_hit(ip_key)
+            record_hit(("contact-all",))
             try:
                 inquiry_label = INQUIRY_LABELS.get(inquiry_type, "Not specified")
                 email_body = (
@@ -328,13 +452,26 @@ def admin_login():
         email = request.form.get("email", "").strip().lower()
         password = request.form.get("password", "")
         remember = bool(request.form.get("remember"))
+        # Site-wide failure cap: an attacker can use it to block new logins for a while, but a
+        # correct password cannot be allowed to skip it or guessing would never be stopped.
+        ip_key = ("login", client_ip())
+        if too_many(ip_key, 5, 15 * 60) or too_many(("login-all",), 20, 15 * 60):
+            app.logger.warning("Admin login rate-limited for %s", client_ip())
+            flash("Too many failed attempts. Try again in 15 minutes.", "danger")
+            return render_template("admin_login.html"), 429
         admin = User.query.filter_by(email=email, is_admin=True).first()
 
         if admin and admin.check_password(password):
             login_user(admin, remember=remember)
+            app.logger.warning("Admin login from %s", client_ip())  # WARNING so it reaches PythonAnywhere's error log
             flash("Admin access granted.", "success")
             return redirect(url_for("admin_dashboard"))
 
+        if not admin:
+            check_password_hash(DUMMY_PASSWORD_HASH, password)
+        record_hit(ip_key)
+        record_hit(("login-all",))
+        app.logger.warning("Failed admin login from %s", client_ip())
         flash("Invalid admin credentials.", "danger")
     return render_template("admin_login.html")
 
@@ -435,11 +572,12 @@ def admin_delete_blog(post_id):
 @admin_required
 def admin_delete_image(image_id):
     img = db.get_or_404(BlogImage, image_id)
+    post_id = img.post_id
     delete_image_file(img.image_path)
     db.session.delete(img)
     db.session.commit()
     flash("Image deleted.", "success")
-    return redirect(request.referrer or url_for("admin_blogs"))
+    return redirect(url_for("admin_edit_blog", post_id=post_id))
 
 
 @app.route("/admin/messages")

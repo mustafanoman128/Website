@@ -95,7 +95,7 @@
       This will permanently remove all associated images.
     </p>
     <div class="adm-modal__actions">
-      <button type="button" class="btn-cancel" onclick="closeDeleteModal()">Cancel</button>
+      <button type="button" class="btn-cancel">Cancel</button>
       <form id="deleteConfirmForm" method="POST" style="margin:0">
         <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
         <button type="submit" class="btn-confirm-delete">Yes, Delete Post</button>

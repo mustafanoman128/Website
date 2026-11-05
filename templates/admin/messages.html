@@ -28,11 +28,11 @@
           <a href="mailto:{{ m.email }}" style="color:var(--teal);font-size:0.85rem">{{ m.email }}</a>
         </td>
         <td style="max-width:360px">
-          <div class="msg-preview" id="msg-{{ m.id }}">
+          <div class="msg-preview">
             <span class="msg-short">{{ m.message[:100] }}{% if m.message|length > 100 %}&hellip;{% endif %}</span>
             {% if m.message|length > 100 %}
             <span class="msg-full" style="display:none">{{ m.message }}</span>
-            <button class="msg-toggle mono" onclick="toggleMsg({{ m.id }})">more</button>
+            <button class="msg-toggle mono">more</button>
             {% endif %}
           </div>
         </td>
@@ -69,7 +69,7 @@
     <p class="adm-modal__text">Are you sure you want to delete the message from <span id="modalTargetName" style="color:var(--white);font-weight:600"></span>? This action cannot be undone.</p>
     
     <div class="adm-modal__actions">
-      <button type="button" class="btn-cancel" onclick="closeDeleteModal()">Cancel</button>
+      <button type="button" class="btn-cancel">Cancel</button>
       <form id="deleteConfirmForm" method="POST" style="margin:0">
         <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
         <button type="submit" class="btn-confirm-delete">Delete Permanently</button>
@@ -78,17 +78,18 @@
   </div>
 </div>
 
-<script>
-function toggleMsg(id) {
-    const wrap = document.getElementById('msg-' + id);
+<script nonce="{{ csp_nonce }}">
+document.querySelectorAll('.msg-toggle').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const wrap = btn.closest('.msg-preview');
     const short = wrap.querySelector('.msg-short');
     const full = wrap.querySelector('.msg-full');
-    const btn = wrap.querySelector('.msg-toggle');
     const isExpanded = full.style.display !== 'none';
     short.style.display = isExpanded ? '' : 'none';
     full.style.display = isExpanded ? 'none' : '';
     btn.textContent = isExpanded ? 'more' : 'less';
-}
+  });
+});
 </script>
 
 {% endblock %}

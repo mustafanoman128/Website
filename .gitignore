@@ -12,3 +12,4 @@ drafts/
 .playwright-mcp/
 DESIGN-SPEC.md
 writing.md
+SECURITY-AUDIT.md
