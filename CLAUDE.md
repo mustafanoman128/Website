@@ -48,7 +48,7 @@ Single-file Flask app (`app.py`) — all models, routes, and config in one file.
 
 **Database models:** `User`, `BlogPost`, `BlogImage`, `ContactMessage` — Flask-SQLAlchemy + Flask-Migrate. Cascading delete: BlogPost→BlogImages. The comment feature and public accounts were removed in Nov 2026 (migration `1da4b2464115` drops the `comment` table); `User` rows are now admins only, though old non-admin rows may remain in production — they cannot log in anywhere. All datetime columns use `datetime.now(timezone.utc)`; never use the deprecated `datetime.utcnow()`. Use `db.get_or_404(Model, id)` — not the deprecated `Model.query.get_or_404(id)`.
 
-**Auth:** Admin-only. The single login is `/admin/login` (`login_manager.login_view = "admin_login"`), which only accepts users with `is_admin=True`. `@admin_required` decorator checks `current_user.is_admin`, not just auth state. Admin accounts are created only via `flask seed-admin`. Login is rate-limited (5 failures per IP *or* 20 site-wide per 15 min → 429 — the site-wide cap holds even if the IP header is spoofed, at the cost that an attacker can block new logins for a while; existing sessions are unaffected, and a correct password deliberately does not bypass the cap); an unknown email still runs a password-hash check against `DUMMY_PASSWORD_HASH` so response time can't reveal the admin address. Successful, failed and rate-limited logins are logged at WARNING (the level PythonAnywhere's error log keeps). Remember-me cookie: Secure, SameSite=Lax, 14 days.
+**Auth:** Admin-only. The single login is `/admin/login` (`login_manager.login_view = "admin_login"`), which only accepts users with `is_admin=True`. `@admin_required` is the only guard admin routes need: anonymous visitors are redirected to the login page (`login_manager.unauthorized()`, keeps `?next=`), logged-in non-admins get 403. Don't stack `@login_required` on top — it is used only on `/logout`. Admin accounts are created only via `flask seed-admin`. Login is rate-limited (5 failures per IP *or* 20 site-wide per 15 min → 429 — the site-wide cap holds even if the IP header is spoofed, at the cost that an attacker can block new logins for a while; existing sessions are unaffected, and a correct password deliberately does not bypass the cap); an unknown email still runs a password-hash check against `DUMMY_PASSWORD_HASH` so response time can't reveal the admin address. Successful, failed and rate-limited logins are logged at WARNING (the level PythonAnywhere's error log keeps). Remember-me cookie: Secure, SameSite=Lax, 14 days.
 
 **CSRF:** Handled entirely by a single `csrf_handler()` `before_request` hook — no exemptions except the `static` endpoint (skipped so static files never get a session cookie). On every POST it pops the session token and compares it (constant-time) with the form's; then, if the session has no token, it issues a fresh one *in the same request* — so a form re-rendered after a failed POST (e.g. wrong password) carries a valid token. The current token is injected into every template as the plain string `csrf_token` (via `inject_globals()` context processor). New forms need:
 ```html
@@ -78,7 +78,7 @@ No parentheses — it's a string, not a callable.
 
 **File uploads:** Blog images go to `static/uploads/blog_images/` (gitignored; created on first upload). Extension allow-list + file-signature check. Max 10 MB per request.
 
-**Template filter:** `nl2br` is registered as a Jinja2 filter (`@app.template_filter("nl2br")`). It HTML-escapes the value then replaces `\n` with `<br>`. Used in `blog_post.html` as `{{ post.content | nl2br | safe }}`. Must remain registered — removing it crashes blog post rendering.
+**Template filter:** `nl2br` is registered as a Jinja2 filter (`@app.template_filter("nl2br")`). It HTML-escapes the value then replaces `\n` with `<br>`. Used in `blog_post.html` as `{{ post.content | nl2br | safe }}`. Must remain registered — removing it crashes blog post rendering. Because it escapes, `.post-content` only ever holds plain text and `<br>`; style.css deliberately has no heading/list/code rules inside it (add them only if post rendering changes).
 
 **Contact form validation:** A filled hidden honeypot field (`hp_field`) is dropped silently with the normal success flash. Otherwise: per-IP rate limit (5/hour → 429), `inquiry_type` must be a key of `INQUIRY_LABELS` (else `None`), email must match `EMAIL_RE` (one plain address), and name/email/message must fit 120/180/5000 chars (the DB column sizes; 5000 leaves headroom over the textarea's 2000 because browsers submit newlines as CRLF).
 
@@ -89,16 +89,16 @@ No parentheses — it's a string, not a callable.
 **Route map:**
 - Public: `/`, `/about`, `/services`, `/projects`, `/blog`, `/blog/<post_id>`, `/contact`
 - Auth: `/admin/login`, `/logout`
-- Admin (all require `@admin_required`): `/admin`, `/admin/blogs`, `/admin/blogs/new`, `/admin/blogs/edit/<id>`, `/admin/blogs/delete/<id>`, `/admin/blogs/delete-image/<id>`, `/admin/messages`, `/admin/messages/delete/<id>`
+- Admin (all require `@admin_required`): `/admin`, `/admin/blogs`, `/admin/blogs/new`, `/admin/blogs/edit/<id>`, `/admin/blogs/delete/<id>`, `/admin/blogs/delete-image/<id>`, `/admin/messages`, `/admin/messages/delete/<id>`. New and edit are one view, `admin_edit_blog` (`post_id=None` for new); `url_for('admin_edit_blog')` without a `post_id` builds `/admin/blogs/new`.
 - Admin templates live in `templates/admin/` and extend `admin/_base.html`, which owns the admin styles (light `--bg` background, sidebar that becomes a scrollable top strip ≤768px) and the shared delete-confirmation modal script. A page opts in by rendering `#deleteModal` (with `#deleteConfirmForm`, `#modalTargetName` and a `.btn-cancel` button) and `.btn-danger[data-url][data-name]` triggers. Never put markup outside `{% block %}` tags in a child template — Jinja renders it before the parent's `<!DOCTYPE>` and the page drops into quirks mode.
 
 ## Frontend
 
-**CSS** (`static/css/style.css`, ~3430 lines) and **JS** (`static/js/main.js`) — both vanilla, no framework.
+**CSS** (`static/css/style.css`, ~2880 lines) and **JS** (`static/js/main.js`) — both vanilla, no framework.
 
 **Design system ("Soft & Friendly" light theme):** Core tokens in `:root` — `--bg: #f3f7f4`, `--surface`, `--ink: #0f2138`, `--body`, `--accent: #0c8f5d`, `--accent-deep`, `--accent-tint`, `--accent-bright`. A "backward-compat aliases" block maps old names onto them (`--teal` → `--accent`, `--white` → `--ink`, `--grad-primary` = accent→accent-deep, etc.); templates and admin styles still use the aliases. Fonts: Bricolage Grotesque (display), DM Sans (body), DM Mono (mono); the admin panel loads Syne + IBM Plex Mono separately in `admin/_base.html`. Gradient text uses `-webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text`.
 
-**CSS structure:** Design tokens → base/reset → components → responsive breakpoints (1100/900/768/480px) → category tabs → mobile override blocks A–T (390px floor) → iOS/Android polish → `prefers-reduced-motion` block → "UI/UX Enhancements v3.1" components (testimonials, logos strip, services, pricing) with their mobile blocks U–V at the end. Append new mobile overrides to the labeled blocks, not inline with components.
+**CSS structure:** Design tokens → base/reset → components → responsive breakpoints for 1200/1100/900px → category tabs → process/principles → mobile override blocks A–S for ≤768/480/390px (one block per area: A global, B nav, C hero, … Q ≤390px) → iOS/Android polish (touch-action, `:active` states under `hover: none`) → `prefers-reduced-motion` block → "UI/UX Enhancements v3.1" components (testimonials, logos strip, services, pricing) with their mobile blocks U–V at the end. Put every ≤768px override in the labeled block for its area, not inline with components. A base rule must sit *before* every media rule that overrides it — a base rule placed later silently wins at all widths (the Nov 2026 cleanup removed several mobile rules that had been dead for this reason).
 
 **Scroll reveal:** `.reveal` elements start hidden and become visible via IntersectionObserver (`threshold: 0.08`, `rootMargin: 0px 0px -40px 0px`, 80ms sibling stagger). Above-fold elements — anything inside `.hero` or `.page-hero` — have a CSS override forcing `opacity: 1 !important`. Do not add `.reveal` to hero elements; GSAP needs opacity control over them.
 
@@ -106,17 +106,18 @@ No parentheses — it's a string, not a callable.
 - `initLoader()` — hides `#page-loader` after 800ms, then fires `initHeroEntrance()` after the 520ms fade. Must run first. The load-event listener uses `{ once: true }` and clears a 2200ms fallback timer to prevent double-firing.
 - `initHeroEntrance()` — GSAP timeline animating `.hero__left`, `.hero__right`, `.hero__avail`, `.hero__float--left/right`. Called only from inside `initLoader`'s callback, never directly.
 - `initScrollProgress()` — injects a `.scroll-progress` bar and sets its width from scroll position.
-- `initNav()` — adds `.scrolled` past 40px; hides the nav on scroll-down past 300px.
-- `initBurger()` — mobile menu toggle (`.open` on `#navLinks`), closes on link click or Escape.
+- `initNav()` — adds `.scrolled` past 40px; hides the nav on scroll-down past 300px (the slide transition is CSS on `.nav`).
+- `initBurger()` — mobile menu toggle (`.open` on `#navLinks`), closes on link click or Escape; `setOpen()` keeps `aria-expanded` and body scroll-lock in sync.
 - `initReveal()` — IntersectionObserver for `.reveal`.
 - `initCounters()` — counts up `.hero__float-val` numbers (keeps `$` prefix and `K/M/%/+` suffix) when scrolled into view.
 - `initParallax()` — mouse-move offset on `.hero__frame`. Disabled on `pointer: coarse`.
-- `initSkillsStrip()` — pauses the `.skills-strip__track` marquee on hover.
 - `initFlash()`, `initForms()` — flash auto-dismiss/close; `.focused` / `.has-value` toggles on `.form-control`.
 - `initSmoothScroll()` — Native anchor smooth-scroll via `window.scrollTo({ behavior: 'smooth' })`, offset by nav height.
 - `initScrollParallax()` — GSAP ScrollTrigger parallax on `.hero__glow--1/2/3`. Disabled entirely on `pointer: coarse` (touch devices).
 - `initScrollTop()` — Shows/hides `#scrollTop` button (`.scroll-top`) after 500px scroll; uses `throttle()`.
 - `initReadingTime()` — Reads `.post-content` word count and writes estimated minutes to `#reading-time`.
+
+The skills marquee pauses on hover in CSS (`.skills-strip:hover .skills-strip__track`), not JS.
 
 Page-specific inline scripts (all carry `nonce="{{ csp_nonce }}"`): `blog.html` (image gallery modal), `admin/messages.html` (`.msg-toggle` expand/collapse), `admin/edit_blog.html` (confirm before removing an image), `admin/_base.html` (shared delete modal).
 

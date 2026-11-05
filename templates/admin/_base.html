@@ -62,9 +62,6 @@
     .adm-table td { padding: 0.9rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.03); color: var(--text-2); font-size: 0.875rem; vertical-align: middle; }
     .adm-table tr:last-child td { border-bottom: none; }
     .adm-table tr:hover td { background: rgba(255,255,255,0.02); }
-    .badge { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; padding: 0.2rem 0.6rem; border-radius: 99px; font-weight: 500; }
-    .badge--green { background: rgba(34,197,94,0.12); color: #4ade80; }
-    .badge--red   { background: rgba(239,68,68,0.12); color: #f87171; }
     .btn-danger {
       background: rgba(239,68,68,0.1); color: #f87171; border: 1px solid rgba(239,68,68,0.2);
       padding: 0.35rem 0.85rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer;
@@ -91,7 +88,6 @@
     .adm-form .form-control { width: 100%; background: var(--ink-2); border: 1px solid var(--border-2); color: var(--white); padding: 0.85rem 1rem; border-radius: 8px; font-size: 0.95rem; box-sizing: border-box; transition: all 0.2s; outline: none; }
     .adm-form .form-control:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(0,212,170,0.1); }
     .adm-form textarea.form-control { min-height: 280px; resize: vertical; }
-    .img-thumb { width: 52px; height: 52px; object-fit: cover; border-radius: 6px; }
     @media (max-width: 768px) {
       /* Sidebar becomes a horizontally scrollable top nav strip */
       .adm { flex-direction: column; }
@@ -119,11 +115,11 @@
         Dashboard
       </a>
       <div class="adm__nav-label">Content</div>
-      <a href="{{ url_for('admin_new_blog') }}">
+      <a href="{{ url_for('admin_edit_blog') }}">
         <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
         New Post
       </a>
-      <a href="{{ url_for('admin_blogs') }}" {% if request.endpoint in ['admin_blogs','admin_edit_blog'] %}class="active"{% endif %}>
+      <a href="{{ url_for('admin_blogs') }}" {% if request.endpoint == 'admin_blogs' or request.view_args.get('post_id') %}class="active"{% endif %}>
         <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
         All Posts
       </a>
@@ -161,12 +157,10 @@
 <script nonce="{{ csp_nonce }}">
 /* Shared delete-confirmation modal. A page opts in by rendering #deleteModal
    (with #deleteConfirmForm, #modalTargetName and a .btn-cancel) and .btn-danger[data-url][data-name] triggers. */
-function closeDeleteModal() {
-  document.getElementById('deleteModal').classList.remove('active');
-}
 (function () {
   const modal = document.getElementById('deleteModal');
   if (!modal) return;
+  const closeDeleteModal = () => modal.classList.remove('active');
   modal.querySelector('.btn-cancel').addEventListener('click', closeDeleteModal);
   document.querySelectorAll('.btn-danger[data-url]').forEach(btn => {
     btn.addEventListener('click', () => {

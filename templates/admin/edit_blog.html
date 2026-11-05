@@ -23,7 +23,7 @@
     {# ── NEW: Category selector ────────────────────────────────────────────── #}
     <div class="form-group">
       <label class="form-label">Category</label>
-      <select name="category" class="form-control adm-category-select">
+      <select name="category" class="form-control">
         <option value="" {% if not post or not post.category %}selected{% endif %}>
           — No Category —
         </option>
@@ -48,7 +48,7 @@
       </small>
     </div>
 
-    <div class="form-actions" style="margin-top: 2rem; display: flex; gap: 1rem;">
+    <div class="form-actions" style="margin-top: 2rem; gap: 1rem;">
       <button type="submit" class="btn-primary">
         <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"
              style="vertical-align: middle; margin-right: 4px;">

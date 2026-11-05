@@ -47,7 +47,6 @@ app.config["SECRET_KEY"] = SECRET_KEY
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
     "DATABASE_URL", "sqlite:///portfolio.db"
 )
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["UPLOAD_FOLDER"] = os.path.join("static", "uploads", "blog_images")
 app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024
 app.config["SESSION_COOKIE_SECURE"] = True
@@ -198,20 +197,21 @@ def delete_image_file(image_path):
 
 
 def sanitize_html(text):
-    if not text:
-        return text
     return re.sub(r"<[^>]+>", "", text)
 
 
 def sanitize_header(value):
     """Strip characters that would allow SMTP header injection."""
-    return (value or "").replace("\r", "").replace("\n", "").replace("\0", "")
+    return value.replace("\r", "").replace("\n", "").replace("\0", "")
 
 
 def admin_required(f):
+    """Send anonymous visitors to the login page; refuse any logged-in user who is not an admin."""
     @wraps(f)
     def decorated(*args, **kwargs):
-        if not current_user.is_authenticated or not current_user.is_admin:
+        if not current_user.is_authenticated:
+            return login_manager.unauthorized()
+        if not current_user.is_admin:
             abort(403)
         return f(*args, **kwargs)
 
@@ -352,7 +352,7 @@ def projects():
     return render_template("projects.html")
 
 
-@app.route("/blog", methods=["GET"])
+@app.route("/blog")
 def blog():
     page = min(request.args.get("page", 1, type=int), 10_000)  # huge pages overflow SQLite's INTEGER offset
     active_category = request.args.get("category", "").strip()
@@ -454,16 +454,17 @@ def admin_login():
         remember = bool(request.form.get("remember"))
         # Site-wide failure cap: an attacker can use it to block new logins for a while, but a
         # correct password cannot be allowed to skip it or guessing would never be stopped.
-        ip_key = ("login", client_ip())
+        ip = client_ip()
+        ip_key = ("login", ip)
         if too_many(ip_key, 5, 15 * 60) or too_many(("login-all",), 20, 15 * 60):
-            app.logger.warning("Admin login rate-limited for %s", client_ip())
+            app.logger.warning("Admin login rate-limited for %s", ip)
             flash("Too many failed attempts. Try again in 15 minutes.", "danger")
             return render_template("admin_login.html"), 429
         admin = User.query.filter_by(email=email, is_admin=True).first()
 
         if admin and admin.check_password(password):
             login_user(admin, remember=remember)
-            app.logger.warning("Admin login from %s", client_ip())  # WARNING so it reaches PythonAnywhere's error log
+            app.logger.warning("Admin login from %s", ip)  # WARNING so it reaches PythonAnywhere's error log
             flash("Admin access granted.", "success")
             return redirect(url_for("admin_dashboard"))
 
@@ -471,13 +472,12 @@ def admin_login():
             check_password_hash(DUMMY_PASSWORD_HASH, password)
         record_hit(ip_key)
         record_hit(("login-all",))
-        app.logger.warning("Failed admin login from %s", client_ip())
+        app.logger.warning("Failed admin login from %s", ip)
         flash("Invalid admin credentials.", "danger")
     return render_template("admin_login.html")
 
 
 @app.route("/admin")
-@login_required
 @admin_required
 def admin_dashboard():
     stats = {
@@ -493,67 +493,40 @@ def admin_dashboard():
 
 
 @app.route("/admin/blogs")
-@login_required
 @admin_required
 def admin_blogs():
     posts = BlogPost.query.order_by(BlogPost.created_at.desc()).all()
     return render_template("admin/blogs.html", posts=posts)
 
 
-@app.route("/admin/blogs/new", methods=["GET", "POST"])
-@login_required
-@admin_required
-def admin_new_blog():
-    if request.method == "POST":
-        title = sanitize_html(request.form.get("title", "").strip())
-        content = request.form.get("content", "").strip()
-        category = request.form.get("category", "").strip()
-        if category not in CATEGORIES:
-            category = None
-        if not title or not content:
-            flash("Title and content required.", "danger")
-        else:
-            post = BlogPost(
-                title=title,
-                content=content,
-                category=category,
-                author_id=current_user.id,
-            )
-            db.session.add(post)
-            db.session.flush()
-            for img in save_uploaded_images(request.files.getlist("images"), post.id):
-                db.session.add(img)
-            db.session.commit()
-            flash("Blog post created!", "success")
-            return redirect(url_for("admin_blogs"))
-    return render_template("admin/edit_blog.html", post=None)
-
-
+@app.route("/admin/blogs/new", methods=["GET", "POST"], defaults={"post_id": None})
 @app.route("/admin/blogs/edit/<int:post_id>", methods=["GET", "POST"])
-@login_required
 @admin_required
 def admin_edit_blog(post_id):
-    post = db.get_or_404(BlogPost, post_id)
+    """Create a post (no post_id) or edit an existing one; both use the same form."""
+    post = None if post_id is None else db.get_or_404(BlogPost, post_id)
     if request.method == "POST":
         title = sanitize_html(request.form.get("title", "").strip())
         content = request.form.get("content", "").strip()
         if not title or not content:
             flash("Title and content required.", "danger")
             return render_template("admin/edit_blog.html", post=post)
+        if post is None:
+            post = BlogPost(author_id=current_user.id)
+            db.session.add(post)
         post.title = title
         post.content = content
         category = request.form.get("category", "").strip()
         post.category = category if category in CATEGORIES else None
-        for img in save_uploaded_images(request.files.getlist("images"), post.id):
-            db.session.add(img)
+        db.session.flush()  # a new post needs its id for the image filenames
+        db.session.add_all(save_uploaded_images(request.files.getlist("images"), post.id))
         db.session.commit()
-        flash("Blog post updated!", "success")
+        flash("Blog post created!" if post_id is None else "Blog post updated!", "success")
         return redirect(url_for("admin_blogs"))
     return render_template("admin/edit_blog.html", post=post)
 
 
 @app.route("/admin/blogs/delete/<int:post_id>", methods=["POST"])
-@login_required
 @admin_required
 def admin_delete_blog(post_id):
     post = db.get_or_404(BlogPost, post_id)
@@ -568,7 +541,6 @@ def admin_delete_blog(post_id):
 
 
 @app.route("/admin/blogs/delete-image/<int:image_id>", methods=["POST"])
-@login_required
 @admin_required
 def admin_delete_image(image_id):
     img = db.get_or_404(BlogImage, image_id)
@@ -581,7 +553,6 @@ def admin_delete_image(image_id):
 
 
 @app.route("/admin/messages")
-@login_required
 @admin_required
 def admin_messages():
     messages = ContactMessage.query.order_by(ContactMessage.created_at.desc()).all()
@@ -589,7 +560,6 @@ def admin_messages():
 
 
 @app.route("/admin/messages/delete/<int:message_id>", methods=["POST"])
-@login_required
 @admin_required
 def admin_delete_message(message_id):
     msg = db.get_or_404(ContactMessage, message_id)

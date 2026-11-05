@@ -72,8 +72,6 @@
     if (!nav) return;
 
     let lastY = 0;
-    nav.style.transition = 'transform 0.4s cubic-bezier(0.16,1,0.3,1), background 0.4s';
-
     const onScroll = throttle(() => {
       const y = window.scrollY;
       nav.classList.toggle('scrolled', y > 40);
@@ -95,28 +93,17 @@
     const links  = document.getElementById('navLinks');
     if (!burger || !links) return;
 
-    burger.addEventListener('click', () => {
-      const open = links.classList.toggle('open');
+    const setOpen = open => {
+      links.classList.toggle('open', open);
       burger.classList.toggle('active', open);
       burger.setAttribute('aria-expanded', open);
       document.body.style.overflow = open ? 'hidden' : '';
-    });
+    };
 
-    links.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => {
-        links.classList.remove('open');
-        burger.classList.remove('active');
-        burger.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
-      });
-    });
-
+    burger.addEventListener('click', () => setOpen(!links.classList.contains('open')));
+    links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setOpen(false)));
     document.addEventListener('keydown', e => {
-      if (e.key === 'Escape' && links.classList.contains('open')) {
-        links.classList.remove('open');
-        burger.classList.remove('active');
-        document.body.style.overflow = '';
-      }
+      if (e.key === 'Escape' && links.classList.contains('open')) setOpen(false);
     });
   };
 
@@ -125,20 +112,19 @@
     const els = document.querySelectorAll('.reveal');
     if (!els.length) return;
 
-    const parents = new Map();
+    // stagger siblings: the nth .reveal inside the same parent waits n × 80ms
+    const delays = new Map();
+    const siblingsSeen = new Map();
     els.forEach(el => {
-      const p = el.parentElement;
-      if (!parents.has(p)) parents.set(p, 0);
-      const idx = parents.get(p);
-      el.dataset.delay = idx * 80;
-      parents.set(p, idx + 1);
+      const idx = siblingsSeen.get(el.parentElement) || 0;
+      delays.set(el, idx * 80);
+      siblingsSeen.set(el.parentElement, idx + 1);
     });
 
     const obs = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
-        const delay = parseInt(entry.target.dataset.delay) || 0;
-        setTimeout(() => entry.target.classList.add('visible'), delay);
+        setTimeout(() => entry.target.classList.add('visible'), delays.get(entry.target));
         obs.unobserve(entry.target);
       });
     }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
@@ -154,12 +140,10 @@
     const ease = t => 1 - Math.pow(1 - t, 3);
 
     const animate = (el) => {
-      const raw = el.textContent;
-      const m = raw.match(/([\$]?)([\d,.]+)([KM%+]*)/);
+      const m = el.textContent.match(/(\$?)([\d,.]+)([KM%+]*)/);
       if (!m) return;
-      const prefix = m[1] || '';
-      const target = parseFloat(m[2].replace(/,/g, ''));
-      const suffix = m[3] || '';
+      const [, prefix, digits, suffix] = m;
+      const target = parseFloat(digits.replace(/,/g, ''));
       const dur = 1600;
       const start = performance.now();
 
@@ -200,17 +184,6 @@
     }, 16);
 
     document.addEventListener('mousemove', move);
-  };
-
-  /* ── Skills Strip Pause ──────────────────────────────────── */
-  const initSkillsStrip = () => {
-    const track = document.querySelector('.skills-strip__track');
-    if (!track) return;
-    const wrap = track.closest('.skills-strip');
-    if (wrap) {
-      wrap.addEventListener('mouseenter', () => track.style.animationPlayState = 'paused');
-      wrap.addEventListener('mouseleave', () => track.style.animationPlayState = 'running');
-    }
   };
 
   /* ── Flash Messages ──────────────────────────────────────── */
@@ -287,7 +260,6 @@
       const el = document.querySelector(sel);
       if (el) gsap.to(el, { ...props, scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub } });
     });
-
   };
 
   /* ── Scroll-to-Top Button ───────────────────────────────────── */
@@ -308,7 +280,7 @@
     const content = document.querySelector('.post-content');
     const badge = document.getElementById('reading-time');
     if (!content || !badge) return;
-    const words = content.innerText.trim().split(/\s+/).filter(Boolean).length;
+    const words = content.innerText.trim().split(/\s+/).length;
     const mins = Math.max(1, Math.round(words / 200));
     badge.textContent = `${mins} min read`;
   };
@@ -321,7 +293,6 @@
   initReveal();
   initCounters();
   initParallax();
-  initSkillsStrip();
   initFlash();
   initForms();
   initSmoothScroll();

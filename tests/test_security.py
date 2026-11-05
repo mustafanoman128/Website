@@ -103,12 +103,47 @@ class SecurityTests(unittest.TestCase):
         self.assertIn("SameSite=Lax", cookie)
 
     def test_admin_pages_need_login_and_are_not_cached(self):
-        self.assertEqual(self.c.get("/admin/messages").status_code, 302)
+        r = self.c.get("/admin/messages")
+        self.assertEqual(r.status_code, 302)
+        self.assertIn("/admin/login", r.headers["Location"])
         self.login()
         r = self.c.get("/admin/messages")
         self.assertEqual(r.status_code, 200)
         self.assertEqual(r.headers["Cache-Control"], "no-store")
         self.assertIn("noindex", r.headers["X-Robots-Tag"])
+
+    def test_logged_in_non_admin_is_refused(self):
+        with site.app.app_context():
+            user = site.User(name="Visitor", email="visitor@test.local", is_admin=False)
+            user.set_password("Visitor-Pass-1")
+            site.db.session.add(user)
+            site.db.session.commit()
+            user_id = user.id
+        with self.c.session_transaction() as s:  # a leftover non-admin session (they can no longer log in)
+            s["_user_id"] = str(user_id)
+            s["_fresh"] = True
+        for path in ["/admin", "/admin/blogs", "/admin/blogs/new", "/admin/messages"]:
+            with self.subTest(path=path):
+                self.assertEqual(self.c.get(path).status_code, 403)
+
+    # ── Blog posts ────────────────────────────────────────────────────────────
+    def test_admin_creates_and_edits_post(self):
+        self.login()
+        data = {"_csrf_token": self.token("/admin/blogs/new"), "title": "<b>First</b>", "content": "Body",
+                "category": "Data Analytics"}
+        self.assertTrue(self.c.post("/admin/blogs/new", data=data).headers["Location"].endswith("/admin/blogs"))
+        with site.app.app_context():
+            post = site.BlogPost.query.filter_by(content="Body").one()
+            post_id = post.id
+            self.assertEqual((post.title, post.category, post.author.email), ("First", "Data Analytics", "admin@test.local"))
+        edit = f"/admin/blogs/edit/{post_id}"
+        self.c.post(edit, data={"_csrf_token": self.token(edit), "title": "Second", "content": "Body 2", "category": "bogus"})
+        self.c.post(edit, data={"_csrf_token": self.token(edit), "title": "", "content": "ignored"})  # rejected
+        with site.app.app_context():
+            post = site.db.session.get(site.BlogPost, post_id)
+            self.assertEqual((post.title, post.content, post.category), ("Second", "Body 2", None))
+        for missing in ("/admin/blogs/edit/999999", "/admin/blogs/edit/0"):
+            self.assertEqual(self.c.get(missing).status_code, 404)
 
     # ── Contact form ──────────────────────────────────────────────────────────
     def test_contact_rejects_bad_input(self):
