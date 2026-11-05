@@ -128,6 +128,10 @@ Page-specific inline scripts (all carry `nonce="{{ csp_nonce }}"`): `base.html` 
 
 **CTA buttons:** `.btn--primary` / `.btn--hero` (solid accent), `.btn--ghost` / `.btn--hero-ghost`, and `.btn--outline-teal` (not `--outline-teall`) for ghost-style accent buttons.
 
+**Testimonials (home):** `.testimonials-list` is a two-card grid that stacks below 900px; each `.testimonial-card` is a `<blockquote>` with a "Verified on LinkedIn" link to the recommendations page. Quotes are **verbatim LinkedIn excerpts approved by the owner** — never reword them; `&hellip;` marks skipped text. Current: Nishal Sukdhoe (Stericycle), Adelinne Hernandez Whittenhall (Pregis). A third card would need the grid rethought (e.g. `repeat(auto-fit, minmax(…))`), not a third column squeezed in.
+
+**Content facts confirmed by the owner (keep pages consistent):** project-inquiry reply time is **8 hours** (Services commitments + Contact copy); the Alteryx Designer Core cert shows its issue date only (expiry passed Oct 2026).
+
 ## Deployment
 
 Hosted on PythonAnywhere. Deploy:
