@@ -2227,11 +2227,17 @@ input:where(:not([type="checkbox"], [type="radio"])), textarea, select {
 }
 
 /* ─── Testimonials ────────────────────────────────────────────── */
+.testimonials-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-6);
+}
+
 .testimonial-card {
   background: var(--accent-tint);
   border: none;
   border-radius: var(--r-card-lg);
-  padding: 3.125rem 3.5rem;
+  padding: var(--sp-10) var(--sp-8);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2240,17 +2246,19 @@ input:where(:not([type="checkbox"], [type="radio"])), textarea, select {
 }
 
 .testimonial-card p {
+  margin-block: auto;  /* centres a short quote and keeps both cards' footers on one line */
   font-family: var(--font-display);
-  font-size: 1.69rem;
+  font-size: 1.3rem;
   color: var(--ink);
-  line-height: 1.4;
+  line-height: 1.45;
   font-style: normal;
   font-weight: 600;
-  max-width: 760px;
 }
 
 .testimonial-card p::before { content: '\201C'; }
 .testimonial-card p::after  { content: '\201D'; }
+
+.testimonial-card__meta { text-align: left; }
 
 .testimonial-card__footer {
   display: flex;
@@ -2445,11 +2453,14 @@ input:where(:not([type="checkbox"], [type="radio"])), textarea, select {
   .service-card { padding: var(--sp-6); gap: var(--sp-4); }
 }
 
-/* V. Logos strip + Testimonials — mobile */
+/* V. Logos strip + Testimonials — mobile (the list stacks from 900px, where two quote cards get too narrow) */
+@media (max-width: 900px) {
+  .testimonials-list { grid-template-columns: 1fr; }
+}
 @media (max-width: 768px) {
   .logos-strip__row { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-2) var(--sp-4); }
   .testimonial-card { padding: var(--sp-8) var(--sp-6); }
-  .testimonial-card p { font-size: 1.2rem; }
+  .testimonial-card p { font-size: 1.15rem; }
   .svc-teaser__grid { grid-template-columns: 1fr; gap: var(--sp-4); }
 }
 
