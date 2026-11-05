@@ -156,7 +156,6 @@ ul { list-style: none; }
 .section { padding: 7rem 0; }
 .section--dark { background: var(--accent-tint); position: relative; }
 .section--dark::before { display: none; }
-.mt-4 { margin-top: var(--sp-4); }
 .mt-8 { margin-top: var(--sp-8); }
 .mt-16 { margin-top: var(--sp-16); }
 .text-center { text-align: center; }
