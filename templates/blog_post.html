@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}{{ post.title }} — Mustafa Noman{% endblock %}
+{% block description %}{{ post.content.split() | join(' ') | truncate(155, end='…') }}{% endblock %}
 
 {% block content %}
 {% from '_gallery.html' import image_stack, gallery_modal with context %}
@@ -39,6 +40,19 @@
 </section>
 
 {% if images %}{{ gallery_modal() }}{% endif %}
+
+{# Article details for search engines; tojson escapes the title so it cannot close the script tag #}
+<script type="application/ld+json" nonce="{{ csp_nonce }}">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": {{ post.title | tojson }},
+  "datePublished": "{{ post.created_at.strftime('%Y-%m-%dT%H:%M:%SZ') }}",
+  "author": { "@type": "Person", "name": {{ post.author.name | tojson }}, "url": "{{ SITE_URL }}{{ url_for('about') }}" },
+  "mainEntityOfPage": "{{ SITE_URL }}{{ request.path }}"{% if images %},
+  "image": {{ (SITE_URL ~ url_for('static', filename='uploads/blog_images/' + images[0].image_path)) | tojson }}{% endif %}
+}
+</script>
 
 
 {% endblock %}

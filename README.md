@@ -1,6 +1,6 @@
 # Mustafa Noman — Portfolio Website
 
-Personal portfolio and freelance site for a data & AI engineer, built with Flask. Light "Soft & Friendly" design, GSAP entrance animations, a small blog CMS and a contact form that emails inquiries.
+Personal portfolio and freelance site for a freelance analytics engineer, built with Flask. Light "Soft & Friendly" design, GSAP entrance animations, a small blog CMS and a contact form that emails inquiries.
 
 Live at **[mustafanoman128.pythonanywhere.com](https://mustafanoman128.pythonanywhere.com)**
 

@@ -73,6 +73,10 @@ login_manager.login_message_category = "info"
 
 ALLOWED_EXT = {"png", "jpg", "jpeg", "gif", "webp"}
 
+# Public address used in canonical links, link previews, structured data and the sitemap.
+# Change it here if the site moves to its own domain.
+SITE_URL = "https://mustafanoman128.pythonanywhere.com"
+
 # ── Blog Categories ───────────────────────────────────────────────────────────
 CATEGORIES = ["Data Analytics", "Data Science & AI", "Freelance & Consulting"]
 
@@ -276,8 +280,8 @@ def load_user(user_id):
 @app.before_request
 def csrf_handler():
     """One-time CSRF token: each POST consumes it, then a fresh one is issued before the view renders."""
-    if request.endpoint == "static":
-        return  # static files need no session, which keeps them cookie-free and cacheable
+    if request.endpoint in ("static", "robots", "sitemap"):
+        return  # these need no session, which keeps them cookie-free and cacheable
     if request.method == "POST":
         token = session.pop("_csrf_token", "")
         form_token = request.form.get("_csrf_token", "")
@@ -323,10 +327,11 @@ def set_security_headers(response):
 
 @app.context_processor
 def inject_globals():
-    """Inject csrf_token (plain string, not callable), csp_nonce and the CATEGORIES list into every template context."""
+    """Inject csrf_token (plain string, not callable), csp_nonce, SITE_URL and the CATEGORIES list into every template context."""
     return dict(
         csrf_token=session.get("_csrf_token", ""),
         csp_nonce=csp_nonce(),
+        SITE_URL=SITE_URL,
         CATEGORIES=CATEGORIES,
     )
 
@@ -380,6 +385,21 @@ def blog():
 def blog_post(post_id):
     post = db.get_or_404(BlogPost, post_id)
     return render_template("blog_post.html", post=post)
+
+
+@app.route("/robots.txt")
+def robots():
+    body = f"User-agent: *\nAllow: /\n\nSitemap: {SITE_URL}/sitemap.xml\n"
+    return app.response_class(body, mimetype="text/plain")
+
+
+@app.route("/sitemap.xml")
+def sitemap():
+    """Every public page plus every blog post, so search engines don't have to discover them by crawling."""
+    pages = [url_for(endpoint) for endpoint in ("home", "services", "projects", "about", "blog", "contact")]
+    pages += [url_for("blog_post", post_id=post.id)
+              for post in BlogPost.query.order_by(BlogPost.created_at.desc())]
+    return app.response_class(render_template("sitemap.xml", pages=pages), mimetype="application/xml")
 
 
 @app.route("/contact", methods=["GET", "POST"])
