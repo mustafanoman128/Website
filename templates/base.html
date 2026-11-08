@@ -56,12 +56,6 @@
         <li><a href="{{ url_for('projects') }}" {% if request.endpoint=='projects' %}class="active" aria-current="page"{% endif %}>Work</a></li>
         <li><a href="{{ url_for('about') }}" {% if request.endpoint=='about' %}class="active" aria-current="page"{% endif %}>About</a></li>
         <li><a href="{{ url_for('blog') }}" {% if request.endpoint in ['blog','blog_post'] %}class="active" aria-current="page"{% endif %}>Blog</a></li>
-        {% if current_user.is_authenticated %}
-          {% if current_user.is_admin %}
-          <li><a href="{{ url_for('admin_dashboard') }}" class="nav__cta nav__resume">Admin</a></li>
-          {% endif %}
-          <li><a href="{{ url_for('logout') }}">Logout</a></li>
-        {% endif %}
         <li><a href="{{ url_for('contact') }}" class="nav__hire" {% if request.endpoint=='contact' %}aria-current="page"{% endif %}>Let's Talk</a></li>
       </ul>
     </div>
@@ -131,6 +125,12 @@
     </div>
     <div class="footer__copy">
       <p class="mono">&copy; 2026 Mustafa Noman. All rights reserved.</p>
+      {# Owner-only links live here so they never crowd the public nav #}
+      {% if current_user.is_authenticated %}
+      <p class="mono footer__admin">
+        {% if current_user.is_admin %}<a href="{{ url_for('admin_dashboard') }}">Admin</a> &middot; {% endif %}<a href="{{ url_for('logout') }}">Logout</a>
+      </p>
+      {% endif %}
     </div>
   </footer>
 

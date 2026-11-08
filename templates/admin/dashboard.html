@@ -7,11 +7,11 @@
 <div class="stat-cards">
   <div class="stat-card">
     <span class="stat-card__num">{{ stats.posts }}</span>
-    <span class="stat-card__label">Blog Posts</span>
+    <span class="stat-card__label">Blog Post{{ 's' if stats.posts != 1 }}</span>
   </div>
   <div class="stat-card">
     <span class="stat-card__num">{{ stats.messages }}</span>
-    <span class="stat-card__label">Contact Messages</span>
+    <span class="stat-card__label">Contact Message{{ 's' if stats.messages != 1 }}</span>
   </div>
 </div>
 

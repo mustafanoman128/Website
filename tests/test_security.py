@@ -135,10 +135,13 @@ class SecurityTests(unittest.TestCase):
         with site.app.app_context():
             post = site.BlogPost.query.filter_by(content="Body").one()
             post_id = post.id
-            self.assertEqual((post.title, post.category, post.author.email), ("First", "Data Analytics", "admin@test.local"))
+            # stored as typed; the page escapes it on output
+            self.assertEqual((post.title, post.category, post.author.email), ("<b>First</b>", "Data Analytics", "admin@test.local"))
+        self.assertIn("&lt;b&gt;First&lt;/b&gt;", self.c.get(f"/blog/{post_id}").get_data(as_text=True))
         edit = f"/admin/blogs/edit/{post_id}"
         self.c.post(edit, data={"_csrf_token": self.token(edit), "title": "Second", "content": "Body 2", "category": "bogus"})
         self.c.post(edit, data={"_csrf_token": self.token(edit), "title": "", "content": "ignored"})  # rejected
+        self.c.post(edit, data={"_csrf_token": self.token(edit), "title": "T" * 256, "content": "ignored"})  # too long
         with site.app.app_context():
             post = site.db.session.get(site.BlogPost, post_id)
             self.assertEqual((post.title, post.content, post.category), ("Second", "Body 2", None))
@@ -159,6 +162,12 @@ class SecurityTests(unittest.TestCase):
         with site.app.app_context():
             self.assertIsNone(site.ContactMessage.query.order_by(site.ContactMessage.id.desc()).first().inquiry_type)
         self.assertEqual(self.sent[-1].reply_to, "ann@example.com")
+
+    def test_contact_keeps_text_that_looks_like_tags(self):
+        self.assertEqual(self.contact(message="Revenue < 10k and churn > 5%").status_code, 302)
+        with site.app.app_context():
+            latest = site.ContactMessage.query.order_by(site.ContactMessage.id.desc()).first()
+            self.assertEqual(latest.message, "Revenue < 10k and churn > 5%")
 
     def test_honeypot_is_silently_dropped(self):
         before = len(self.sent)
@@ -216,8 +225,10 @@ class SecurityTests(unittest.TestCase):
                     self.assertIn(f'nonce="{nonce}"', tag)
                 self.assertIsNone(re.search(r"<[^>]+\son[a-z]+\s*=", html), "inline event handler is blocked by CSP")
 
-    def test_blog_survives_huge_page_number(self):
-        self.assertEqual(self.c.get("/blog?page=99999999999999999999").status_code, 200)
+    def test_blog_page_past_the_end_redirects_to_last_page(self):
+        r = self.c.get("/blog?page=99999999999999999999")  # huge pages also overflow SQLite's INTEGER offset
+        self.assertEqual(r.status_code, 302)
+        self.assertEqual(self.c.get(r.headers["Location"]).status_code, 200)
 
     def test_versioned_static_is_cached_long_and_cookie_free(self):
         css = re.search(r'href="(/static/css/style\.css\?v=\d+)"', self.c.get("/").get_data(as_text=True)).group(1)

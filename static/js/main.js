@@ -12,6 +12,9 @@
     };
   };
 
+  // Visitors who ask for less motion get instant scrolling and no hero entrance
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   /* ── Page Loader ─────────────────────────────────────────── */
   // Shown on the first page of a browser session only; base.html's head script sets
   // .return-visit (CSS hides the loader) so later pages render instantly, without the entrance.
@@ -20,12 +23,11 @@
     if (!loader) return;
     if (document.documentElement.classList.contains('return-visit')) { loader.remove(); return; }
     try { sessionStorage.setItem('mn-visited', '1'); } catch (e) { /* storage blocked: loader shows each time */ }
+    const playHero = initHeroEntrance();  // hides the hero now, while the loader still covers it
     const hide = () => {
       loader.classList.add('hidden');
-      setTimeout(() => {
-        loader.remove();
-        initHeroEntrance();
-      }, 520);
+      playHero();
+      setTimeout(() => loader.remove(), 520);
     };
     if (document.readyState === 'complete') {
       setTimeout(hide, 800);
@@ -36,22 +38,22 @@
   };
 
   /* ── GSAP Hero Entrance ──────────────────────────────────── */
+  // Sets the hidden start state immediately and returns a function that plays the entrance.
   const initHeroEntrance = () => {
-    if (typeof gsap === 'undefined') return;
-    if (!document.querySelector('.hero')) return;
+    if (typeof gsap === 'undefined' || reduceMotion || !document.querySelector('.hero')) return () => {};
 
-    gsap.set('.hero__left',         { y: 70, opacity: 0 });
-    gsap.set('.hero__right',        { x: 60, opacity: 0 });
-    gsap.set('.hero__avail',        { y: -24, opacity: 0 });
-    gsap.set('.hero__float--left',  { x: -30, y: 16, opacity: 0 });
-    gsap.set('.hero__float--right', { x: 30, y: -16, opacity: 0 });
+    gsap.set('.hero__left',         { y: 24, opacity: 0 });
+    gsap.set('.hero__right',        { x: 24, opacity: 0 });
+    gsap.set('.hero__avail',        { y: -12, opacity: 0 });
+    gsap.set('.hero__float--left',  { x: -16, y: 8, opacity: 0 });
+    gsap.set('.hero__float--right', { x: 16, y: -8, opacity: 0 });
 
-    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-    tl.to('.hero__left',         { y: 0, opacity: 1, duration: 1.0 })
-      .to('.hero__right',        { x: 0, opacity: 1, duration: 1.0 }, '-=0.75')
-      .to('.hero__avail',        { y: 0, opacity: 1, duration: 0.6, ease: 'back.out(2)' }, '-=0.5')
-      .to('.hero__float--left',  { x: 0, y: 0, opacity: 1, duration: 0.65, ease: 'back.out(1.8)' }, '-=0.45')
-      .to('.hero__float--right', { x: 0, y: 0, opacity: 1, duration: 0.65, ease: 'back.out(1.8)' }, '-=0.55');
+    const tl = gsap.timeline({ paused: true, defaults: { duration: 0.6, ease: 'power3.out' } });
+    tl.to('.hero__left',  { y: 0, opacity: 1 }, 0)
+      .to('.hero__right', { x: 0, opacity: 1 }, 0.08)
+      .to('.hero__avail', { y: 0, opacity: 1 }, 0.16)
+      .to(['.hero__float--left', '.hero__float--right'], { x: 0, y: 0, opacity: 1, stagger: 0.06 }, 0.24);
+    return () => tl.play();
   };
 
   /* ── Scroll Progress (reading progress on blog posts) ───── */
@@ -65,7 +67,7 @@
       const scrollTop = window.scrollY;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-      bar.style.width = pct + '%';
+      bar.style.transform = `scaleX(${pct / 100})`;
     }, 16);
 
     window.addEventListener('scroll', update, { passive: true });
@@ -136,10 +138,10 @@
 
   /* ── Flash Messages ──────────────────────────────────────── */
   const dismissFlash = (flash) => {
+    flash.style.transition = 'opacity 0.2s ease-out, transform 0.2s ease-out';  // exit faster than the entry
     flash.style.opacity = '0';
     flash.style.transform = 'translateX(110%)';
-    flash.style.transition = 'all 0.4s ease';
-    setTimeout(() => flash.remove(), 420);
+    setTimeout(() => flash.remove(), 220);
   };
 
   const initFlash = () => {
@@ -199,7 +201,7 @@
         e.preventDefault();
         const offset = (nav ? nav.offsetHeight : 0) + 20;
         const top = target.getBoundingClientRect().top + window.scrollY - offset;
-        window.scrollTo({ top, behavior: 'smooth' });
+        window.scrollTo({ top, behavior: reduceMotion ? 'instant' : 'smooth' });
       });
     });
   };
@@ -214,7 +216,7 @@
     }, 100);
 
     window.addEventListener('scroll', toggle, { passive: true });
-    btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: reduceMotion ? 'instant' : 'smooth' }));
   };
 
   /* ── Reading Time Estimate ───────────────────────────────────── */

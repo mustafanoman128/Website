@@ -196,10 +196,6 @@ def delete_image_file(image_path):
         )
 
 
-def sanitize_html(text):
-    return re.sub(r"<[^>]+>", "", text)
-
-
 def sanitize_header(value):
     """Strip characters that would allow SMTP header injection."""
     return value.replace("\r", "").replace("\n", "").replace("\0", "")
@@ -247,6 +243,12 @@ class BlogPost(db.Model):
     images = db.relationship(
         "BlogImage", backref="post", lazy=True, cascade="all, delete-orphan"
     )
+
+    @property
+    def images_on_disk(self):
+        """Images whose file still exists; public pages skip rows whose file was deleted from disk."""
+        folder = os.path.join(app.root_path, app.config["UPLOAD_FOLDER"])
+        return [img for img in self.images if os.path.isfile(os.path.join(folder, img.image_path))]
 
 
 class BlogImage(db.Model):
@@ -364,6 +366,9 @@ def blog():
         query = query.filter(BlogPost.category == active_category)
 
     posts = query.paginate(page=page, per_page=6, error_out=False)
+    if page > max(posts.pages, 1):  # a stale or hand-typed page past the end lands on the last page
+        return redirect(url_for("blog", page=posts.pages if posts.pages > 1 else None,
+                                category=active_category or None))
     return render_template(
         "blog.html",
         posts=posts,
@@ -389,12 +394,13 @@ def contact():
         if too_many(ip_key, 5, 60 * 60) or too_many(("contact-all",), 10, 60 * 60):
             flash("Too many messages have been sent recently. Please try again later.", "warning")
             return render_template("contact.html"), 429
-        name = sanitize_header(sanitize_html(request.form.get("name", "").strip()))
-        email = sanitize_header(sanitize_html(request.form.get("email", "").strip()))
+        # Stored as typed ("Revenue < 10k" must survive); every template autoescapes on output.
+        name = sanitize_header(request.form.get("name", "").strip())
+        email = sanitize_header(request.form.get("email", "").strip())
         inquiry_type = request.form.get("inquiry_type", "").strip()
         if inquiry_type not in INQUIRY_LABELS:
             inquiry_type = None
-        message = sanitize_html(request.form.get("message", "").strip())
+        message = request.form.get("message", "").strip()
         if not name or not email or not message:
             flash("All fields are required.", "danger")
         elif not EMAIL_RE.fullmatch(email):
@@ -506,10 +512,13 @@ def admin_edit_blog(post_id):
     """Create a post (no post_id) or edit an existing one; both use the same form."""
     post = None if post_id is None else db.get_or_404(BlogPost, post_id)
     if request.method == "POST":
-        title = sanitize_html(request.form.get("title", "").strip())
+        title = request.form.get("title", "").strip()
         content = request.form.get("content", "").strip()
         if not title or not content:
             flash("Title and content required.", "danger")
+            return render_template("admin/edit_blog.html", post=post)
+        if len(title) > 255:  # the column size; PostgreSQL would reject a longer value
+            flash("Title must be 255 characters or fewer.", "danger")
             return render_template("admin/edit_blog.html", post=post)
         if post is None:
             post = BlogPost(author_id=current_user.id)

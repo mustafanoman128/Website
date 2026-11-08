@@ -23,12 +23,13 @@
       {% for m in messages %}
       <tr>
         <td class="mono" style="font-size:0.72rem;color:var(--text-muted)">{{ m.id }}</td>
-        <td style="white-space:nowrap;font-weight:500;color:var(--white)">{{ m.name }}</td>
-        <td>
+        {# long names/emails wrap inside a minimum width; on a phone the table scrolls sideways instead #}
+        <td style="font-weight:500;color:var(--white);min-width:140px;overflow-wrap:anywhere" dir="auto">{{ m.name }}</td>
+        <td style="min-width:180px;overflow-wrap:anywhere">
           <a href="mailto:{{ m.email }}" style="color:var(--teal);font-size:0.85rem">{{ m.email }}</a>
         </td>
-        <td style="max-width:360px">
-          <div class="msg-preview">
+        <td style="min-width:240px;max-width:360px">
+          <div class="msg-preview" dir="auto">
             <span class="msg-short">{{ m.message[:100] }}{% if m.message|length > 100 %}&hellip;{% endif %}</span>
             {% if m.message|length > 100 %}
             <span class="msg-full" style="display:none">{{ m.message }}</span>

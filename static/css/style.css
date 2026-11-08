@@ -87,7 +87,7 @@
 }
 
 /* ─── Base ───────────────────────────────────────────────────── */
-html { scroll-behavior: smooth; font-size: 16px; }
+html { scroll-behavior: smooth; font-size: 100%; }  /* 100% respects the visitor's browser text-size setting */
 
 body {
   background: var(--bg);
@@ -97,7 +97,6 @@ body {
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
-  overscroll-behavior-y: none;
 }
 
 /* ─── Page Loader ────────────────────────────────────────── */
@@ -132,20 +131,23 @@ body {
   height: 100%;
   background: var(--grad-primary);
   border-radius: 2px;
+  transform-origin: left;
   animation: loaderBar 0.9s var(--ease-out) both;
 }
-@keyframes loaderIn  { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: scale(1); } }
-@keyframes loaderBar { from { width: 0; } to { width: 100%; } }
+@keyframes loaderIn  { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+@keyframes loaderBar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
-/* Scroll progress */
+/* Scroll progress — main.js sets scaleX(0–1); scaling instead of width avoids a layout pass per scroll frame */
 .scroll-progress {
   position: fixed;
   top: 0; left: 0;
   height: 2px;
-  width: 0%;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
   background: linear-gradient(90deg, var(--teal), var(--teal-hi));
   z-index: 10001;
-  transition: width 0.1s linear;
+  transition: transform 0.1s linear;
   box-shadow: 0 0 8px var(--teal-glow);
 }
 
@@ -229,8 +231,8 @@ h3 { font-weight: 700; }
    script never leaves the page blank. */
 .js .reveal {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+  transform: translateY(12px);
+  transition: opacity 0.3s var(--ease-out), transform 0.3s var(--ease-out);
 }
 .reveal.visible {
   opacity: 1;
@@ -251,7 +253,7 @@ h3 { font-weight: 700; }
   top: 0; left: 0; right: 0;
   z-index: 1000;
   padding: 0 var(--sp-6);
-  transition: transform 0.4s var(--ease-out);
+  transition: transform 0.25s var(--ease-out);  /* hides/shows on every scroll-direction change, so keep it quick */
 }
 .nav::after {
   content: '';
@@ -260,7 +262,7 @@ h3 { font-weight: 700; }
   background: transparent;
   backdrop-filter: none;
   border-bottom: 1px solid transparent;
-  transition: all 0.4s var(--ease-out);
+  transition: background-color 0.3s var(--ease-out), border-color 0.3s var(--ease-out), backdrop-filter 0.3s var(--ease-out);
   pointer-events: none;
 }
 .nav.scrolled::after {
@@ -306,7 +308,7 @@ h3 { font-weight: 700; }
   color: var(--body);
   padding: 0.4rem 0.8rem;
   border-radius: var(--r-pill);
-  transition: all 0.25s;
+  transition: color 0.2s, background-color 0.2s;
   position: relative;
   display: block;
 }
@@ -317,20 +319,6 @@ h3 { font-weight: 700; }
 .nav__links a.active {
   background: var(--accent-tint);
   color: var(--accent-deep);
-}
-.nav__cta {
-  background: var(--accent-tint) !important;
-  border: 1px solid var(--hairline) !important;
-  color: var(--accent-deep) !important;
-}
-.nav__cta:hover { border-color: var(--accent) !important; }
-.nav__resume {
-  font-family: var(--font-mono) !important;
-  font-size: 0.78rem !important;
-  letter-spacing: 0.04em;
-  padding: 0.45rem 1rem !important;
-  border-radius: var(--r-full) !important;
-  margin-left: var(--sp-3);
 }
 .nav__hire {
   display: inline-block;
@@ -346,10 +334,12 @@ h3 { font-weight: 700; }
   white-space: nowrap;
   box-shadow: var(--sh-btn);
 }
-.nav__hire:hover {
-  background: var(--accent-deep) !important;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(10,122,82,.35);
+@media (hover: hover) and (pointer: fine) {
+  .nav__hire:hover {
+    background: var(--accent-deep) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(10,122,82,.35);
+  }
 }
 /* Scroll offset for fixed nav on anchor links */
 #process, #experience, #skills, #education { scroll-margin-top: 90px; }
@@ -370,7 +360,7 @@ h3 { font-weight: 700; }
   width: 22px; height: 2px;
   background: var(--ink);
   border-radius: 2px;
-  transition: all 0.3s var(--ease-out);
+  transition: transform 0.3s var(--ease-out), opacity 0.3s var(--ease-out);
   transform-origin: center;
 }
 .nav__burger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
@@ -399,11 +389,12 @@ h3 { font-weight: 700; }
   min-width: 280px;
   max-width: 440px;
   border: 1px solid;
-  animation: slideInRight 0.35s var(--ease-out) forwards;
+  /* Entry via @starting-style rather than keyframes: a keyframe's fill would override the
+     inline opacity/transform main.js sets to dismiss it, so the exit would never show. */
+  transition: opacity 0.35s var(--ease-out), transform 0.35s var(--ease-out);
 }
-@keyframes slideInRight {
-  from { opacity: 0; transform: translateX(110%); }
-  to   { opacity: 1; transform: translateX(0); }
+@starting-style {
+  .flash { opacity: 0; transform: translateX(110%); }
 }
 .flash--success, .flash--info { background: var(--success-bg); color: var(--success); border-color: currentColor; }
 .flash--danger  { background: var(--danger-bg);  color: var(--danger);  border-color: currentColor; }
@@ -419,6 +410,7 @@ h3 { font-weight: 700; }
 .hero {
   position: relative;
   height: 100vh;
+  height: 100svh;  /* the visible height with the phone's URL bar showing; 100vh above is the fallback */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -587,7 +579,8 @@ h3 { font-weight: 700; }
   border-radius: var(--r-pill);
   border: none;
   cursor: pointer;
-  transition: all 0.2s var(--ease-out);
+  transition: background-color 0.2s var(--ease-out), border-color 0.2s var(--ease-out), color 0.2s var(--ease-out),
+              box-shadow 0.2s var(--ease-out), transform 0.16s var(--ease-out);
   position: relative;
   overflow: hidden;
   white-space: nowrap;
@@ -597,11 +590,6 @@ h3 { font-weight: 700; }
   color: #fff;
   box-shadow: var(--sh-btn);
 }
-.btn--primary:hover, .btn--hero:hover {
-  background: var(--accent-deep);
-  transform: translateY(-2px);
-  box-shadow: 0 12px 32px rgba(10,122,82,.35);
-}
 .btn--hero { padding: 0.9rem 1.6rem; font-size: 1rem; }
 .btn--ghost, .btn--hero-ghost {
   background: var(--surface);
@@ -609,21 +597,30 @@ h3 { font-weight: 700; }
   border: 1.5px solid var(--hairline);
   box-shadow: var(--sh-nav);
 }
-.btn--ghost:hover, .btn--hero-ghost:hover {
-  border-color: var(--accent);
-  color: var(--accent-deep);
-  transform: translateY(-2px);
-}
 .btn--outline-teal {
   background: var(--accent-tint);
   color: var(--accent-deep);
   border: 1px solid transparent;
 }
-.btn--outline-teal:hover {
-  background: var(--accent-tint);
-  border-color: var(--accent);
-  transform: translateY(-2px);
+/* Hover motion only for a real mouse: a tap fakes :hover and leaves it stuck on phones */
+@media (hover: hover) and (pointer: fine) {
+  .btn--primary:hover, .btn--hero:hover {
+    background: var(--accent-deep);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(10,122,82,.35);
+  }
+  .btn--ghost:hover, .btn--hero-ghost:hover {
+    border-color: var(--accent);
+    color: var(--accent-deep);
+    transform: translateY(-2px);
+  }
+  .btn--outline-teal:hover {
+    background: var(--accent-tint);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
 }
+.btn:active { transform: scale(0.97); }  /* press feedback for mouse and touch; after the hovers so it wins */
 .btn--lg { padding: 1rem 2rem; font-size: 0.95rem; }
 .btn--sm { padding: 0.55rem 1rem; font-size: 0.78rem; }
 .btn--full { width: 100%; justify-content: center; }
@@ -640,10 +637,9 @@ h3 { font-weight: 700; }
   display: inline-flex;
   align-items: center;
   gap: var(--sp-2);
-  transition: all 0.25s;
+  transition: transform 0.16s var(--ease-out), opacity 0.16s;
 }
 .btn__icon--arrow { transition: transform 0.3s var(--ease-spring); }
-.btn:hover .btn__icon--arrow { transform: translateX(4px); }
 .link-arrow {
   display: inline-flex;
   align-items: center;
@@ -652,11 +648,12 @@ h3 { font-weight: 700; }
   font-size: 0.9rem;
   color: var(--accent-deep);
   letter-spacing: 0.05em;
-  transition: gap 0.25s var(--ease-spring);
 }
-.link-arrow:hover { gap: var(--sp-3); }
 .link-arrow svg { transition: transform 0.25s var(--ease-spring); }
-.link-arrow:hover svg { transform: translateX(3px); }
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover .btn__icon--arrow { transform: translateX(4px); }
+  .link-arrow:hover svg { transform: translateX(3px); }
+}
 
 /* ─── Page Hero ──────────────────────────────────────────────── */
 .page-hero {
@@ -680,6 +677,7 @@ h3 { font-weight: 700; }
   line-height: 1.08;
   letter-spacing: -0.03em;
   max-width: 18em;
+  overflow-wrap: anywhere;  /* a long unbroken word must wrap, not widen the page */
 }
 .page-hero__sub {
   font-size: 1.1rem;
@@ -717,10 +715,12 @@ h3 { font-weight: 700; }
   flex-direction: column;
   box-shadow: var(--sh-card);
 }
-.project-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--sh-raise);
-  border-color: rgba(10,122,82,0.2);
+@media (hover: hover) and (pointer: fine) {
+  .project-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--sh-raise);
+    border-color: rgba(10,122,82,0.2);
+  }
 }
 .project-card__img {
   position: relative;
@@ -730,9 +730,7 @@ h3 { font-weight: 700; }
 .project-card__img img {
   width: 100%; height: 100%;
   object-fit: cover;
-  transition: transform 0.6s var(--ease-out);
 }
-.project-card:hover .project-card__img img { transform: scale(1.06); }
 .project-card__links { display: flex; gap: var(--sp-5); }
 .project-card__link { color: var(--accent-deep); font-size: var(--fs-xs); display: inline-flex; align-items: center; gap: 4px; padding: 0.5rem 0; }
 .project-card__link:hover { text-decoration: underline; text-underline-offset: 3px; }
@@ -848,7 +846,9 @@ h3 { font-weight: 700; }
   flex-direction: column;
   box-shadow: var(--sh-card);
 }
-.blog-card:hover { border-color: rgba(10,122,82,0.2); transform: translateY(-3px); box-shadow: var(--sh-raise); }
+@media (hover: hover) and (pointer: fine) {
+  .blog-card:hover { border-color: rgba(10,122,82,0.2); transform: translateY(-3px); box-shadow: var(--sh-raise); }
+}
 .blog-card__img-container {
   position: relative;
   aspect-ratio: 16/9;
@@ -857,9 +857,7 @@ h3 { font-weight: 700; }
 .blog-card__img {
   width: 100%; height: 100%;
   object-fit: cover;
-  transition: transform 0.5s var(--ease-out);
 }
-.blog-card:hover .blog-card__img { transform: scale(1.05); }
 .blog-card__img--placeholder {
   width: 100%; height: 100%;
   background: var(--ink-3);
@@ -883,6 +881,12 @@ h3 { font-weight: 700; }
   color: var(--white);
   margin: var(--sp-2) 0 var(--sp-3);
   line-height: 1.3;
+  overflow-wrap: anywhere;
+  /* long titles stop at 3 lines here; the full title is on the post page */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .blog-card__body h2 a:hover { color: var(--accent-deep); }
 .blog-card__body p { font-size: var(--fs-sm); color: var(--text-2); }
@@ -905,7 +909,6 @@ h3 { font-weight: 700; }
   inset: 0;
   border-radius: 0;
   overflow: hidden;
-  transition: all 0.4s var(--ease-out);
 }
 .image-stack__item img { width: 100%; height: 100%; object-fit: cover; }
 .image-stack--large { aspect-ratio: 16/9; height: auto; }
@@ -917,6 +920,7 @@ h3 { font-weight: 700; }
   bottom: var(--sp-4); left: 50%; transform: translateX(-50%);
   z-index: 5;
 }
+.gallery-trigger:active { transform: translateX(-50%) scale(0.97); }  /* keep the centring while pressed */
 .gallery-modal {
   position: fixed;
   inset: 0;
@@ -952,7 +956,7 @@ h3 { font-weight: 700; }
   border-radius: 50%;
   font-size: 1.1rem;
   cursor: pointer;
-  transition: all 0.25s;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
   z-index: 3;
 }
 .gallery-nav:hover { background: rgba(255,255,255,0.16); border-color: var(--accent-bright); color: var(--accent-bright); }
@@ -988,12 +992,14 @@ h3 { font-weight: 700; }
   color: var(--white);
   letter-spacing: -0.03em;
   line-height: 1.1;
+  overflow-wrap: anywhere;  /* e.g. "Microsoft.Mashup.Engine…" in a title must not widen the page on phones */
 }
 .post-image-bundle { margin-bottom: var(--sp-10); }
 .post-content {
   font-size: 1.05rem;
   line-height: 1.85;
   color: var(--text-2);
+  overflow-wrap: anywhere;  /* pasted URLs and file paths wrap instead of being cut off */
 }
 
 /* ─── Forms ──────────────────────────────────────────────────── */
@@ -1018,7 +1024,7 @@ h3 { font-weight: 700; }
   font-family: var(--font-body);
   font-size: 1rem;
   box-sizing: border-box;
-  transition: all 0.25s;
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s, color 0.2s;
   outline: none;
   appearance: none;
 }
@@ -1076,10 +1082,10 @@ select.form-control.has-value { color: var(--teal); font-weight: 500; }
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--r-lg);
-  transition: all 0.3s var(--ease-out);
+  transition: border-color 0.2s, box-shadow 0.2s;
   text-decoration: none;
 }
-.contact-detail:hover { border-color: rgba(10,122,82,0.3); transform: translateX(6px); box-shadow: var(--shadow-teal); }
+.contact-detail:hover { border-color: rgba(10,122,82,0.3); box-shadow: var(--shadow-teal); }
 .contact-detail__icon {
   width: 42px; height: 42px;
   background: var(--teal-lo);
@@ -1153,7 +1159,7 @@ select.form-control.has-value { color: var(--teal); font-weight: 500; }
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--r-md);
-  transition: all 0.25s;
+  transition: border-color 0.2s, color 0.2s;
 }
 .bio__contact-item:hover { border-color: rgba(10,122,82,0.3); color: var(--teal); }
 .bio__contact-item .mono { color: var(--teal); }
@@ -1204,11 +1210,6 @@ select.form-control.has-value { color: var(--teal); font-weight: 500; }
 .timeline__item--current .timeline__dot {
   background: var(--accent);
   box-shadow: 0 0 0 4px rgba(10,122,82,0.15), 0 0 16px rgba(10,122,82,0.25);
-  animation: dotPulse 2s ease-in-out infinite;
-}
-@keyframes dotPulse {
-  0%,100% { box-shadow: 0 0 0 4px rgba(10,122,82,0.15), 0 0 16px rgba(10,122,82,0.25); }
-  50%      { box-shadow: 0 0 0 8px rgba(10,122,82,0.05), 0 0 28px rgba(10,122,82,0.12); }
 }
 .timeline__card {
   background: var(--surface);
@@ -1364,7 +1365,7 @@ select.form-control.has-value { color: var(--teal); font-weight: 500; }
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
   font-weight: 600;
-  transition: all 0.25s;
+  transition: background-color 0.2s, border-color 0.2s, transform 0.2s var(--ease-out);
   border: 1px solid;
   min-height: 44px;
 }
@@ -1374,14 +1375,16 @@ select.form-control.has-value { color: var(--teal); font-weight: 500; }
   color: #fff;
   border-radius: var(--r-pill);
 }
-.proj-link--github:hover { background: var(--body); transform: translateY(-2px); }
 .proj-link--live {
   background: var(--accent-tint);
   border-color: transparent;
   color: var(--accent-deep);
   border-radius: var(--r-pill);
 }
-.proj-link--live:hover { border-color: var(--accent); transform: translateY(-2px); }
+@media (hover: hover) and (pointer: fine) {
+  .proj-link--github:hover { background: var(--body); transform: translateY(-2px); }
+  .proj-link--live:hover { border-color: var(--accent); transform: translateY(-2px); }
+}
 .proj-detail__title {
   font-family: var(--font-display);
   font-size: clamp(1.8rem, 3vw, 2.5rem);
@@ -1479,6 +1482,7 @@ select.form-control.has-value { color: var(--teal); font-weight: 500; }
   text-align: center;
 }
 .footer__copy p { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--muted); letter-spacing: 0.08em; }
+.footer__admin a { display: inline-block; padding: 0.75rem 0.25rem; color: var(--accent-deep); text-decoration: underline; text-underline-offset: 3px; }
 
 /* ─── Admin Panel ────────────────────────────────────────────── */
 .adm-modal {
@@ -1499,6 +1503,8 @@ select.form-control.has-value { color: var(--teal); font-weight: 500; }
   padding: var(--sp-10);
   max-width: 480px;
   width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;  /* a long post title can't push the confirm button off a short screen */
   text-align: center;
   box-shadow: var(--shadow-xl);
 }
@@ -1521,7 +1527,7 @@ select.form-control.has-value { color: var(--teal); font-weight: 500; }
   cursor: pointer;
   font-family: var(--font-display);
   font-size: 0.875rem;
-  transition: all 0.2s;
+  transition: border-color 0.2s, color 0.2s;
 }
 .btn-cancel:hover { border-color: var(--border-3); color: var(--white); }
 .btn-confirm-delete {
@@ -1533,7 +1539,7 @@ select.form-control.has-value { color: var(--teal); font-weight: 500; }
   cursor: pointer;
   font-family: var(--font-display);
   font-size: 0.875rem;
-  transition: all 0.2s;
+  transition: background-color 0.2s;
 }
 .btn-confirm-delete:hover { background: rgba(239,68,68,0.25); }
 
@@ -1550,7 +1556,9 @@ select.form-control.has-value { color: var(--teal); font-weight: 500; }
   border-radius: var(--r-sm);
 }
 .msg-preview { max-width: 320px; }
-.msg-short, .msg-full { font-size: 0.82rem; color: var(--text-2); }
+.msg-short, .msg-full { font-size: 0.82rem; color: var(--text-2); overflow-wrap: anywhere; }  /* pasted URLs wrap */
+/* Expanded message keeps the sender's line breaks; a long one scrolls instead of filling the page */
+.msg-full { display: block; white-space: pre-wrap; max-height: 24rem; overflow-y: auto; }
 .msg-toggle {
   background: none; border: none; color: var(--teal); font-size: 0.7rem; cursor: pointer;
   letter-spacing: 0.05em; margin-left: 4px;
@@ -1569,7 +1577,7 @@ select.form-control.has-value { color: var(--teal); font-weight: 500; }
 }
 
 @media (max-width: 900px) {
-  .hero { height: auto; min-height: 100vh; padding: 80px 0 40px; justify-content: flex-start; }
+  .hero { height: auto; min-height: 100vh; min-height: 100svh; padding: 80px 0 40px; justify-content: flex-start; }
   .hero__inner { grid-template-columns: 1fr; gap: 3.5rem; }
   .hero__left { padding-right: 0; text-align: center; max-width: none; }
   .hero__right { max-width: 380px; margin: 0 auto; }
@@ -1624,7 +1632,7 @@ select.form-control.has-value { color: var(--teal); font-weight: 500; }
   border-radius: var(--r-full);
   border: 1px solid var(--border-2);
   background: transparent;
-  transition: all 0.22s ease;
+  transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
   white-space: nowrap;
   cursor: pointer;
 }
@@ -1673,7 +1681,7 @@ select.form-control.has-value { color: var(--teal); font-weight: 500; }
   border-radius: var(--r-full);
   padding: 2px var(--sp-3);
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease;
   line-height: 1.6;
 }
 
@@ -1783,7 +1791,7 @@ select.form-control.has-value { color: var(--teal); font-weight: 500; }
 /* A. Global mobile resets */
 @media (max-width: 768px) {
   .flash-container {
-    bottom: var(--sp-6);
+    bottom: max(var(--sp-6), calc(env(safe-area-inset-bottom, 0px) + var(--sp-3)));  /* clear the iPhone home bar */
     right: 50%;
     transform: translateX(50%);
     width: calc(100vw - var(--sp-8));
@@ -1828,14 +1836,6 @@ select.form-control.has-value { color: var(--teal); font-weight: 500; }
   }
   .nav__links.open { transform: translateX(0); }
   .nav__links a { font-size: 1.05rem; padding: 0.65rem var(--sp-8); color: var(--ink); }  /* ≥ 44px tap target */
-  .nav__resume {
-    display: inline-flex;
-    padding: 0.5rem 1.4rem !important;
-    font-size: 0.85rem !important;
-    min-height: 40px;
-    align-items: center;
-    justify-content: center;
-  }
   .nav__hire {
     margin-left: 0 !important;
     padding: 0.65rem 2rem !important;
@@ -1995,6 +1995,11 @@ select.form-control.has-value { color: var(--teal); font-weight: 500; }
 @media (max-width: 768px) {
   .blog-card__body { padding: 1.25rem; }
 }
+@media (max-width: 480px) {
+  /* reading time gets its own line, so the line can't start with an orphaned "·" */
+  .post-reading-time { flex-basis: 100%; }
+  .post-reading-time:not(:empty)::before { display: none; }
+}
 
 /* Q. Very small phones ≤ 390px — catch-all */
 @media (max-width: 390px) {
@@ -2023,6 +2028,12 @@ a, button {
   touch-action: manipulation;
 }
 
+/* A long-press on a control shouldn't select its label (body text stays selectable) */
+.btn, .nav__burger, .cat-tab, .gallery-nav, .gallery-close {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 /* Prevent iOS from auto-styling inputs and selects. Checkboxes and radios keep their
    native look (styled via accent-color); :where() keeps this selector's specificity at 0,0,1. */
 input:where(:not([type="checkbox"], [type="radio"])), textarea, select {
@@ -2030,9 +2041,9 @@ input:where(:not([type="checkbox"], [type="radio"])), textarea, select {
   border-radius: var(--r-md);
 }
 
-/* Active states for touch (replaces :hover on phones) */
+/* Active states for touch (replaces :hover on phones); the .btn press scale is in the base .btn rules */
 @media (hover: none) and (pointer: coarse) {
-  .btn:active { opacity: 0.8; transform: scale(0.97); }
+  .btn:active { opacity: 0.8; }
   .project-card:active { border-color: rgba(10,122,82,0.3); }
   .nav__links a:active { color: var(--teal); }
   .bio__contact-item:active { color: var(--teal); }
@@ -2055,9 +2066,10 @@ input:where(:not([type="checkbox"], [type="radio"])), textarea, select {
     transition-duration: 0.01ms !important;
   }
 
+  html { scroll-behavior: auto; }  /* anchor jumps land instantly (main.js does the same for its scrolls) */
+
   /* Restore intentional transitions that improve usability */
   .nav { transition: background 0.3s !important; }
-  .flash { animation: none !important; }
   /* Reveal elements are already visible via the .hero / .page-hero overrides;
      make sure any remaining reveal elements are instantly visible */
   .reveal {
@@ -2106,7 +2118,10 @@ input:where(:not([type="checkbox"], [type="radio"])), textarea, select {
   box-shadow: var(--sh-raise);
 }
 @media (max-width: 768px) {
-  .scroll-top { bottom: 1.5rem; right: 1rem; width: 40px; height: 40px; }
+  .scroll-top {
+    bottom: max(1.5rem, calc(env(safe-area-inset-bottom, 0px) + 0.75rem));  /* clear the iPhone home bar */
+    right: 1rem;
+  }
 }
 
 /* ─── Reading Time Badge ──────────────────────────────────────── */

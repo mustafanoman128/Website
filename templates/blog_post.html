@@ -2,7 +2,8 @@
 {% block title %}{{ post.title }} — Mustafa Noman{% endblock %}
 
 {% block content %}
-
+{% from '_gallery.html' import image_stack, gallery_modal with context %}
+{% set images = post.images_on_disk %}
 
 <section class="post-hero section--dark" aria-labelledby="post-title">
   <div class="container">
@@ -17,30 +18,27 @@
       <span class="mono">&middot; by {{ post.author.name }}</span>
       <span class="post-reading-time mono" id="reading-time"></span>
     </div>
-    <h1 class="post-hero__title" id="post-title">{{ post.title }}</h1>
+    <h1 class="post-hero__title" id="post-title" dir="auto">{{ post.title }}</h1>
   </div>
 </section>
 
 <section class="section" aria-label="Blog post content">
   <div class="container container--narrow">
 
-    {% if post.images %}
+    {% if images %}
     <div class="post-image-bundle reveal">
-      <div class="image-stack image-stack--large">
-        <div class="image-stack__item stack-1">
-          <img src="{{ url_for('static', filename='uploads/blog_images/' + post.images[0].image_path) }}" alt="{{ post.title }}" loading="lazy" />
-        </div>
-      </div>
+      {{ image_stack(post, images, large=True) }}
     </div>
     {% endif %}
 
-    <div class="post-content reveal">
+    <div class="post-content reveal" dir="auto">
       {{ post.content | nl2br | safe }}
     </div>
 
-
   </div>
 </section>
+
+{% if images %}{{ gallery_modal() }}{% endif %}
 
 
 {% endblock %}
