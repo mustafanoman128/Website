@@ -163,6 +163,12 @@ class SecurityTests(unittest.TestCase):
             self.assertIsNone(site.ContactMessage.query.order_by(site.ContactMessage.id.desc()).first().inquiry_type)
         self.assertEqual(self.sent[-1].reply_to, "ann@example.com")
 
+    def test_contact_stores_known_inquiry_type_and_emails_its_label(self):
+        self.assertEqual(self.contact(inquiry_type="dashboards").status_code, 302)
+        with site.app.app_context():
+            self.assertEqual(site.ContactMessage.query.order_by(site.ContactMessage.id.desc()).first().inquiry_type, "dashboards")
+        self.assertIn("Dashboards & reporting", self.sent[-1].body)
+
     def test_contact_keeps_text_that_looks_like_tags(self):
         self.assertEqual(self.contact(message="Revenue < 10k and churn > 5%").status_code, 302)
         with site.app.app_context():

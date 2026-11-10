@@ -89,9 +89,11 @@ def nl2br_filter(value):
 
 # Maps contact-form inquiry_type field values to human-readable labels used in the notification email.
 INQUIRY_LABELS = {
-    "freelance": "Freelance / Consulting",
-    "collab": "Collaboration",
-    "general": "General",
+    "dashboards": "Dashboards & reporting",
+    "etl": "Data pipelines (ETL)",
+    "ai": "AI / predictive model",
+    "web": "Web app or internal tool",
+    "unsure": "Not sure yet",
 }
 
 # One plain address: rejects "a@b", comma/semicolon lists, spaces and angle brackets.
